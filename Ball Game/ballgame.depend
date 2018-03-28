@@ -1,0 +1,88 @@
+# depslib dependency file v1.0
+1522078486 source:c:\users\hynax\desktop\cgnew\src\ballgame.cpp
+	<GL/glut.h>
+	<math.h>
+	<time.h>
+	<iostream>
+
+1368290960 c:\users\hynax\desktop\cgnew\shared\windows\include\gl\glut.h
+	"freeglut_std.h"
+
+1368290960 c:\users\hynax\desktop\cgnew\shared\windows\include\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1522160162 source:c:\users\hynax\desktop\cgnew\animationbase.cpp
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"extras.h"
+	<time.h>
+	<iostream>
+	<math.h>
+	<string>
+	<sstream>
+
+1522157676 c:\users\hynax\desktop\cgnew\extras.h
+
+1522078486 source:c:\users\hynax\desktop\nova pasta\ballgame.cpp
+	<GL/glut.h>
+	<math.h>
+	<time.h>
+	<iostream>
+
+1368290960 c:\users\hynax\desktop\nova pasta\windows\include\gl\glut.h
+	"freeglut_std.h"
+
+1368290960 c:\users\hynax\desktop\nova pasta\windows\include\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1522161094 source:c:\users\hynax\desktop\nova pasta\animationbase.cpp
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"extras.h"
+	<time.h>
+	<iostream>
+	<math.h>
+	<string>
+	<sstream>
+
+1522157676 c:\users\hynax\desktop\nova pasta\extras.h
+
+1522161094 source:c:\users\hynax\desktop\ball game\animationbase.cpp
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"extras.h"
+	<time.h>
+	<iostream>
+	<math.h>
+	<string>
+	<sstream>
+
+1368290960 c:\users\hynax\desktop\ball game\windows\include\gl\glut.h
+	"freeglut_std.h"
+
+1368290960 c:\users\hynax\desktop\ball game\windows\include\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1522157676 c:\users\hynax\desktop\ball game\extras.h
+
