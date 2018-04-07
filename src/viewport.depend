@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1520818589 source:/home/diego/Área de Trabalho/diego/CG/src/viewport.cpp
-	<GL/glut.h>
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-

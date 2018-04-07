@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1385425772 source:/home/diego/Área de Trabalho/diego/CG/src/zbufferBackface.cpp
-	<GL/glut.h>
-	<stdlib.h>
-	<stdio.h>
-	<ctype.h>
-
