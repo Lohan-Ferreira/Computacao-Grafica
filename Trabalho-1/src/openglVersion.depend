@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1360379516 source:/home/diego/Área de Trabalho/diego/CG/shared/glcText.cpp
+	<stdio.h>
+	<string.h>
+	<GL/glut.h>
+	"glcText.h"
+
+1360379482 /home/diego/Área de Trabalho/diego/CG/shared/glcText.h
+
+1512425196 source:/home/diego/Área de Trabalho/diego/CG/src/openglVersion.cpp
+	<GL/glew.h>
+	<GL/glut.h>
+	<iostream>
+	"glcText.h"
+

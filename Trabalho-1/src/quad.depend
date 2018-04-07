@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1521658245 source:/home/diego/Área de Trabalho/diego/CG/src/quad.cpp
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+	<glcFPSViewer.h>
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+
+1522118057 source:/home/diego/Área de Trabalho/diego/CG/src/animationBase.cpp
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"extras.h"
+
+1471984452 /home/diego/Área de Trabalho/diego/CG/src/extras.h
+

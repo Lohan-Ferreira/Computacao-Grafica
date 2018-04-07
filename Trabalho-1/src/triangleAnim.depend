@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1511978200 source:/home/diego/Área de Trabalho/diego/CG/shared/glcFPSViewer.cpp
+	"glcFPSViewer.h"
+	<stdio.h>
+	<string.h>
+	<GL/glut.h>
+
+1360381086 /home/diego/Área de Trabalho/diego/CG/shared/glcFPSViewer.h
+	"glcFPSViewer.h"
+
+1521311009 source:/home/diego/Área de Trabalho/diego/CG/src/triangleAnimation.cpp
+	<iostream>
+	<GL/glut.h>
+	<glcFPSViewer.h>
+
