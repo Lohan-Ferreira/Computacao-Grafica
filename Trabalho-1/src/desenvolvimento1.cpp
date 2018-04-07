@@ -2,13 +2,14 @@
  * Autores: Diego Paiva e Lohan Ferreira
  * Data de criação: 07/04/2018
  * Descrição: Trabalho 1 - River Raid
+ *
 */
 
 #include <GL/glut.h>
 #include <iostream>
 #include <string.h>
 
-#define WINDOW_WIDTH  1000
+#define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
 
 void init();
@@ -17,6 +18,9 @@ void imprimirTexto(char const *texto, int x, int y);
 void mouse(int button, int state, int x, int y);
 void idle();
 void motion(int x, int y);
+
+int orthoFirstY = 0;
+int orthoLastY = 100;
 
 int main(int argc, char** argv)
 {
@@ -39,7 +43,7 @@ void init()
    glMatrixMode (GL_PROJECTION);
    glLoadIdentity ();
 
-   glOrtho(0.0, WINDOW_WIDTH, 0.0, WINDOW_HEIGHT, -30.0, 30.0);
+   glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
 
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity ();
@@ -49,6 +53,83 @@ void init()
 void display()
 {
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+   glColor3f(0.0, 1.0, 0.0);
+   glBegin(GL_TRIANGLE_STRIP);
+    glVertex3f(80, 0, 0);
+    glVertex3f(200, 0, 0);
+    glVertex3f(80, 300, 0);
+    glVertex3f(200, 300, 0);
+    glVertex3f(120, 500, 0);
+    glVertex3f(200, 500, 0);
+    glVertex3f(120, 1000, 0);
+    glVertex3f(200, 1000, 0);
+    glVertex3f(80, 1200, 0);
+    glVertex3f(200, 1200, 0);
+    glVertex3f(80, 1500, 0);
+    glVertex3f(200, 1500, 0);
+    glVertex3f(110, 1700, 0);
+    glVertex3f(200, 1700, 0);
+    glVertex3f(110, 1900, 0);
+    glVertex3f(200, 1900, 0);
+    glVertex3f(120, 2000, 0);
+    glVertex3f(200, 2000, 0);
+    glVertex3f(120, 2100, 0);
+    glVertex3f(200, 2100, 0);
+    glVertex3f(110, 2200, 0);
+    glVertex3f(200, 2200, 0);
+    glVertex3f(110, 2500, 0);
+    glVertex3f(200, 2500, 0);
+    glVertex3f(120, 2600, 0);
+    glVertex3f(200, 2600, 0);
+    glVertex3f(120, 2800, 0);
+    glVertex3f(200, 2800, 0);
+    glVertex3f(140, 3000, 0);
+    glVertex3f(200, 3000, 0);
+    glVertex3f(140, 3500, 0);
+    glVertex3f(200, 3500, 0);
+    glVertex3f(120, 4000, 0);
+    glVertex3f(200, 4000, 0);
+
+   glEnd();
+
+   glColor3f(0.0, 1.0, 0.0);
+   glBegin(GL_TRIANGLE_STRIP);
+    glVertex3f(-80, 0, 0);
+    glVertex3f(-200, 0, 0);
+    glVertex3f(-80, 300, 0);
+    glVertex3f(-200, 300, 0);
+    glVertex3f(-120, 500, 0);
+    glVertex3f(-200, 500, 0);
+    glVertex3f(-120, 1000, 0);
+    glVertex3f(-200, 1000, 0);
+    glVertex3f(-80, 1200, 0);
+    glVertex3f(-200, 1200, 0);
+    glVertex3f(-80, 1500, 0);
+    glVertex3f(-200, 1500, 0);
+    glVertex3f(-110, 1700, 0);
+    glVertex3f(-200, 1700, 0);
+    glVertex3f(-110, 1900, 0);
+    glVertex3f(-200, 1900, 0);
+    glVertex3f(-120, 2000, 0);
+    glVertex3f(-200, 2000, 0);
+    glVertex3f(-120, 2100, 0);
+    glVertex3f(-200, 2100, 0);
+    glVertex3f(-110, 2200, 0);
+    glVertex3f(-200, 2200, 0);
+    glVertex3f(-110, 2500, 0);
+    glVertex3f(-200, 2500, 0);
+    glVertex3f(-120, 2600, 0);
+    glVertex3f(-200, 2600, 0);
+    glVertex3f(-120, 2800, 0);
+    glVertex3f(-200, 2800, 0);
+    glVertex3f(-140, 3000, 0);
+    glVertex3f(-200, 3000, 0);
+    glVertex3f(-140, 3500, 0);
+    glVertex3f(-200, 3500, 0);
+    glVertex3f(-120, 4000, 0);
+    glVertex3f(-200, 4000, 0);
+   glEnd();
 
    glutSwapBuffers();
 }
@@ -89,6 +170,11 @@ void idle()
     dt = t - tLast;
 
     /* Update velocity and position */
+
+    for(int i = 0; i < 4000; i++) {
+        orthoFirstY+= 500;
+        orthoLastY+= 500;
+    }
 
     /* Update tLast for next time, using static local variable */
     tLast = t;
