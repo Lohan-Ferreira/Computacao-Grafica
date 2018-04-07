@@ -13,3 +13,17 @@
 	<GL/glut.h>
 	<glcFPSViewer.h>
 
+1523119261 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/shared/glcFPSViewer.cpp
+	"glcFPSViewer.h"
+	<stdio.h>
+	<string.h>
+	<GL/glut.h>
+
+1523119261 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/shared/glcFPSViewer.h
+	"glcFPSViewer.h"
+
+1523119261 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/triangleAnimation.cpp
+	<iostream>
+	<GL/glut.h>
+	<glcFPSViewer.h>
+

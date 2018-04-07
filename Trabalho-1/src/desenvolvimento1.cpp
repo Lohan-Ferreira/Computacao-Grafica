@@ -20,7 +20,7 @@ void idle();
 void motion(int x, int y);
 
 int orthoFirstY = 0;
-int orthoLastY = 100;
+int orthoLastY = 750;
 
 int main(int argc, char** argv)
 {
@@ -40,33 +40,32 @@ void init()
 {
    glClearColor (0.0, 0.0, 1.0, 0.0);
 
-   glMatrixMode (GL_PROJECTION);
-   glLoadIdentity ();
-
-   glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
-
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity ();
 }
-
 
 void display()
 {
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-   glColor3f(0.0, 1.0, 0.0);
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+
+   glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+
+   glColor3f(0.1, 1.0, 0.4);
    glBegin(GL_TRIANGLE_STRIP);
-    glVertex3f(80, 0, 0);
-    glVertex3f(200, 0, 0);
-    glVertex3f(80, 300, 0);
-    glVertex3f(200, 300, 0);
-    glVertex3f(120, 500, 0);
-    glVertex3f(200, 500, 0);
+    glVertex3f(80,  0,    0);
+    glVertex3f(200, 0,    0);
+    glVertex3f(80,  300,  0);
+    glVertex3f(200, 300,  0);
+    glVertex3f(120, 500,  0);
+    glVertex3f(200, 500,  0);
     glVertex3f(120, 1000, 0);
     glVertex3f(200, 1000, 0);
-    glVertex3f(80, 1200, 0);
+    glVertex3f(80,  1200, 0);
     glVertex3f(200, 1200, 0);
-    glVertex3f(80, 1500, 0);
+    glVertex3f(80,  1500, 0);
     glVertex3f(200, 1500, 0);
     glVertex3f(110, 1700, 0);
     glVertex3f(200, 1700, 0);
@@ -90,10 +89,45 @@ void display()
     glVertex3f(200, 3500, 0);
     glVertex3f(120, 4000, 0);
     glVertex3f(200, 4000, 0);
-
+    glVertex3f(120, 4200, 0);
+    glVertex3f(200, 4200, 0);
+    glVertex3f(140, 4400, 0);
+    glVertex3f(200, 4400, 0);
+    glVertex3f(140, 5000, 0);
+    glVertex3f(200, 5000, 0);
+    glVertex3f(160, 5300, 0);
+    glVertex3f(200, 5300, 0);
+    glVertex3f(160, 7000, 0);
+    glVertex3f(200, 7000, 0);
+    glVertex3f(140, 7300, 0);
+    glVertex3f(200, 7300, 0);
+    glVertex3f(140, 7600, 0);
+    glVertex3f(200, 7600, 0);
+    glVertex3f(160, 7600, 0);
+    glVertex3f(200, 8000, 0);
+    glVertex3f(160, 8000, 0);
+    glVertex3f(200, 9000, 0);
+    glVertex3f(80,  9000, 0);
+    glVertex3f(200, 10000, 0);
+    glVertex3f(80,  10000, 0);
+    glVertex3f(200, 10300, 0);
+    glVertex3f(120, 10300, 0);
+    glVertex3f(200, 12000, 0);
+    glVertex3f(120, 12000, 0);
+    glVertex3f(200, 12300, 0);
+    glVertex3f(80,  12300, 0);
+    glVertex3f(200, 12600, 0);
+    glVertex3f(80,  12600, 0);
+    glVertex3f(200, 12800, 0);
+    glVertex3f(120, 12800, 0);
+    glVertex3f(200, 13000, 0);
+    glVertex3f(120, 13000, 0);
+    glVertex3f(200, 14000, 0);
+    glVertex3f(80,  14000, 0);
+    glVertex3f(200, 15000, 0);
+    glVertex3f(80,  15000, 0);
    glEnd();
 
-   glColor3f(0.0, 1.0, 0.0);
    glBegin(GL_TRIANGLE_STRIP);
     glVertex3f(-80, 0, 0);
     glVertex3f(-200, 0, 0);
@@ -129,6 +163,65 @@ void display()
     glVertex3f(-200, 3500, 0);
     glVertex3f(-120, 4000, 0);
     glVertex3f(-200, 4000, 0);
+    glVertex3f(-120, 4200, 0);
+    glVertex3f(-200, 4200, 0);
+    glVertex3f(-140, 4400, 0);
+    glVertex3f(-200, 4400, 0);
+    glVertex3f(-140, 5000, 0);
+    glVertex3f(-200, 5000, 0);
+    glVertex3f(-160, 5300, 0);
+    glVertex3f(-200, 5300, 0);
+    glVertex3f(-160, 7000, 0);
+    glVertex3f(-200, 7000, 0);
+    glVertex3f(-140, 7300, 0);
+    glVertex3f(-200, 7300, 0);
+    glVertex3f(-140, 7600, 0);
+    glVertex3f(-200, 7600, 0);
+    glVertex3f(-160, 7600, 0);
+    glVertex3f(-200, 8000, 0);
+    glVertex3f(-160, 8000, 0);
+    glVertex3f(-200, 9000, 0);
+    glVertex3f(-80, 9000, 0);
+    glVertex3f(-200, 10000, 0);
+    glVertex3f(-80, 10000, 0);
+    glVertex3f(-200, 10300, 0);
+    glVertex3f(-120, 10300, 0);
+    glVertex3f(-200, 12000, 0);
+    glVertex3f(-120, 12000, 0);
+    glVertex3f(-200, 12300, 0);
+    glVertex3f(-80,  12300, 0);
+    glVertex3f(-200, 12600, 0);
+    glVertex3f(-80,  12600, 0);
+    glVertex3f(-200, 12800, 0);
+    glVertex3f(-120, 12800, 0);
+    glVertex3f(-200, 13000, 0);
+    glVertex3f(-120, 13000, 0);
+    glVertex3f(-200, 14000, 0);
+    glVertex3f(-80,  14000, 0);
+    glVertex3f(-200, 15000, 0);
+    glVertex3f(-80,  15000, 0);
+   glEnd();
+
+   // Primeiro obstaculo que fica dentro da parte azul
+   glBegin(GL_POLYGON);
+    glVertex3f(-30, 3050, 0);
+    glVertex3f(-30, 3400, 0);
+    glVertex3f(30, 3400, 0);
+    glVertex3f(30, 3050, 0);
+   glEnd();
+
+   // Segundo obstaculo que fica dentro da parte azul
+   glBegin(GL_POLYGON);
+    glVertex3f(0, 4100, 0);
+    glVertex3f(-60, 4200, 0);
+    glVertex3f(-60, 4400, 0);
+    glVertex3f(-25, 4500, 0);
+    glVertex3f(-25, 4700, 0);
+    glVertex3f(0, 4800, 0);
+    glVertex3f(25, 4700, 0);
+    glVertex3f(25, 4500, 0);
+    glVertex3f(60, 4400, 0);
+    glVertex3f(60, 4200, 0);
    glEnd();
 
    glutSwapBuffers();
@@ -171,10 +264,12 @@ void idle()
 
     /* Update velocity and position */
 
-    for(int i = 0; i < 4000; i++) {
-        orthoFirstY+= 500;
-        orthoLastY+= 500;
+    // 15000 = ortho maximo y
+    if(orthoLastY < 15000) {
+        orthoLastY+=2;
+        orthoFirstY+=2;
     }
+
 
     /* Update tLast for next time, using static local variable */
     tLast = t;
