@@ -35,11 +35,6 @@
 			<Add library="GLEW" />
 		</Linker>
 		<Unit filename="desenvolvimento1.cpp" />
-		<Unit filename="extras.h" />
-		<Unit filename="include/Esfera.h" />
-		<Unit filename="include/Plano.h" />
-		<Unit filename="src/Esfera.cpp" />
-		<Unit filename="src/Plano.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
