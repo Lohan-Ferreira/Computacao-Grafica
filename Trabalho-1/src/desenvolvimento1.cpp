@@ -11,8 +11,6 @@
 #define WINDOW_WIDTH  1000
 #define WINDOW_HEIGHT 600
 
-#define QUANTIDADE_ESFERAS_A_COLETAR 100
-
 void init();
 void display();
 void imprimirTexto(char const *texto, int x, int y);
