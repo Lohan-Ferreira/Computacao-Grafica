@@ -8,9 +8,13 @@
 #include <GL/glut.h>
 #include <iostream>
 #include <string.h>
+#include <cstdlib>
+#include "Inimigo.h"
 
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
+
+#define QUANTIDADE_INIMIGOS 50
 
 #define ORTHO_MAXIMO 18000
 
@@ -164,8 +168,10 @@ public:
 };
 
 Reta** retas;
+Inimigo *inimigos[QUANTIDADE_INIMIGOS];
 int nretas = 0;
 void init();
+void inicializarInimigo();
 void display();
 void imprimirTexto(char const *texto, int x, int y);
 void mouse(int button, int state, int x, int y);
@@ -182,8 +188,10 @@ int main(int argc, char** argv)
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     glutInitWindowPosition(200, 100);
     glutCreateWindow("River Raid");
-    glutKeyboardFunc(keyboard);
     init();
+    srand(time(NULL));
+    inicializarInimigo();
+    glutKeyboardFunc(keyboard);
     glutDisplayFunc(display);
     glutIdleFunc(idle);
 
@@ -244,6 +252,14 @@ void init()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity ();
+}
+
+void inicializarInimigo()
+{
+    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++) {
+        inimigos[i] = new Inimigo(rand () % 100 + -50, ((i+1) * 400) - rand() % 200);
+    }
+
 }
 
 void display()
@@ -379,7 +395,6 @@ void display()
     glEnd();
 
     glBegin(GL_TRIANGLE_STRIP);
-        // Show
         glVertex3f(-50,  0.0,   0);
         glVertex3f(-200, 0.0,   0);
         glVertex3f(-50,  250,   0);
@@ -613,6 +628,10 @@ void display()
         glVertex3f(navex3, navey3, 0);
     glEnd();
 
+    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++) {
+        inimigos[i]->desenhar();
+    }
+
     glutSwapBuffers();
 }
 
@@ -629,7 +648,6 @@ void imprimirTexto(char const *texto, int x, int y)
     }
 
 }
-
 
 void motion(int x, int y)
 {
@@ -697,7 +715,7 @@ void keyboard(unsigned char key, int x, int y)
             navex3 += 5;
         break;
 
-        case'w':
+        case 'w':
             navey1 += 5;
             navey2 += 5;
             navey3 += 5;
