@@ -438,6 +438,16 @@ int main(int argc, char** argv)
     nretas++;
 
 
+    //Primeiro Poligono
+    retas[nretas] = new Reta(-30,3000,-30,3301,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-30,3300,30,3301,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-30,3000,30,3001,0,true);
+    nretas++;
+    retas[nretas] = new Reta(30,3000,30,3300,0,true);
+    nretas++;
+
 
     //Segundo Poligono
 
@@ -462,6 +472,101 @@ int main(int argc, char** argv)
     retas[nretas] = new Reta(0,4100,60,4200,0,true);
     nretas++;
 
+    //Terceiro Poligono
+    retas[nretas] = new Reta(0,10700,-60,10750,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-60,10750,-60,10950,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-60,10950,-25,11050,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-25,11050,-25,11250,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-25,11250,0,11260,0,true);
+    nretas++;
+    retas[nretas] = new Reta(25,11250,0,11260,0,true);
+    nretas++;
+    retas[nretas] = new Reta(25,11050,25,11250,0,true);
+    nretas++;
+    retas[nretas] = new Reta(60,10950,25,11050,0,true);
+    nretas++;
+    retas[nretas] = new Reta(60,10750,60,10950,0,true);
+    nretas++;
+    retas[nretas] = new Reta(0,10700,60,10750,0,true);
+    nretas++;
+
+    //Quarto poligono
+    retas[nretas] = new Reta(0,11800,-70,11850,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-70,11850,-70,12150,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-70,12150,-80,12151,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-80,12151,-80,12300,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-80,12300,0,12350,1,true);
+    nretas++;
+    retas[nretas] = new Reta(80,12300,0,12350,0,true);
+    nretas++;
+    retas[nretas] = new Reta(80,12150,80,12300,0,true);
+    nretas++;
+    retas[nretas] = new Reta(70,12150,80,12151,0,true);
+    nretas++;
+    retas[nretas] = new Reta(70,11850,70,12150,0,true);
+    nretas++;
+    retas[nretas] = new Reta(0,11800,70,11850,0,true);
+    nretas++;
+
+    //Quinto Poligono
+    retas[nretas] = new Reta(0,15100,-130,15150,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-130,15150,-130,15250,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-130,15250,-110,15260,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-110,15260,-110,15450,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-110,15450,-130,15500,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-130,15500,-130,15550,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-130,15550,-100,15600,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-100,15600,-100,15700,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-100,15700,0,15750,1,true);
+    nretas++;
+    retas[nretas] = new Reta(100,15700,0,15750,0,true);
+    nretas++;
+    retas[nretas] = new Reta(100,15600,100,15700,0,true);
+    nretas++;
+    retas[nretas] = new Reta(130,15550,100,15600,0,true);
+    nretas++;
+    retas[nretas] = new Reta(130,15500,130,15550,0,true);
+    nretas++;
+    retas[nretas] = new Reta(110,15450,130,15500,0,true);
+    nretas++;
+    retas[nretas] = new Reta(110,15260,110,15450,0,true);
+    nretas++;
+    retas[nretas] = new Reta(130,15250,110,15260,0,true);
+    nretas++;
+    retas[nretas] = new Reta(130,15150,130,15250,0,true);
+    nretas++;
+    retas[nretas] = new Reta(0,15100,130,15150,0,true);
+    nretas++;
+
+    //Sexto Poligono
+    retas[nretas] = new Reta(0,16500,-130,16550,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-130,16550,-130,17050,1,true);
+    nretas++;
+    retas[nretas] = new Reta(-130,17050,0,17100,1,true);
+    nretas++;
+    retas[nretas] = new Reta(130,17050,0,17100,0,true);
+    nretas++;
+    retas[nretas] = new Reta(130,16550,130,17050,0,true);
+    nretas++;
+    retas[nretas] = new Reta(0,16500,130,16550,0,true);
+    nretas++;
 
 
     glutMainLoop();
