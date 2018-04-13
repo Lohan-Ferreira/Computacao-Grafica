@@ -14,7 +14,7 @@
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
 
-#define QUANTIDADE_INIMIGOS 50
+#define QUANTIDADE_INIMIGOS 68
 
 #define ORTHO_MAXIMO 18000
 
@@ -585,10 +585,75 @@ void init()
 
 void inicializarInimigo()
 {
-    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++) {
-        inimigos[i] = new Inimigo(rand () % 100 + -50, ((i+1) * 400) - rand() % 200);
-    }
-
+    inimigos[0] = new Inimigo(0, 300);
+    inimigos[1] = new Inimigo(-50, 500);
+    inimigos[2] = new Inimigo(-70, 900);
+    inimigos[3] = new Inimigo(-30, 1000);
+    inimigos[4] = new Inimigo(70, 1200);
+    inimigos[5] = new Inimigo(50, 1300);
+    inimigos[6] = new Inimigo(30, 1350);
+    inimigos[7] = new Inimigo(80, 1500);
+    inimigos[8] = new Inimigo(-80, 1700);
+    inimigos[9] = new Inimigo(0, 1900);
+    inimigos[10] = new Inimigo(110, 2220);
+    inimigos[11] = new Inimigo(100, 2350);
+    inimigos[12] = new Inimigo(90, 2450);
+    inimigos[13] = new Inimigo(-90, 2600);
+    inimigos[14] = new Inimigo(-140, 2900);
+    inimigos[15] = new Inimigo(-120, 3150);
+    inimigos[16] = new Inimigo(120, 3200);
+    inimigos[17] = new Inimigo(-130, 3350);
+    inimigos[18] = new Inimigo(-20, 3500);
+    inimigos[19] = new Inimigo(20, 3700);
+    inimigos[20] = new Inimigo(-90, 4200);
+    inimigos[21] = new Inimigo(90, 4750);
+    inimigos[22] = new Inimigo(-30, 5100);
+    inimigos[23] = new Inimigo(-30, 5200);
+    inimigos[24] = new Inimigo(50, 5850);
+    inimigos[25] = new Inimigo(50, 6000);
+    inimigos[26] = new Inimigo(50, 6100);
+    inimigos[27] = new Inimigo(0, 6500);
+    inimigos[28] = new Inimigo(-20, 6700);
+    inimigos[29] = new Inimigo(-10, 6800);
+    inimigos[30] = new Inimigo(80, 6900);
+    inimigos[31] = new Inimigo(-10, 7000);
+    inimigos[32] = new Inimigo(80, 7500);
+    inimigos[33] = new Inimigo(80, 7600);
+    inimigos[34] = new Inimigo(-10, 8000);
+    inimigos[35] = new Inimigo(-10, 8500);
+    inimigos[35] = new Inimigo(-10, 8700);
+    inimigos[36] = new Inimigo(0, 9100);
+    inimigos[37] = new Inimigo(-10, 9800);
+    inimigos[38] = new Inimigo(60, 10100);
+    inimigos[39] = new Inimigo(-70, 10300);
+    inimigos[40] = new Inimigo(-100, 10680);
+    inimigos[41] = new Inimigo(100, 10680);
+    inimigos[42] = new Inimigo(-100, 11300);
+    inimigos[43] = new Inimigo(100, 12200);
+    inimigos[44] = new Inimigo(0, 12650);
+    inimigos[45] = new Inimigo(-20, 12900);
+    inimigos[46] = new Inimigo(0, 13150);
+    inimigos[47] = new Inimigo(50, 13200);
+    inimigos[48] = new Inimigo(40, 13300);
+    inimigos[49] = new Inimigo(-40, 13400);
+    inimigos[50] = new Inimigo(0, 13600);
+    inimigos[51] = new Inimigo(20, 13700);
+    inimigos[52] = new Inimigo(60, 14200);
+    inimigos[53] = new Inimigo(60, 14300);
+    inimigos[54] = new Inimigo(-60, 14350);
+    inimigos[55] = new Inimigo(0, 14600);
+    inimigos[56] = new Inimigo(-120, 14820);
+    inimigos[57] = new Inimigo(-120, 14870);
+    inimigos[58] = new Inimigo(-130, 15000);
+    inimigos[59] = new Inimigo(-130, 15300);
+    inimigos[60] = new Inimigo(130, 15650);
+    inimigos[61] = new Inimigo(-80, 16000);
+    inimigos[62] = new Inimigo(80, 16100);
+    inimigos[63] = new Inimigo(100, 16200);
+    inimigos[64] = new Inimigo(-50, 16450);
+    inimigos[65] = new Inimigo(50, 16400);
+    inimigos[66] = new Inimigo(-145, 16900);
+    inimigos[67] = new Inimigo(130, 17400);
 }
 
 void display()
@@ -1014,12 +1079,31 @@ void idle()
 
     if(orthoLastY < ORTHO_MAXIMO)
     {
-        orthoLastY += 2;
-        orthoFirstY += 2;
-        navey1 += 2;
-        navey2 += 2;
-        navey3 += 2;
+        orthoLastY += 1;
+        orthoFirstY += 1;
+        navey1 += 1;
+        navey2 += 1;
+        navey3 += 1;
     }
+
+    inimigos[1]->oscilar(-120, 120);
+    inimigos[2]->oscilar(-120, 120);
+    inimigos[3]->oscilar(-120, 120);
+    inimigos[4]->oscilar(-120, 120);
+    inimigos[5]->oscilar(-120, 120);
+    inimigos[6]->oscilar(-120, 120);
+    inimigos[7]->oscilar(-120, 120);
+    inimigos[8]->oscilar(-120, 120);
+    inimigos[10]->oscilar(-150, 150);
+    inimigos[11]->oscilar(-120, 120);
+    inimigos[12]->oscilar(-120, 120);
+    inimigos[13]->oscilar(-150, 150);
+    inimigos[14]->oscilar(-170, 170);
+    inimigos[15]->oscilar(-170, -30);
+    inimigos[16]->oscilar(30, 170);
+    inimigos[19]->oscilar(-50, 50);
+    inimigos[22]->oscilar(-50, 50);
+    inimigos[23]->oscilar(-50, 50);
 
     /* Update tLast for next time, using static local variable */
     tLast = t;
