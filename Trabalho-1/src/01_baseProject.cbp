@@ -35,6 +35,8 @@
 			<Add library="GLEW" />
 		</Linker>
 		<Unit filename="desenvolvimento1.cpp" />
+		<Unit filename="include/Inimigo.h" />
+		<Unit filename="src/Inimigo.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

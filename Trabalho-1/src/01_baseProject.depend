@@ -53,7 +53,7 @@
 	"Esfera.h"
 	"Plano.h"
 
-1523471779 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
+1523634401 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
 	<GL/glut.h>
 	<iostream>
 	<string.h>
@@ -76,9 +76,9 @@
 1522531103 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Plano.cpp
 	"Plano.h"
 
-1523469526 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Inimigo.cpp
+1523544770 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Inimigo.cpp
 	"Inimigo.h"
 
-1523469515 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Inimigo.h
+1523544742 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Inimigo.h
 	<GL/glut.h>
 

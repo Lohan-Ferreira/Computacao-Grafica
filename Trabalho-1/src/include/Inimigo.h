@@ -11,9 +11,11 @@ class Inimigo
         Inimigo(int x, int y);
         ~Inimigo();
         void desenhar();
+        void oscilar(int esquerda, int direita);
     private:
         int x;
         int y;
+        int direcaoMovimento;
 
 };
 
