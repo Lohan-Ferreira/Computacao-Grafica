@@ -18,8 +18,6 @@
 
 #define ORTHO_MAXIMO 18000
 
-#define WINDOW_HEIGHT 600
-
 double navex1 = -8, navey1 = 20, navex2 = 8, navey2 = 20, navex3 = 0, navey3 = 40;
 
 class Reta
@@ -1079,11 +1077,11 @@ void idle()
 
     if(orthoLastY < ORTHO_MAXIMO)
     {
-        orthoLastY += 1;
-        orthoFirstY += 1;
-        navey1 += 1;
-        navey2 += 1;
-        navey3 += 1;
+        orthoLastY += 2;
+        orthoFirstY += 2;
+        navey1 += 2;
+        navey2 += 2;
+        navey3 += 2;
     }
 
     inimigos[1]->oscilar(-120, 120);
@@ -1104,6 +1102,42 @@ void idle()
     inimigos[19]->oscilar(-50, 50);
     inimigos[22]->oscilar(-50, 50);
     inimigos[23]->oscilar(-50, 50);
+    inimigos[24]->oscilar(-90, 90);
+    inimigos[25]->oscilar(-90, 90);
+    inimigos[26]->oscilar(-90, 90);
+    inimigos[27]->oscilar(-90, 90);
+    inimigos[28]->oscilar(-90, 90);
+    inimigos[29]->oscilar(-90, 90);
+    inimigos[30]->oscilar(-90, 90);
+    inimigos[31]->oscilar(-90, 90);
+    inimigos[32]->oscilar(-90, 90);
+    inimigos[33]->oscilar(-90, 90);
+    inimigos[34]->oscilar(-90, 90);
+    inimigos[35]->oscilar(-90, 90);
+    inimigos[36]->oscilar(-50, 50);
+    inimigos[37]->oscilar(-60, 60);
+    inimigos[43]->oscilar(80, 140);
+    inimigos[44]->oscilar(-50, 50);
+    inimigos[45]->oscilar(-50, 50);
+    inimigos[46]->oscilar(-100, 100);
+    inimigos[47]->oscilar(-100, 100);
+    inimigos[48]->oscilar(-100, 100);
+    inimigos[49]->oscilar(-100, 100);
+    inimigos[50]->oscilar(-100, 100);
+    inimigos[51]->oscilar(-100, 100);
+    inimigos[52]->oscilar(-100, 100);
+    inimigos[53]->oscilar(-100, 100);
+    inimigos[54]->oscilar(-100, 100);
+    inimigos[56]->oscilar(-140, 140);
+    inimigos[57]->oscilar(-140, 140);
+    inimigos[59]->oscilar(-160, -110);
+    inimigos[60]->oscilar(100, 160);
+    inimigos[61]->oscilar(-160, 160);
+    inimigos[62]->oscilar(-160, 160);
+    inimigos[63]->oscilar(-160, 160);
+    inimigos[64]->oscilar(-160, 160);
+    inimigos[65]->oscilar(-160, 160);
+    inimigos[67]->oscilar(-160, 160);
 
     /* Update tLast for next time, using static local variable */
     tLast = t;
