@@ -1,4 +1,5 @@
 #include "Inimigo.h"
+#include "math.h"
 
 Inimigo::Inimigo(int x, int y)
 {
@@ -30,3 +31,25 @@ void Inimigo::oscilar(int esquerda, int direita)
     this->x += this->direcaoMovimento;
 
 }
+
+bool Inimigo::colisaoN(double x1,double y1, double x2, double y2, double x3, double y3)
+{
+    if( (x1 <= x + 9 && x1 >= x-9) && (y1 <= y + 9 && y1 >= y - 9) )
+        return true;
+    if( (x2 <= x + 9 && x2 >= x-9) && (y2 <= y + 9 && y2 >= y - 9) )
+        return true;
+    if( (x3 <= x + 9 && x3 >= x-9) && (y3 <= y + 9 && y3 >= y - 9) )
+        return true;
+
+        return false;
+
+}
+
+bool Inimigo::colisaoP(double xp, double yp)
+{
+    if(sqrt((xp-x)*(xp-x)+(yp-y)*(yp-y))<= 12 )
+        return true;
+    return false;
+}
+
+

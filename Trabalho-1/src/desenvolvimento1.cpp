@@ -10,15 +10,33 @@
 #include <string.h>
 #include <cstdlib>
 #include "Inimigo.h"
+#include "time.h"
 
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
 
-#define QUANTIDADE_INIMIGOS 68
+#define QUANTIDADE_INIMIGOS_INICIAL 68
 
 #define ORTHO_MAXIMO 18000
 
 double navex1 = -8, navey1 = 20, navex2 = 8, navey2 = 20, navex3 = 0, navey3 = 40;
+
+class Projetil
+{
+    public:
+    double x,y;
+    Projetil()
+    {
+        x = navex3;
+        y = navey3;
+    }
+
+
+};
+
+Projetil *projetil;
+
+
 
 class Reta
 {
@@ -165,10 +183,62 @@ public:
         return 0;
     }
 
+
+    int colisaoP()
+    {
+        if (projetil->y >= y1-6 && projetil->y <= y2+6 )
+         {
+
+                int PI2 = projetil->x * VO[0] + projetil->y * VO[1];
+
+                if(side)
+                {
+
+                    if (PI2 <= PI)
+                    {
+                        if(verificaX )
+                        {
+                            if(abs(projetil->x-x1) <= dx+0.5 && abs(projetil->x-x2) <= dx+0.5)
+                                return 1;
+                        }
+
+                        else return 1;
+
+                    }
+                }
+                else
+                {
+                    if (PI2 >= PI)
+                    {
+                        if(verificaX )
+                        {
+                            if(abs(projetil->x-x1) <= dx+0.5 && abs(projetil->x-x2) <= dx+0.5)
+                                return 1;
+                        }
+
+                        else return 1;
+
+                    }
+                }
+
+
+
+        }
+
+        return 0;
+
+    }
 };
 
+
+
+
+
 Reta** retas;
-Inimigo *inimigos[QUANTIDADE_INIMIGOS];
+
+
+int QUANTIDADE_INIMIGOS = 68;
+Inimigo **inimigos;
 int nretas = 0;
 void init();
 void inicializarInimigo();
@@ -180,6 +250,10 @@ void idle();
 void motion(int x, int y);
 double orthoFirstY = 0;
 double orthoLastY = 500;
+int fullscreen = 0;
+int gameState = 0; //Estados do jogo 0 tela inicial, 1 jogando , 2 pausado , 3 fim de jogo
+int vidas = 3;
+int pontos = 0;
 
 int main(int argc, char** argv)
 {
@@ -190,13 +264,12 @@ int main(int argc, char** argv)
     glutCreateWindow("River Raid");
     init();
     srand(time(NULL));
-    inicializarInimigo();
     glutKeyboardFunc(keyboard);
     glutDisplayFunc(display);
     glutIdleFunc(idle);
-
+    inimigos = new Inimigo* [QUANTIDADE_INIMIGOS];
     retas = new Reta* [400];
-
+    inicializarInimigo();
      //Lado Direito
     retas[nretas] = new Reta(50,0,50,250,1,false);
     nretas++;
@@ -437,11 +510,11 @@ int main(int argc, char** argv)
 
 
     //Primeiro Poligono
-    retas[nretas] = new Reta(-30,3000,-30,3301,1,true);
+    retas[nretas] = new Reta(-30,3000,-30,3300,1,true);
     nretas++;
     retas[nretas] = new Reta(-30,3300,30,3301,1,true);
     nretas++;
-    retas[nretas] = new Reta(-30,3000,30,3001,0,true);
+    retas[nretas] = new Reta(-30,3000,30,3001,1,true);
     nretas++;
     retas[nretas] = new Reta(30,3000,30,3300,0,true);
     nretas++;
@@ -656,13 +729,36 @@ void inicializarInimigo()
 
 void display()
 {
+
+    if(gameState == 0)
+    {
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+
+        glClearColor (0.0, 0.0, 0.0, 0.0);
+
+        glColor3f(1,1,0);
+        imprimirTexto("RIVER RAID",-20,(orthoLastY+orthoFirstY)/2);
+        imprimirTexto("Aperte Espaço para Começar",-50,(orthoLastY+orthoFirstY)/2 - 20);
+
+    }
+
+
+    if (gameState==1)
+    {
+
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
 
     glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
-
+    glClearColor (0.0, 0.0, 1.0, 0.0);
     glColor3f(0.1, 1.0, 0.4);
 
     glBegin(GL_TRIANGLE_STRIP);
@@ -1020,9 +1116,48 @@ void display()
         glVertex3f(navex3, navey3, 0);
     glEnd();
 
+    //Projetil
+    if(projetil!=NULL)
+    {
+        glPushMatrix();
+
+            glTranslatef(projetil->x,projetil->y,3);
+            glScalef(0.6,1,1);
+         glutSolidSphere(3,50,50);
+       glPopMatrix();
+    }
+
     for(int i = 0; i < QUANTIDADE_INIMIGOS; i++) {
         inimigos[i]->desenhar();
     }
+
+        glColor3f(0.0,0.0,0.0);
+        imprimirTexto(std::to_string(pontos).c_str(),150,orthoLastY-30);
+
+
+    }
+
+    if (gameState==2)
+    {
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glClearColor(0,0,0,0);
+        glColor3f(1.0,0.0,0.0);
+        imprimirTexto("JOGO PAUSADO",-20,(orthoLastY+orthoFirstY)/2);
+
+    }
+
+     if (gameState==3)
+    {
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0,0,0,0);
+        glColor3f(1.0,0.0,0.0);
+        imprimirTexto("FIM DE JOGO",-20,(orthoFirstY+orthoLastY)/2);
+
+    }
+
+
+
 
     glutSwapBuffers();
 }
@@ -1051,7 +1186,7 @@ void motion(int x, int y)
 
 void idle()
 {
-    float t, dt;
+    float t,desiredFrameTime, frameTime;
     static float tLast = 0.0;
 
     /* Get elapsed time and convert to s */
@@ -1059,8 +1194,78 @@ void idle()
 
     t /= 1000.0;
 
-    /* Calculate delta t */
-    dt = t - tLast;
+    frameTime = t - tLast;
+
+    desiredFrameTime = 1.0/60.0;
+
+     if(frameTime<=desiredFrameTime)
+        return;
+
+    if(gameState==1)
+    {
+
+
+
+	//Verifica colisao com inimigos
+	for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
+    {
+        if(inimigos[i]->colisaoN(navex1,navey1,navex2,navey2,navex3,navey3))
+        {
+            vidas--;
+            navex1 = -80; navex2 = -64; navex3 = -72;
+
+            if(vidas <= 0)
+            {
+                gameState = 3;
+                for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
+                    {
+                        delete inimigos[i];
+                    }
+                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+                inicializarInimigo();
+                projetil == NULL;
+                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+
+            }
+
+        }
+    }
+
+    if(projetil!=NULL)
+            for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
+        {
+            if(inimigos[i]->colisaoP(projetil->x,projetil->y))
+            {
+                pontos++;
+                delete inimigos[i];
+                if(QUANTIDADE_INIMIGOS > 1)
+                    inimigos[i] = inimigos[QUANTIDADE_INIMIGOS-1];
+                QUANTIDADE_INIMIGOS--;
+                delete projetil;
+                projetil = NULL;
+                break;
+            }
+        }
+
+    if(projetil!=NULL)
+            for(int i = 0; i<nretas; i++)
+        {
+
+
+            if(retas[i]->colisaoP()== 1)
+            {
+               delete projetil;
+                projetil = NULL;
+                break;
+            }
+
+        }
+
+
+
+
+
+	//Verifica colisão com mapa
     for(int i = 0; i<nretas; i++)
     {
 
@@ -1068,10 +1273,27 @@ void idle()
         if(retas[i]->colisao()== 1)
             {
 
-                navex1 = -80; navex2 = -64; navex3 = -72;
+            vidas--;
+            navex1 = -80; navex2 = -64; navex3 = -72;
+
+            if(vidas <= 0)
+                {
+                gameState = 3;
+                for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
+                    {
+                        delete inimigos[i];
+                    }
+                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+                inicializarInimigo();
+                projetil == NULL;
+                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+
+                }
+
             }
 
     }
+
 
     /* Update velocity and position */
 
@@ -1082,6 +1304,17 @@ void idle()
         navey1 += 2;
         navey2 += 2;
         navey3 += 2;
+    }
+
+    if(projetil!=NULL)
+    {
+        projetil->y += 10;
+        if(projetil->y > orthoLastY)
+        {
+            delete projetil;
+            projetil = NULL;
+        }
+
     }
 
     inimigos[1]->oscilar(-120, 120);
@@ -1138,7 +1371,7 @@ void idle()
     inimigos[64]->oscilar(-160, 160);
     inimigos[65]->oscilar(-160, 160);
     inimigos[67]->oscilar(-160, 160);
-
+    }
     /* Update tLast for next time, using static local variable */
     tLast = t;
 
@@ -1167,5 +1400,72 @@ void keyboard(unsigned char key, int x, int y)
             navey2 += 5;
             navey3 += 5;
         break;
+
+		case 'm':
+
+            if(fullscreen == 0)
+            {
+                fullscreen=1;
+                glutFullScreen();
+
+            }
+            else
+            {
+                fullscreen = 0;
+                glutReshapeWindow(900,600);
+            }
+            break;
+
+        case ' ':
+            if(projetil==NULL&&gameState==1)
+                projetil= new Projetil();
+            if(gameState==0 || gameState==3)
+            {
+                gameState=1;
+                vidas=3;
+                pontos=0;
+                orthoFirstY=0;
+                orthoLastY=500;
+            }
+            break;
+        case 'p':
+            if(gameState == 1)
+            {
+                gameState = 2;
+            }
+
+            else if(gameState == 2)
+            {
+                gameState = 1;
+            }
+        break;
+
+        case 'r':
+                 for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
+                    {
+                        delete inimigos[i];
+                    }
+                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+                inicializarInimigo();
+                projetil == NULL;
+                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+                gameState=0;
+                vidas=3;
+                pontos=0;
+                orthoFirstY=0;
+                orthoLastY=500;
+
+            break;
+
+		case 27 :
+		    for(int i=0; i<QUANTIDADE_INIMIGOS; i++)
+                delete inimigos[i];
+            delete [] inimigos;
+
+		     exit(0);
+
+        break;
+
+
     }
 }

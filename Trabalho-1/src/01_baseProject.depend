@@ -53,12 +53,13 @@
 	"Esfera.h"
 	"Plano.h"
 
-1523739391 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
+1523812098 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
 	<GL/glut.h>
 	<iostream>
 	<string.h>
 	<cstdlib>
 	"Inimigo.h"
+	"time.h"
 
 1522531163 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/extras.h
 
@@ -76,9 +77,10 @@
 1522531103 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Plano.cpp
 	"Plano.h"
 
-1523641411 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Inimigo.cpp
+1523811992 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Inimigo.cpp
 	"Inimigo.h"
+	"math.h"
 
-1523640201 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Inimigo.h
+1523811992 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Inimigo.h
 	<GL/glut.h>
 
