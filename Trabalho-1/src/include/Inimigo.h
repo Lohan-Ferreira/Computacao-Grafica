@@ -4,6 +4,7 @@
 #define TAMANHO 20
 
 #include <GL/glut.h>
+#include "Aviao.h"
 
 class Inimigo
 {
@@ -12,7 +13,7 @@ class Inimigo
         ~Inimigo();
         void desenhar();
         void oscilar(int esquerda, int direita);
-        bool colisaoN( double x1,double y1, double x2, double y2, double x3, double y3 );
+        bool colisaoN(Aviao *aviao);
         bool colisaoP(double xp, double yp);
     private:
         int x;

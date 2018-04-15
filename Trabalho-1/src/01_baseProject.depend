@@ -53,13 +53,15 @@
 	"Esfera.h"
 	"Plano.h"
 
-1523816615 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
+1523821270 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
 	<GL/glut.h>
 	<iostream>
 	<string.h>
 	<cstdlib>
 	<time.h>
+	"Aviao.h"
 	"Inimigo.h"
+	"Combustivel.h"
 
 1522531163 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/extras.h
 
@@ -77,10 +79,24 @@
 1522531103 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Plano.cpp
 	"Plano.h"
 
-1523813165 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Inimigo.cpp
+1523820512 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Inimigo.cpp
 	"Inimigo.h"
 	"math.h"
 
-1523813165 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Inimigo.h
+1523820403 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Inimigo.h
 	<GL/glut.h>
+	"Aviao.h"
+
+1523818443 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Combustivel.cpp
+	"Combustivel.h"
+
+1523817395 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Combustivel.h
+	<GL/glut.h>
+
+1523821301 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Aviao.h
+	<GL/glut.h>
+	<string>
+
+1523821229 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Aviao.cpp
+	"Aviao.h"
 

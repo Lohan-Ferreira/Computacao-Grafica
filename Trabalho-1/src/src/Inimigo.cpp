@@ -32,17 +32,16 @@ void Inimigo::oscilar(int esquerda, int direita)
 
 }
 
-bool Inimigo::colisaoN(double x1,double y1, double x2, double y2, double x3, double y3)
+bool Inimigo::colisaoN(Aviao *aviao)
 {
-    if( (x1 <= x + 9 && x1 >= x-9) && (y1 <= y + 9 && y1 >= y - 9) )
+    if( (aviao->getX1() <= x + 9 && aviao->getX1() >= x-9) && (aviao->getY1() <= y + 9 && aviao->getY1() >= y - 9) )
         return true;
-    if( (x2 <= x + 9 && x2 >= x-9) && (y2 <= y + 9 && y2 >= y - 9) )
+    if( (aviao->getX2() <= x + 9 && aviao->getX2() >= x-9) && (aviao->getY2() <= y + 9 && aviao->getY2() >= y - 9) )
         return true;
-    if( (x3 <= x + 9 && x3 >= x-9) && (y3 <= y + 9 && y3 >= y - 9) )
+    if( (aviao->getX3() <= x + 9 && aviao->getX3() >= x-9) && (aviao->getY3() <= y + 9 && aviao->getY3() >= y - 9) )
         return true;
 
-        return false;
-
+    return false;
 }
 
 bool Inimigo::colisaoP(double xp, double yp)

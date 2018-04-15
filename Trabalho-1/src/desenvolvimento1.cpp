@@ -2,7 +2,6 @@
  * Autores: Diego Paiva e Lohan Ferreira
  * Data de criação: 07/04/2018
  * Descrição: Trabalho 1 - River Raid
- *
  */
 
 #include <GL/glut.h>
@@ -10,8 +9,9 @@
 #include <string.h>
 #include <cstdlib>
 #include <time.h>
+#include "Aviao.h"
 #include "Inimigo.h"
-
+#include "Combustivel.h"
 
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
@@ -20,7 +20,7 @@
 
 #define ORTHO_MAXIMO 18000
 
-double navex1 = -8, navey1 = 20, navex2 = 8, navey2 = 20, navex3 = 0, navey3 = 40;
+Aviao *aviao = new Aviao();
 
 class Projetil
 {
@@ -28,16 +28,14 @@ class Projetil
     double x,y;
     Projetil()
     {
-        x = navex3;
-        y = navey3;
+        x = aviao->getX3();
+        y = aviao->getY3();
     }
 
 
 };
 
 Projetil *projetil;
-
-
 
 class Reta
 {
@@ -70,58 +68,47 @@ public:
     int colisao()
     {
 
-        if (navey1 >= y1 && navey1 <= y2 )
+        if (aviao->getY1() >= y1 && aviao->getY2() <= y2 )
          {
-
-                int PI2 = navex1 * VO[0] + navey1 * VO[1];
+                int PI2 = aviao->getX1() * VO[0] + aviao->getY1() * VO[1];
 
                 if(side)
                 {
-
                     if (PI2 <= PI)
                     {
-                        if(verificaX )
+                        if(verificaX)
                         {
-                            if(abs(navex1-x1) <= dx+0.5 && abs(navex1-x2) <= dx+0.5)
+                            if(abs(aviao->getX1() - x1) <= dx + 0.5 && abs(aviao->getX1() - x2) <= dx + 0.5)
                                 return 1;
                         }
-
                         else return 1;
-
                     }
                 }
                 else
                 {
                     if (PI2 >= PI)
                     {
-                        if(verificaX )
+                        if(verificaX)
                         {
-                            if(abs(navex1-x1) <= dx+0.5 && abs(navex1-x2) <= dx+0.5)
+                            if(abs(aviao->getX1() - x1) <= dx + 0.5 && abs(aviao->getX1() - x2) <= dx + 0.5)
                                 return 1;
                         }
-
                         else return 1;
-
                     }
                 }
-
-
-
         }
-
-
-         if (navey2 >= y1 && navey2 <= y2)
+        if (aviao->getY2() >= y1 && aviao->getY2() <= y2)
         {
 
-                int PI2 = navex2 * VO[0] + navey2 * VO[1];
+                int PI2 = aviao->getX2() * VO[0] + aviao->getY2() * VO[1];
 
                 if(side)
                 {
                     if (PI2 <= PI)
                     {
-                        if(verificaX )
+                        if(verificaX)
                         {
-                            if(abs(navex2-x1) <= dx+0.5 && abs(navex2-x2) <= dx+0.5)
+                            if(abs(aviao->getX2() - x1) <= dx + 0.5 && abs(aviao->getX2() - x2) <= dx + 0.5)
                                 return 1;
                         }
 
@@ -132,9 +119,9 @@ public:
                 {
                     if (PI2 >= PI)
                     {
-                        if(verificaX )
+                        if(verificaX)
                         {
-                            if(abs(navex2-x1) <= dx+0.5 && abs(navex2-x2) <= dx+0.5)
+                            if(abs(aviao->getX2() - x1) <= dx + 0.5 && abs(aviao->getX2() - x2) <= dx + 0.5)
                                 return 1;
                         }
 
@@ -145,22 +132,20 @@ public:
 
         }
 
-
-         if (navey3 >= y1 && navey3 <= y2)
+        if (aviao->getY3() >= y1 && aviao->getY3() <= y2)
         {
 
-                int PI2 = navex3 * VO[0] + navey3 * VO[1];
+                int PI2 = aviao->getX3() * VO[0] + aviao->getY3() * VO[1];
 
                 if(side)
                 {
                     if (PI2 <= PI)
                     {
-                        if(verificaX )
+                        if(verificaX)
                         {
-                            if(abs(navex3-x1) <= dx+0.5 && abs(navex3-x2) <= dx+0.5)
+                            if(abs(aviao->getX3() - x1) <= dx + 0.5 && abs(aviao->getX3() - x2) <= dx + 0.5)
                                 return 1;
                         }
-
                         else return 1;
                     }
                 }
@@ -168,43 +153,35 @@ public:
                 {
                     if (PI2 >= PI)
                     {
-                        if(verificaX )
+                        if(verificaX)
                         {
-                            if(abs(navex3-x1) <= dx+0.5 && abs(navex3-x2) <= dx+0.5)
+                            if(abs(aviao->getX3() - x1) <= dx + 0.5 && abs(aviao->getX3() - x2) <= dx + 0.5)
                                 return 1;
                         }
-
                         else return 1;
-
                     }
                 }
 
         }
-
         return 0;
     }
-
 
     int colisaoP()
     {
         if (projetil->y >= y1-6 && projetil->y <= y2+6 )
          {
-
                 int PI2 = projetil->x * VO[0] + projetil->y * VO[1];
 
                 if(side)
                 {
-
                     if (PI2 <= PI)
                     {
-                        if(verificaX )
+                        if(verificaX)
                         {
                             if(abs(projetil->x-x1) <= dx+0.5 && abs(projetil->x-x2) <= dx+0.5)
                                 return 1;
                         }
-
                         else return 1;
-
                     }
                 }
                 else
@@ -216,23 +193,16 @@ public:
                             if(abs(projetil->x-x1) <= dx+0.5 && abs(projetil->x-x2) <= dx+0.5)
                                 return 1;
                         }
-
                         else return 1;
-
                     }
                 }
 
-
-
         }
-
         return 0;
-
     }
 };
 
 Reta** retas;
-
 int QUANTIDADE_INIMIGOS = 68;
 Inimigo **inimigos;
 int nretas = 0;
@@ -241,6 +211,7 @@ void inicializarInimigo();
 void display();
 void imprimirTexto(char const *texto, int x, int y);
 void mouse(int button, int state, int x, int y);
+void specialKeys(int key, int x, int y);
 void keyboard(unsigned char key, int x, int y);
 void idle();
 void motion(int x, int y);
@@ -250,6 +221,7 @@ bool fullscreen = false;
 int gameState = 0; // Estados do jogo 0 tela inicial, 1 jogando, 2 pausado, 3 fim de jogo
 int vidas = 3;
 int pontos = 0;
+Combustivel *combustivel = new Combustivel(0, 500);
 
 int main(int argc, char** argv)
 {
@@ -262,6 +234,7 @@ int main(int argc, char** argv)
     srand(time(NULL));
     glutKeyboardFunc(keyboard);
     glutDisplayFunc(display);
+    glutSpecialFunc(specialKeys);
     glutIdleFunc(idle);
     inimigos = new Inimigo* [QUANTIDADE_INIMIGOS];
     retas = new Reta* [400];
@@ -650,6 +623,18 @@ void init()
     glLoadIdentity ();
 }
 
+void specialKeys(int key, int x, int y)
+{
+    switch(key) {
+        case GLUT_KEY_LEFT:
+            aviao->moverEsquerda();
+        break;
+        case GLUT_KEY_RIGHT:
+            aviao->moverDireita();
+        break;
+    }
+}
+
 void inicializarInimigo()
 {
     inimigos[0] = new Inimigo(0, 300);
@@ -725,7 +710,6 @@ void inicializarInimigo()
 
 void display()
 {
-
     if(gameState == 0)
     {
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -739,7 +723,7 @@ void display()
 
         glColor3f(1,1,0);
         imprimirTexto("RIVER RAID",-20,(orthoLastY+orthoFirstY)/2);
-        imprimirTexto("Aperte Espaço para Começar",-50,(orthoLastY+orthoFirstY)/2 - 20);
+        imprimirTexto("Aperte espaco para comecar",-50,(orthoLastY+orthoFirstY)/2 - 20);
 
     }
 
@@ -1101,13 +1085,8 @@ void display()
             glVertex3f(130, 16550, 0);
         glEnd();
 
-        // Aeronave
-        glColor3f(1.0, 1.0, 1.0);
-            glBegin(GL_TRIANGLES) ;
-            glVertex3f(navex1, navey1, 0);
-            glVertex3f(navex2, navey2, 0);
-            glVertex3f(navex3, navey3, 0);
-        glEnd();
+
+        aviao->desenhar();
 
         //Projetil
         if(projetil != NULL)
@@ -1125,6 +1104,8 @@ void display()
 
         glColor3f(0.0,0.0,0.0);
         imprimirTexto(std::to_string(pontos).c_str(), 150, orthoLastY - 30);
+
+        combustivel->desenhar();
     }
 
     if (gameState == 2)
@@ -1191,22 +1172,28 @@ void idle()
         //Verifica colisao com inimigos
         for(int i = 0; i < QUANTIDADE_INIMIGOS ; i++)
         {
-            if(inimigos[i]->colisaoN(navex1,navey1,navex2,navey2,navex3,navey3))
+            if(inimigos[i]->colisaoN(aviao))
             {
                 vidas--;
-                navex1 = -80; navex2 = -64; navex3 = -72;
-
+                aviao->setComponente("x1", -80);
+                aviao->setComponente("x2", -64);
+                aviao->setComponente("x3", -72);
                 if(vidas <= 0)
                 {
                     gameState = 3;
-                    for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
+                    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
                     {
                         delete inimigos[i];
                     }
                     QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
                     inicializarInimigo();
                     projetil == NULL;
-                    navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+                    aviao->setComponente("x1", -8);
+                    aviao->setComponente("y1", 20);
+                    aviao->setComponente("x2", 8);
+                    aviao->setComponente("y2", 20);
+                    aviao->setComponente("x3", 0);
+                    aviao->setComponente("y3", 40);
                 }
             }
         }
@@ -1245,7 +1232,9 @@ void idle()
             {
 
                 vidas--;
-                navex1 = -80; navex2 = -64; navex3 = -72;
+                aviao->setComponente("x1", -80);
+                aviao->setComponente("x2", -64);
+                aviao->setComponente("x3", -72);
 
                 if(vidas <= 0)
                 {
@@ -1257,7 +1246,12 @@ void idle()
                     QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
                     inicializarInimigo();
                     projetil == NULL;
-                    navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+                    aviao->setComponente("x1", -8);
+                    aviao->setComponente("y1", 20);
+                    aviao->setComponente("x2", 8);
+                    aviao->setComponente("y2", 20);
+                    aviao->setComponente("x3", 0);
+                    aviao->setComponente("y3", 40);
                 }
             }
         }
@@ -1269,12 +1263,12 @@ void idle()
         {
             orthoLastY += 2;
             orthoFirstY += 2;
-            navey1 += 2;
-            navey2 += 2;
-            navey3 += 2;
+            aviao->setComponente("y1", aviao->getY1() + 2);
+            aviao->setComponente("y2", aviao->getY2() + 2);
+            aviao->setComponente("y3", aviao->getY3() + 2);
         }
 
-        if(projetil!=NULL)
+        if(projetil != NULL)
         {
             projetil->y += 10;
             if(projetil->y > orthoLastY)
@@ -1352,19 +1346,10 @@ void keyboard(unsigned char key, int x, int y)
     switch (key)
     {
         case 'a':
-            navex1 -= 5;
-            navex2 -= 5;
-            navex3 -= 5;
+            aviao->moverEsquerda();
         break;
         case 'd':
-            navex1 += 5;
-            navex2 += 5;
-            navex3 += 5;
-        break;
-        case 'w':
-            navey1 += 5;
-            navey2 += 5;
-            navey3 += 5;
+            aviao->moverDireita();
         break;
 		case 'm':
             if(!fullscreen)
@@ -1409,7 +1394,12 @@ void keyboard(unsigned char key, int x, int y)
             QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
             inicializarInimigo();
             projetil == NULL;
-            navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+            aviao->setComponente("x1", -8);
+            aviao->setComponente("y1", 20);
+            aviao->setComponente("x2", 8);
+            aviao->setComponente("y2", 20);
+            aviao->setComponente("x3", 0);
+            aviao->setComponente("y3", 40);
             gameState = 0;
             vidas = 3;
             pontos = 0;
