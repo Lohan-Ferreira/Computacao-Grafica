@@ -92,3 +92,28 @@ void Aviao::setComponente(std::string componente, int valor)
         this->y3 = valor;
     }
 }
+
+bool Aviao::colideComCombustivel(Combustivel *combustivel)
+{
+    int metadeTamanho = combustivel->getTamanho()/2;
+
+    if( (this->x1 <= combustivel->getX() + metadeTamanho && this->x1 >= combustivel->getX() - metadeTamanho)
+                                             &&
+        (this->y1 <= combustivel->getY() + metadeTamanho && this->y1 >= combustivel->getY() - metadeTamanho) ) {
+            return true;
+        }
+
+    if( (this->x2 <= combustivel->getX() + metadeTamanho && this->x2 >= combustivel->getX() - metadeTamanho)
+                                             &&
+        (this->y2 <= combustivel->getY() + metadeTamanho && this->y2 >= combustivel->getY() - metadeTamanho) ) {
+            return true;
+        }
+
+    if( (this->x3 <= combustivel->getX() + metadeTamanho && this->x3 >= combustivel->getX() - metadeTamanho)
+                                             &&
+        (this->y3 <= combustivel->getY() + metadeTamanho && this->y3 >= combustivel->getY() - metadeTamanho) ) {
+            return true;
+        }
+
+    return false;
+}

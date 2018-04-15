@@ -3,6 +3,8 @@
 
 #include <GL/glut.h>
 #include <string>
+#include <math.h>
+#include "Combustivel.h"
 
 class Aviao
 {
@@ -22,6 +24,7 @@ class Aviao
         void moverEsquerda();
         void moverDireita();
         void setComponente(std::string componente, int valor);
+        bool colideComCombustivel(Combustivel *combustivel);
 };
 
 #endif // AVIAO_H

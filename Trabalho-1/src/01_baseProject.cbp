@@ -35,7 +35,11 @@
 			<Add library="GLEW" />
 		</Linker>
 		<Unit filename="desenvolvimento1.cpp" />
+		<Unit filename="include/Aviao.h" />
+		<Unit filename="include/Combustivel.h" />
 		<Unit filename="include/Inimigo.h" />
+		<Unit filename="src/Aviao.cpp" />
+		<Unit filename="src/Combustivel.cpp" />
 		<Unit filename="src/Inimigo.cpp" />
 		<Extensions>
 			<code_completion />

@@ -17,6 +17,7 @@
 #define WINDOW_HEIGHT 600
 
 #define QUANTIDADE_INIMIGOS_INICIAL 68
+#define QUANTIDADE_COMBUSTIVEL 43
 
 #define ORTHO_MAXIMO 18000
 
@@ -202,12 +203,13 @@ public:
     }
 };
 
-Reta** retas;
+Reta **retas;
 int QUANTIDADE_INIMIGOS = 68;
 Inimigo **inimigos;
 int nretas = 0;
 void init();
 void inicializarInimigo();
+void inicializarCombustiveis();
 void display();
 void imprimirTexto(char const *texto, int x, int y);
 void mouse(int button, int state, int x, int y);
@@ -221,7 +223,8 @@ bool fullscreen = false;
 int gameState = 0; // Estados do jogo 0 tela inicial, 1 jogando, 2 pausado, 3 fim de jogo
 int vidas = 3;
 int pontos = 0;
-Combustivel *combustivel = new Combustivel(0, 500);
+float porcentagemCombustivel = 100;
+Combustivel *combustiveis[QUANTIDADE_COMBUSTIVEL];
 
 int main(int argc, char** argv)
 {
@@ -239,7 +242,8 @@ int main(int argc, char** argv)
     inimigos = new Inimigo* [QUANTIDADE_INIMIGOS];
     retas = new Reta* [400];
     inicializarInimigo();
-     //Lado Direito
+    inicializarCombustiveis();
+    //Lado Direito
     retas[nretas] = new Reta(50,0,50,250,1,false);
     nretas++;
     retas[nretas] = new Reta(50,250,120,300,1,false);
@@ -708,23 +712,70 @@ void inicializarInimigo()
     inimigos[67] = new Inimigo(130, 17400);
 }
 
+void inicializarCombustiveis()
+{
+    combustiveis[0] = new Combustivel(50, 500);
+    combustiveis[1] = new Combustivel(30, 600);
+    combustiveis[2] = new Combustivel(80, 700);
+    combustiveis[3] = new Combustivel(35, 900);
+    combustiveis[4] = new Combustivel(-20, 1000);
+    combustiveis[5] = new Combustivel(30, 1200);
+    combustiveis[6] = new Combustivel(0, 1700);
+    combustiveis[7] = new Combustivel(60, 2500);
+    combustiveis[8] = new Combustivel(100, 3000);
+    combustiveis[9] = new Combustivel(-50, 3200);
+    combustiveis[10] = new Combustivel(-50, 3400);
+    combustiveis[11] = new Combustivel(60, 3900);
+    combustiveis[12] = new Combustivel(-60, 4100);
+    combustiveis[13] = new Combustivel(90, 4500);
+    combustiveis[14] = new Combustivel(80, 4800);
+    combustiveis[15] = new Combustivel(40, 6000);
+    combustiveis[16] = new Combustivel(-40, 6300);
+    combustiveis[17] = new Combustivel(-10, 6600);
+    combustiveis[18] = new Combustivel(30, 6900);
+    combustiveis[19] = new Combustivel(0, 7200);
+    combustiveis[20] = new Combustivel(-50, 7500);
+    combustiveis[21] = new Combustivel(-10, 7800);
+    combustiveis[22] = new Combustivel(40, 8100);
+    combustiveis[23] = new Combustivel(0, 8400);
+    combustiveis[24] = new Combustivel(-20, 8800);
+    combustiveis[25] = new Combustivel(80, 9480);
+    combustiveis[26] = new Combustivel(40, 9650);
+    combustiveis[27] = new Combustivel(-80, 10500);
+    combustiveis[28] = new Combustivel(80, 10700);
+    combustiveis[29] = new Combustivel(-70, 11000);
+    combustiveis[30] = new Combustivel(120, 11200);
+    combustiveis[31] = new Combustivel(-80, 11500);
+    combustiveis[32] = new Combustivel(-70, 11600);
+    combustiveis[33] = new Combustivel(100, 12250);
+    combustiveis[34] = new Combustivel(0, 13200);
+    combustiveis[35] = new Combustivel(40, 13600);
+    combustiveis[36] = new Combustivel(20, 14000);
+    combustiveis[37] = new Combustivel(-30, 14400);
+    combustiveis[38] = new Combustivel(120, 15000);
+    combustiveis[39] = new Combustivel(-120, 15050);
+    combustiveis[40] = new Combustivel(-80, 16000);
+    combustiveis[41] = new Combustivel(-145, 16550);
+    combustiveis[42] = new Combustivel(-145, 16600);
+    combustiveis[43] = new Combustivel(-145, 16650);
+}
+
 void display()
 {
     if(gameState == 0)
     {
-        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glMatrixMode (GL_PROJECTION);
-        glLoadIdentity ();
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
 
         glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
 
         glClearColor (0.0, 0.0, 0.0, 0.0);
 
-        glColor3f(1,1,0);
-        imprimirTexto("RIVER RAID",-20,(orthoLastY+orthoFirstY)/2);
-        imprimirTexto("Aperte espaco para comecar",-50,(orthoLastY+orthoFirstY)/2 - 20);
-
+        glColor3f(1.0, 1.0, 0);
+        imprimirTexto("RIVER RAID", -20, (orthoLastY + orthoFirstY)/2);
+        imprimirTexto("Aperte espaco para comecar", -50, (orthoLastY + orthoFirstY)/2 - 20);
     }
 
     if (gameState == 1)
@@ -1088,6 +1139,10 @@ void display()
 
         aviao->desenhar();
 
+        if(porcentagemCombustivel <= 0) {
+            gameState = 3;
+        }
+
         //Projetil
         if(projetil != NULL)
         {
@@ -1102,10 +1157,16 @@ void display()
             inimigos[i]->desenhar();
         }
 
+        for(int i = 0; i < QUANTIDADE_COMBUSTIVEL; i++) {
+            combustiveis[i]->desenhar();
+             if(aviao->colideComCombustivel(combustiveis[i])) {
+               porcentagemCombustivel += 1;
+             }
+        }
+
         glColor3f(0.0,0.0,0.0);
         imprimirTexto(std::to_string(pontos).c_str(), 150, orthoLastY - 30);
-
-        combustivel->desenhar();
+        imprimirTexto(std::to_string(porcentagemCombustivel).c_str(), -180, orthoLastY - 30);
     }
 
     if (gameState == 2)
@@ -1169,7 +1230,7 @@ void idle()
 
     if(gameState == 1)
     {
-        //Verifica colisao com inimigos
+        // Verifica colisao com inimigos
         for(int i = 0; i < QUANTIDADE_INIMIGOS ; i++)
         {
             if(inimigos[i]->colisaoN(aviao))
@@ -1181,6 +1242,7 @@ void idle()
                 if(vidas <= 0)
                 {
                     gameState = 3;
+                    porcentagemCombustivel = 100;
                     for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
                     {
                         delete inimigos[i];
@@ -1197,6 +1259,8 @@ void idle()
                 }
             }
         }
+
+        porcentagemCombustivel -= 0.1;
 
         if(projetil != NULL)
             for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
@@ -1360,7 +1424,7 @@ void keyboard(unsigned char key, int x, int y)
             else
             {
                 fullscreen = false;
-                glutReshapeWindow(WINDOW_WIDTH,WINDOW_HEIGHT);
+                glutReshapeWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
             }
         break;
         case ' ':
