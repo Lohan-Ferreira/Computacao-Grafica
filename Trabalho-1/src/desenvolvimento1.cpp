@@ -9,8 +9,9 @@
 #include <iostream>
 #include <string.h>
 #include <cstdlib>
+#include <time.h>
 #include "Inimigo.h"
-#include "time.h"
+
 
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
@@ -230,12 +231,7 @@ public:
     }
 };
 
-
-
-
-
 Reta** retas;
-
 
 int QUANTIDADE_INIMIGOS = 68;
 Inimigo **inimigos;
@@ -250,8 +246,8 @@ void idle();
 void motion(int x, int y);
 double orthoFirstY = 0;
 double orthoLastY = 500;
-int fullscreen = 0;
-int gameState = 0; //Estados do jogo 0 tela inicial, 1 jogando , 2 pausado , 3 fim de jogo
+bool fullscreen = false;
+int gameState = 0; // Estados do jogo 0 tela inicial, 1 jogando, 2 pausado, 3 fim de jogo
 int vidas = 3;
 int pontos = 0;
 
@@ -747,417 +743,405 @@ void display()
 
     }
 
-
-    if (gameState==1)
+    if (gameState == 1)
     {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
 
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+        glClearColor (0.0, 0.0, 1.0, 0.0);
+        glColor3f(0.1, 1.0, 0.4);
 
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
+        glBegin(GL_TRIANGLE_STRIP);
+            glVertex3f(50,  0.0,   0);
+            glVertex3f(200, 0.0,   0);
+            glVertex3f(50,  250,   0);
+            glVertex3f(200, 250,   0);
+            glVertex3f(120, 300,   0);
+            glVertex3f(200, 300,   0);
+            glVertex3f(120, 1800,  0);
+            glVertex3f(200, 1800,  0);
+            glVertex3f(50,  1850,  0);
+            glVertex3f(200, 1850,  0);
+            glVertex3f(50,  2100,  0);
+            glVertex3f(200, 2100,  0);
+            glVertex3f(120, 2150,  0);
+            glVertex3f(200, 2150,  0);
+            glVertex3f(150, 2200,  0);
+            glVertex3f(200, 2200,  0);
+            glVertex3f(150, 2250,  0);
+            glVertex3f(200, 2250,  0);
+            glVertex3f(120, 2300,  0);
+            glVertex3f(200, 2300,  0);
+            glVertex3f(120, 2500,  0);
+            glVertex3f(200, 2500,  0);
+            glVertex3f(150, 2550,  0);
+            glVertex3f(200, 2550,  0);
+            glVertex3f(150, 2650,  0);
+            glVertex3f(200, 2650,  0);
+            glVertex3f(170, 2700,  0);
+            glVertex3f(200, 2700,  0);
+            glVertex3f(170, 3400,  0);
+            glVertex3f(200, 3400,  0);
+            glVertex3f(50,  3450,  0);
+            glVertex3f(200, 3450,  0);
+            glVertex3f(50,  3750,  0);
+            glVertex3f(200, 3750,  0);
+            glVertex3f(100, 3800,  0);
+            glVertex3f(200, 3800,  0);
+            glVertex3f(100, 4000,  0);
+            glVertex3f(200, 4000,  0);
+            glVertex3f(120, 4050,  0);
+            glVertex3f(200, 4050,  0);
+            glVertex3f(120, 5000,  0);
+            glVertex3f(200, 5000,  0);
+            glVertex3f(50,  5050,  0);
+            glVertex3f(200, 5050,  0);
+            glVertex3f(50,  5300,  0);
+            glVertex3f(200, 5300,  0);
+            glVertex3f(100, 5300,  0);
+            glVertex3f(200, 5300,  0);
+            glVertex3f(100, 5350,  0);
+            glVertex3f(200, 5350,  0);
+            glVertex3f(50,  5400,  0);
+            glVertex3f(200, 5400,  0);
+            glVertex3f(50,  5550,  0);
+            glVertex3f(200, 5550,  0);
+            glVertex3f(90,  5600,  0);
+            glVertex3f(200, 5600,  0);
+            glVertex3f(90,  9000,  0);
+            glVertex3f(200, 9000,  0);
+            glVertex3f(50,  9050,  0);
+            glVertex3f(200, 9050,  0);
+            glVertex3f(50,  9400,  0);
+            glVertex3f(200, 9400,  0);
+            glVertex3f(110, 9450,  0);
+            glVertex3f(200, 9450,  0);
+            glVertex3f(110, 9500,  0);
+            glVertex3f(200, 9500,  0);
+            glVertex3f(60,  9550,  0);
+            glVertex3f(200, 9550,  0);
+            glVertex3f(60,  10000, 0);
+            glVertex3f(200, 10000, 0);
+            glVertex3f(120, 10050, 0);
+            glVertex3f(200, 10050, 0);
+            glVertex3f(120, 10200, 0);
+            glVertex3f(200, 10200, 0);
+            glVertex3f(130, 10200, 0);
+            glVertex3f(200, 10200, 0);
+            glVertex3f(130, 10400, 0);
+            glVertex3f(200, 10400, 0);
+            glVertex3f(140, 10400, 0);
+            glVertex3f(200, 10400, 0);
+            glVertex3f(140, 10600, 0);
+            glVertex3f(200, 10600, 0);
+            glVertex3f(160, 10650, 0);
+            glVertex3f(200, 10650, 0);
+            glVertex3f(160, 11400, 0);
+            glVertex3f(200, 11400, 0);
+            glVertex3f(120, 11450, 0);
+            glVertex3f(200, 11450, 0);
+            glVertex3f(120, 11650, 0);
+            glVertex3f(200, 11650, 0);
+            glVertex3f(140, 11700, 0);
+            glVertex3f(200, 11700, 0);
+            glVertex3f(140, 12550, 0);
+            glVertex3f(200, 12550, 0);
+            glVertex3f(50,  12600, 0);
+            glVertex3f(200, 12600, 0);
+            glVertex3f(50,  13000, 0);
+            glVertex3f(200, 13000, 0);
+            glVertex3f(100, 13050, 0);
+            glVertex3f(200, 13050, 0);
+            glVertex3f(100, 14500, 0);
+            glVertex3f(200, 14500, 0);
+            glVertex3f(50,  14550, 0);
+            glVertex3f(200, 14550, 0);
+            glVertex3f(50,  14750, 0);
+            glVertex3f(200, 14750, 0);
+            glVertex3f(140, 14800, 0);
+            glVertex3f(200, 14800, 0);
+            glVertex3f(140, 14900, 0);
+            glVertex3f(200, 14900, 0);
+            glVertex3f(160, 14950, 0);
+            glVertex3f(200, 14950, 0);
+            glVertex3f(160, 17500, 0);
+            glVertex3f(200, 17500, 0);
+            glVertex3f(50,  17550, 0);
+            glVertex3f(200, 17550, 0);
+            glVertex3f(50,  18000, 0);
+            glVertex3f(200, 18000, 0);
+        glEnd();
 
-    glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
-    glClearColor (0.0, 0.0, 1.0, 0.0);
-    glColor3f(0.1, 1.0, 0.4);
+        glBegin(GL_TRIANGLE_STRIP);
+            glVertex3f(-50,  0.0,   0);
+            glVertex3f(-200, 0.0,   0);
+            glVertex3f(-50,  250,   0);
+            glVertex3f(-200, 250,   0);
+            glVertex3f(-120, 300,   0);
+            glVertex3f(-200, 300,   0);
+            glVertex3f(-120, 1800,  0);
+            glVertex3f(-200, 1800,  0);
+            glVertex3f(-50,  1850,  0);
+            glVertex3f(-200, 1850,  0);
+            glVertex3f(-50,  2100,  0);
+            glVertex3f(-200, 2100,  0);
+            glVertex3f(-120, 2150,  0);
+            glVertex3f(-200, 2150,  0);
+            glVertex3f(-150, 2200,  0);
+            glVertex3f(-200, 2200,  0);
+            glVertex3f(-150, 2250,  0);
+            glVertex3f(-200, 2250,  0);
+            glVertex3f(-120, 2300,  0);
+            glVertex3f(-200, 2300,  0);
+            glVertex3f(-120, 2500,  0);
+            glVertex3f(-200, 2500,  0);
+            glVertex3f(-150, 2550,  0);
+            glVertex3f(-200, 2550,  0);
+            glVertex3f(-150, 2650,  0);
+            glVertex3f(-200, 2650,  0);
+            glVertex3f(-170, 2700,  0);
+            glVertex3f(-200, 2700,  0);
+            glVertex3f(-170, 3400,  0);
+            glVertex3f(-200, 3400,  0);
+            glVertex3f(-50,  3450,  0);
+            glVertex3f(-200, 3450,  0);
+            glVertex3f(-50,  3750,  0);
+            glVertex3f(-200, 3750,  0);
+            glVertex3f(-100, 3800,  0);
+            glVertex3f(-200, 3800,  0);
+            glVertex3f(-100, 4000,  0);
+            glVertex3f(-200, 4000,  0);
+            glVertex3f(-120, 4050,  0);
+            glVertex3f(-200, 4050,  0);
+            glVertex3f(-120, 5000,  0);
+            glVertex3f(-200, 5000,  0);
+            glVertex3f(-50,  5050,  0);
+            glVertex3f(-200, 5050,  0);
+            glVertex3f(-50,  5300,  0);
+            glVertex3f(-200, 5300,  0);
+            glVertex3f(-100, 5300,  0);
+            glVertex3f(-200, 5300,  0);
+            glVertex3f(-100, 5350,  0);
+            glVertex3f(-200, 5350,  0);
+            glVertex3f(-50,  5400,  0);
+            glVertex3f(-200, 5400,  0);
+            glVertex3f(-50,  5550,  0);
+            glVertex3f(-200, 5550,  0);
+            glVertex3f(-90,  5600,  0);
+            glVertex3f(-200, 5600,  0);
+            glVertex3f(-90,  9000,  0);
+            glVertex3f(-200, 9000,  0);
+            glVertex3f(-50,  9050,  0);
+            glVertex3f(-200, 9050,  0);
+            glVertex3f(-50,  9400,  0);
+            glVertex3f(-200, 9400,  0);
+            glVertex3f(-110, 9450,  0);
+            glVertex3f(-200, 9450,  0);
+            glVertex3f(-110, 9500,  0);
+            glVertex3f(-200, 9500,  0);
+            glVertex3f(-60,  9550,  0);
+            glVertex3f(-200, 9550,  0);
+            glVertex3f(-60,  10000, 0);
+            glVertex3f(-200, 10000, 0);
+            glVertex3f(-120, 10050, 0);
+            glVertex3f(-200, 10050, 0);
+            glVertex3f(-120, 10200, 0);
+            glVertex3f(-200, 10200, 0);
+            glVertex3f(-130, 10200, 0);
+            glVertex3f(-200, 10200, 0);
+            glVertex3f(-130, 10400, 0);
+            glVertex3f(-200, 10400, 0);
+            glVertex3f(-140, 10400, 0);
+            glVertex3f(-200, 10400, 0);
+            glVertex3f(-140, 10600, 0);
+            glVertex3f(-200, 10600, 0);
+            glVertex3f(-160, 10650, 0);
+            glVertex3f(-200, 10650, 0);
+            glVertex3f(-160, 11000, 0);
+            glVertex3f(-200, 11000, 0);
+            glVertex3f(-160, 11400, 0);
+            glVertex3f(-200, 11400, 0);
+            glVertex3f(-120, 11450, 0);
+            glVertex3f(-200, 11450, 0);
+            glVertex3f(-120, 11650, 0);
+            glVertex3f(-200, 11650, 0);
+            glVertex3f(-140, 11700, 0);
+            glVertex3f(-200, 11700, 0);
+            glVertex3f(-140, 12550, 0);
+            glVertex3f(-200, 12550, 0);
+            glVertex3f(-50,  12600, 0);
+            glVertex3f(-200, 12600, 0);
+            glVertex3f(-50,  13000, 0);
+            glVertex3f(-200, 13000, 0);
+            glVertex3f(-100, 13050, 0);
+            glVertex3f(-200, 13050, 0);
+            glVertex3f(-100, 14500, 0);
+            glVertex3f(-200, 14500, 0);
+            glVertex3f(-50,  14550, 0);
+            glVertex3f(-200, 14550, 0);
+            glVertex3f(-50,  14750, 0);
+            glVertex3f(-200, 14750, 0);
+            glVertex3f(-140, 14800, 0);
+            glVertex3f(-200, 14800, 0);
+            glVertex3f(-140, 14900, 0);
+            glVertex3f(-200, 14900, 0);
+            glVertex3f(-160, 14950, 0);
+            glVertex3f(-200, 14950, 0);
+            glVertex3f(-160, 17500, 0);
+            glVertex3f(-200, 17500, 0);
+            glVertex3f(-50,  17550, 0);
+            glVertex3f(-200, 17550, 0);
+            glVertex3f(-50,  18000, 0);
+            glVertex3f(-200, 18000, 0);
+        glEnd();
 
-    glBegin(GL_TRIANGLE_STRIP);
-        glVertex3f(50,  0.0,   0);
-        glVertex3f(200, 0.0,   0);
-        glVertex3f(50,  250,   0);
-        glVertex3f(200, 250,   0);
-        glVertex3f(120, 300,   0);
-        glVertex3f(200, 300,   0);
-        glVertex3f(120, 1800,  0);
-        glVertex3f(200, 1800,  0);
-        glVertex3f(50,  1850,  0);
-        glVertex3f(200, 1850,  0);
-        glVertex3f(50,  2100,  0);
-        glVertex3f(200, 2100,  0);
-        glVertex3f(120, 2150,  0);
-        glVertex3f(200, 2150,  0);
-        glVertex3f(150, 2200,  0);
-        glVertex3f(200, 2200,  0);
-        glVertex3f(150, 2250,  0);
-        glVertex3f(200, 2250,  0);
-        glVertex3f(120, 2300,  0);
-        glVertex3f(200, 2300,  0);
-        glVertex3f(120, 2500,  0);
-        glVertex3f(200, 2500,  0);
-        glVertex3f(150, 2550,  0);
-        glVertex3f(200, 2550,  0);
-        glVertex3f(150, 2650,  0);
-        glVertex3f(200, 2650,  0);
-        glVertex3f(170, 2700,  0);
-        glVertex3f(200, 2700,  0);
-        glVertex3f(170, 3400,  0);
-        glVertex3f(200, 3400,  0);
-        glVertex3f(50,  3450,  0);
-        glVertex3f(200, 3450,  0);
-        glVertex3f(50,  3750,  0);
-        glVertex3f(200, 3750,  0);
-        glVertex3f(100, 3800,  0);
-        glVertex3f(200, 3800,  0);
-        glVertex3f(100, 4000,  0);
-        glVertex3f(200, 4000,  0);
-        glVertex3f(120, 4050,  0);
-        glVertex3f(200, 4050,  0);
-        glVertex3f(120, 5000,  0);
-        glVertex3f(200, 5000,  0);
-        glVertex3f(50,  5050,  0);
-        glVertex3f(200, 5050,  0);
-        glVertex3f(50,  5300,  0);
-        glVertex3f(200, 5300,  0);
-        glVertex3f(100, 5300,  0);
-        glVertex3f(200, 5300,  0);
-        glVertex3f(100, 5350,  0);
-        glVertex3f(200, 5350,  0);
-        glVertex3f(50,  5400,  0);
-        glVertex3f(200, 5400,  0);
-        glVertex3f(50,  5550,  0);
-        glVertex3f(200, 5550,  0);
-        glVertex3f(90,  5600,  0);
-        glVertex3f(200, 5600,  0);
-        glVertex3f(90,  9000,  0);
-        glVertex3f(200, 9000,  0);
-        glVertex3f(50,  9050,  0);
-        glVertex3f(200, 9050,  0);
-        glVertex3f(50,  9400,  0);
-        glVertex3f(200, 9400,  0);
-        glVertex3f(110, 9450,  0);
-        glVertex3f(200, 9450,  0);
-        glVertex3f(110, 9500,  0);
-        glVertex3f(200, 9500,  0);
-        glVertex3f(60,  9550,  0);
-        glVertex3f(200, 9550,  0);
-        glVertex3f(60,  10000, 0);
-        glVertex3f(200, 10000, 0);
-        glVertex3f(120, 10050, 0);
-        glVertex3f(200, 10050, 0);
-        glVertex3f(120, 10200, 0);
-        glVertex3f(200, 10200, 0);
-        glVertex3f(130, 10200, 0);
-        glVertex3f(200, 10200, 0);
-        glVertex3f(130, 10400, 0);
-        glVertex3f(200, 10400, 0);
-        glVertex3f(140, 10400, 0);
-        glVertex3f(200, 10400, 0);
-        glVertex3f(140, 10600, 0);
-        glVertex3f(200, 10600, 0);
-        glVertex3f(160, 10650, 0);
-        glVertex3f(200, 10650, 0);
-        glVertex3f(160, 11400, 0);
-        glVertex3f(200, 11400, 0);
-        glVertex3f(120, 11450, 0);
-        glVertex3f(200, 11450, 0);
-        glVertex3f(120, 11650, 0);
-        glVertex3f(200, 11650, 0);
-        glVertex3f(140, 11700, 0);
-        glVertex3f(200, 11700, 0);
-        glVertex3f(140, 12550, 0);
-        glVertex3f(200, 12550, 0);
-        glVertex3f(50,  12600, 0);
-        glVertex3f(200, 12600, 0);
-        glVertex3f(50,  13000, 0);
-        glVertex3f(200, 13000, 0);
-        glVertex3f(100, 13050, 0);
-        glVertex3f(200, 13050, 0);
-        glVertex3f(100, 14500, 0);
-        glVertex3f(200, 14500, 0);
-        glVertex3f(50,  14550, 0);
-        glVertex3f(200, 14550, 0);
-        glVertex3f(50,  14750, 0);
-        glVertex3f(200, 14750, 0);
-        glVertex3f(140, 14800, 0);
-        glVertex3f(200, 14800, 0);
-        glVertex3f(140, 14900, 0);
-        glVertex3f(200, 14900, 0);
-        glVertex3f(160, 14950, 0);
-        glVertex3f(200, 14950, 0);
-        glVertex3f(160, 17500, 0);
-        glVertex3f(200, 17500, 0);
-        glVertex3f(50,  17550, 0);
-        glVertex3f(200, 17550, 0);
-        glVertex3f(50,  18000, 0);
-        glVertex3f(200, 18000, 0);
-    glEnd();
+        // Primeiro obstaculo que fica dentro da parte azul
+        glBegin(GL_POLYGON);
+            glVertex3f(-30, 3000, 0);
+            glVertex3f(-30, 3300, 0);
+            glVertex3f(30, 3300,  0);
+            glVertex3f(30, 3000,  0);
+        glEnd();
 
-    glBegin(GL_TRIANGLE_STRIP);
-        glVertex3f(-50,  0.0,   0);
-        glVertex3f(-200, 0.0,   0);
-        glVertex3f(-50,  250,   0);
-        glVertex3f(-200, 250,   0);
-        glVertex3f(-120, 300,   0);
-        glVertex3f(-200, 300,   0);
-        glVertex3f(-120, 1800,  0);
-        glVertex3f(-200, 1800,  0);
-        glVertex3f(-50,  1850,  0);
-        glVertex3f(-200, 1850,  0);
-        glVertex3f(-50,  2100,  0);
-        glVertex3f(-200, 2100,  0);
-        glVertex3f(-120, 2150,  0);
-        glVertex3f(-200, 2150,  0);
-        glVertex3f(-150, 2200,  0);
-        glVertex3f(-200, 2200,  0);
-        glVertex3f(-150, 2250,  0);
-        glVertex3f(-200, 2250,  0);
-        glVertex3f(-120, 2300,  0);
-        glVertex3f(-200, 2300,  0);
-        glVertex3f(-120, 2500,  0);
-        glVertex3f(-200, 2500,  0);
-        glVertex3f(-150, 2550,  0);
-        glVertex3f(-200, 2550,  0);
-        glVertex3f(-150, 2650,  0);
-        glVertex3f(-200, 2650,  0);
-        glVertex3f(-170, 2700,  0);
-        glVertex3f(-200, 2700,  0);
-        glVertex3f(-170, 3400,  0);
-        glVertex3f(-200, 3400,  0);
-        glVertex3f(-50,  3450,  0);
-        glVertex3f(-200, 3450,  0);
-        glVertex3f(-50,  3750,  0);
-        glVertex3f(-200, 3750,  0);
-        glVertex3f(-100, 3800,  0);
-        glVertex3f(-200, 3800,  0);
-        glVertex3f(-100, 4000,  0);
-        glVertex3f(-200, 4000,  0);
-        glVertex3f(-120, 4050,  0);
-        glVertex3f(-200, 4050,  0);
-        glVertex3f(-120, 5000,  0);
-        glVertex3f(-200, 5000,  0);
-        glVertex3f(-50,  5050,  0);
-        glVertex3f(-200, 5050,  0);
-        glVertex3f(-50,  5300,  0);
-        glVertex3f(-200, 5300,  0);
-        glVertex3f(-100, 5300,  0);
-        glVertex3f(-200, 5300,  0);
-        glVertex3f(-100, 5350,  0);
-        glVertex3f(-200, 5350,  0);
-        glVertex3f(-50,  5400,  0);
-        glVertex3f(-200, 5400,  0);
-        glVertex3f(-50,  5550,  0);
-        glVertex3f(-200, 5550,  0);
-        glVertex3f(-90,  5600,  0);
-        glVertex3f(-200, 5600,  0);
-        glVertex3f(-90,  9000,  0);
-        glVertex3f(-200, 9000,  0);
-        glVertex3f(-50,  9050,  0);
-        glVertex3f(-200, 9050,  0);
-        glVertex3f(-50,  9400,  0);
-        glVertex3f(-200, 9400,  0);
-        glVertex3f(-110, 9450,  0);
-        glVertex3f(-200, 9450,  0);
-        glVertex3f(-110, 9500,  0);
-        glVertex3f(-200, 9500,  0);
-        glVertex3f(-60,  9550,  0);
-        glVertex3f(-200, 9550,  0);
-        glVertex3f(-60,  10000, 0);
-        glVertex3f(-200, 10000, 0);
-        glVertex3f(-120, 10050, 0);
-        glVertex3f(-200, 10050, 0);
-        glVertex3f(-120, 10200, 0);
-        glVertex3f(-200, 10200, 0);
-        glVertex3f(-130, 10200, 0);
-        glVertex3f(-200, 10200, 0);
-        glVertex3f(-130, 10400, 0);
-        glVertex3f(-200, 10400, 0);
-        glVertex3f(-140, 10400, 0);
-        glVertex3f(-200, 10400, 0);
-        glVertex3f(-140, 10600, 0);
-        glVertex3f(-200, 10600, 0);
-        glVertex3f(-160, 10650, 0);
-        glVertex3f(-200, 10650, 0);
-        glVertex3f(-160, 11000, 0);
-        glVertex3f(-200, 11000, 0);
-        glVertex3f(-160, 11400, 0);
-        glVertex3f(-200, 11400, 0);
-        glVertex3f(-120, 11450, 0);
-        glVertex3f(-200, 11450, 0);
-        glVertex3f(-120, 11650, 0);
-        glVertex3f(-200, 11650, 0);
-        glVertex3f(-140, 11700, 0);
-        glVertex3f(-200, 11700, 0);
-        glVertex3f(-140, 12550, 0);
-        glVertex3f(-200, 12550, 0);
-        glVertex3f(-50,  12600, 0);
-        glVertex3f(-200, 12600, 0);
-        glVertex3f(-50,  13000, 0);
-        glVertex3f(-200, 13000, 0);
-        glVertex3f(-100, 13050, 0);
-        glVertex3f(-200, 13050, 0);
-        glVertex3f(-100, 14500, 0);
-        glVertex3f(-200, 14500, 0);
-        glVertex3f(-50,  14550, 0);
-        glVertex3f(-200, 14550, 0);
-        glVertex3f(-50,  14750, 0);
-        glVertex3f(-200, 14750, 0);
-        glVertex3f(-140, 14800, 0);
-        glVertex3f(-200, 14800, 0);
-        glVertex3f(-140, 14900, 0);
-        glVertex3f(-200, 14900, 0);
-        glVertex3f(-160, 14950, 0);
-        glVertex3f(-200, 14950, 0);
-        glVertex3f(-160, 17500, 0);
-        glVertex3f(-200, 17500, 0);
-        glVertex3f(-50,  17550, 0);
-        glVertex3f(-200, 17550, 0);
-        glVertex3f(-50,  18000, 0);
-        glVertex3f(-200, 18000, 0);
-    glEnd();
+        // Segundo obstaculo que fica dentro da parte azul
+        glBegin(GL_POLYGON);
+            glVertex3f(0,4100, 0);
+            glVertex3f(-60, 4200, 0);
+            glVertex3f(-60, 4400, 0);
+            glVertex3f(-25, 4500, 0);
+            glVertex3f(-25, 4700, 0);
+            glVertex3f(0, 4800, 0);
+            glVertex3f(25, 4700, 0);
+            glVertex3f(25, 4500, 0);
+            glVertex3f(60, 4400, 0);
+            glVertex3f(60, 4200, 0);
+        glEnd();
 
-    // Primeiro obstaculo que fica dentro da parte azul
-    glBegin(GL_POLYGON);
-        glVertex3f(-30, 3000, 0);
-        glVertex3f(-30, 3300, 0);
-        glVertex3f(30, 3300,  0);
-        glVertex3f(30, 3000,  0);
-    glEnd();
+        // Terceiro obstaculo que fica dentro da parte azul
+        glBegin(GL_POLYGON);
+            glVertex3f(0.0, 36000, 0);
+            glVertex3f(-60, 35500, 0);
+            glVertex3f(-60, 34500, 0);
+            glVertex3f(-90, 34000, 0);
+            glVertex3f(-90, 33500, 0);
+            glVertex3f(-60, 33000, 0);
+            glVertex3f(-60, 32500, 0);
+            glVertex3f(-90, 32000, 0);
+            glVertex3f(-90, 30000, 0);
+            glVertex3f(90, 30000, 0);
+            glVertex3f(90, 32000, 0);
+            glVertex3f(60, 32500, 0);
+            glVertex3f(60, 33000, 0);
+            glVertex3f(90, 33500, 0);
+            glVertex3f(90, 34000, 0);
+            glVertex3f(60, 34500, 0);
+            glVertex3f(60, 35500, 0);
+        glEnd();
 
-    // Segundo obstaculo que fica dentro da parte azul
-    glBegin(GL_POLYGON);
-        glVertex3f(0,4100, 0);
-        glVertex3f(-60, 4200, 0);
-        glVertex3f(-60, 4400, 0);
-        glVertex3f(-25, 4500, 0);
-        glVertex3f(-25, 4700, 0);
-        glVertex3f(0, 4800, 0);
-        glVertex3f(25, 4700, 0);
-        glVertex3f(25, 4500, 0);
-        glVertex3f(60, 4400, 0);
-        glVertex3f(60, 4200, 0);
-    glEnd();
+        // Quarto obstaculo que fica dentro da parte azul
+        glBegin(GL_POLYGON);
+            glVertex3f(0, 10700, 0);
+            glVertex3f(-60, 10750, 0);
+            glVertex3f(-60, 10950, 0);
+            glVertex3f(-25, 11050, 0);
+            glVertex3f(-25, 11250, 0);
+            glVertex3f(0, 11260, 0);
+            glVertex3f(25, 11250, 0);
+            glVertex3f(25, 11050, 0);
+            glVertex3f(60, 10950, 0);
+            glVertex3f(60, 10750, 0);
+        glEnd();
 
-    // Terceiro obstaculo que fica dentro da parte azul
-    glBegin(GL_POLYGON);
-        glVertex3f(0.0, 36000, 0);
-        glVertex3f(-60, 35500, 0);
-        glVertex3f(-60, 34500, 0);
-        glVertex3f(-90, 34000, 0);
-        glVertex3f(-90, 33500, 0);
-        glVertex3f(-60, 33000, 0);
-        glVertex3f(-60, 32500, 0);
-        glVertex3f(-90, 32000, 0);
-        glVertex3f(-90, 30000, 0);
-        glVertex3f(90, 30000, 0);
-        glVertex3f(90, 32000, 0);
-        glVertex3f(60, 32500, 0);
-        glVertex3f(60, 33000, 0);
-        glVertex3f(90, 33500, 0);
-        glVertex3f(90, 34000, 0);
-        glVertex3f(60, 34500, 0);
-        glVertex3f(60, 35500, 0);
-    glEnd();
+        // Quinto obstaculo que fica dentro da parte azul
+        glBegin(GL_POLYGON);
+            glVertex3f(0, 11800, 0);
+            glVertex3f(-70, 11850, 0);
+            glVertex3f(-70, 12150, 0);
+            glVertex3f(-80, 12150, 0);
+            glVertex3f(-80, 12300, 0);
+            glVertex3f(0, 12350, 0);
+            glVertex3f(80, 12300, 0);
+            glVertex3f(80, 12150, 0);
+            glVertex3f(70, 12150, 0);
+            glVertex3f(70, 11850, 0);
+        glEnd();
 
-    // Quarto obstaculo que fica dentro da parte azul
-    glBegin(GL_POLYGON);
-        glVertex3f(0, 10700, 0);
-        glVertex3f(-60, 10750, 0);
-        glVertex3f(-60, 10950, 0);
-        glVertex3f(-25, 11050, 0);
-        glVertex3f(-25, 11250, 0);
-        glVertex3f(0, 11260, 0);
-        glVertex3f(25, 11250, 0);
-        glVertex3f(25, 11050, 0);
-        glVertex3f(60, 10950, 0);
-        glVertex3f(60, 10750, 0);
-    glEnd();
+        // Sexto obstaculo que fica dentro da parte azul
+        glBegin(GL_POLYGON);
+            glVertex3f(0, 15100, 0);
+            glVertex3f(-130, 15150, 0);
+            glVertex3f(-130, 15250, 0);
+            glVertex3f(-110, 15260, 0);
+            glVertex3f(-110, 15450, 0);
+            glVertex3f(-130, 15500, 0);
+            glVertex3f(-130, 15550, 0);
+            glVertex3f(-100, 15600, 0);
+            glVertex3f(-100, 15700, 0);
+            glVertex3f(0.0, 15750, 0);
+            glVertex3f(100, 15700, 0);
+            glVertex3f(100, 15600, 0);
+            glVertex3f(130, 15550, 0);
+            glVertex3f(130, 15500, 0);
+            glVertex3f(110, 15450, 0);
+            glVertex3f(110, 15260, 0);
+            glVertex3f(130, 15250, 0);
+            glVertex3f(130, 15150, 0);
+        glEnd();
 
-    // Quinto obstaculo que fica dentro da parte azul
-    glBegin(GL_POLYGON);
-        glVertex3f(0, 11800, 0);
-        glVertex3f(-70, 11850, 0);
-        glVertex3f(-70, 12150, 0);
-        glVertex3f(-80, 12150, 0);
-        glVertex3f(-80, 12300, 0);
-        glVertex3f(0, 12350, 0);
-        glVertex3f(80, 12300, 0);
-        glVertex3f(80, 12150, 0);
-        glVertex3f(70, 12150, 0);
-        glVertex3f(70, 11850, 0);
-    glEnd();
+        // Setimo obstaculo que fica dentro da parte azul
+        glBegin(GL_POLYGON);
+            glVertex3f(0, 16500, 0);
+            glVertex3f(-130, 16550, 0);
+            glVertex3f(-130, 17050, 0);
+            glVertex3f(0, 17100, 0);
+            glVertex3f(130, 17050, 0);
+            glVertex3f(130, 16550, 0);
+        glEnd();
 
-    // Sexto obstaculo que fica dentro da parte azul
-    glBegin(GL_POLYGON);
-        glVertex3f(0, 15100, 0);
-        glVertex3f(-130, 15150, 0);
-        glVertex3f(-130, 15250, 0);
-        glVertex3f(-110, 15260, 0);
-        glVertex3f(-110, 15450, 0);
-        glVertex3f(-130, 15500, 0);
-        glVertex3f(-130, 15550, 0);
-        glVertex3f(-100, 15600, 0);
-        glVertex3f(-100, 15700, 0);
-        glVertex3f(0.0, 15750, 0);
-        glVertex3f(100, 15700, 0);
-        glVertex3f(100, 15600, 0);
-        glVertex3f(130, 15550, 0);
-        glVertex3f(130, 15500, 0);
-        glVertex3f(110, 15450, 0);
-        glVertex3f(110, 15260, 0);
-        glVertex3f(130, 15250, 0);
-        glVertex3f(130, 15150, 0);
-    glEnd();
+        // Aeronave
+        glColor3f(1.0, 1.0, 1.0);
+            glBegin(GL_TRIANGLES) ;
+            glVertex3f(navex1, navey1, 0);
+            glVertex3f(navex2, navey2, 0);
+            glVertex3f(navex3, navey3, 0);
+        glEnd();
 
-    // Setimo obstaculo que fica dentro da parte azul
-    glBegin(GL_POLYGON);
-        glVertex3f(0, 16500, 0);
-        glVertex3f(-130, 16550, 0);
-        glVertex3f(-130, 17050, 0);
-        glVertex3f(0, 17100, 0);
-        glVertex3f(130, 17050, 0);
-        glVertex3f(130, 16550, 0);
-    glEnd();
+        //Projetil
+        if(projetil != NULL)
+        {
+            glPushMatrix();
+                glTranslatef(projetil->x,projetil->y,3);
+                glScalef(0.6,1,1);
+                glutSolidSphere(3,50,50);
+            glPopMatrix();
+        }
 
-    // Aeronave
-    glColor3f(1.0, 1.0, 1.0);
-        glBegin(GL_TRIANGLES) ;
-        glVertex3f(navex1, navey1, 0);
-        glVertex3f(navex2, navey2, 0);
-        glVertex3f(navex3, navey3, 0);
-    glEnd();
-
-    //Projetil
-    if(projetil!=NULL)
-    {
-        glPushMatrix();
-
-            glTranslatef(projetil->x,projetil->y,3);
-            glScalef(0.6,1,1);
-         glutSolidSphere(3,50,50);
-       glPopMatrix();
-    }
-
-    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++) {
-        inimigos[i]->desenhar();
-    }
+        for(int i = 0; i < QUANTIDADE_INIMIGOS; i++) {
+            inimigos[i]->desenhar();
+        }
 
         glColor3f(0.0,0.0,0.0);
-        imprimirTexto(std::to_string(pontos).c_str(),150,orthoLastY-30);
-
-
+        imprimirTexto(std::to_string(pontos).c_str(), 150, orthoLastY - 30);
     }
 
-    if (gameState==2)
-    {
-        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glClearColor(0,0,0,0);
-        glColor3f(1.0,0.0,0.0);
-        imprimirTexto("JOGO PAUSADO",-20,(orthoLastY+orthoFirstY)/2);
-
-    }
-
-     if (gameState==3)
+    if (gameState == 2)
     {
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0,0,0,0);
         glColor3f(1.0,0.0,0.0);
-        imprimirTexto("FIM DE JOGO",-20,(orthoFirstY+orthoLastY)/2);
-
+        imprimirTexto("JOGO PAUSADO", -20, (orthoLastY+orthoFirstY)/2);
     }
 
-
-
+    if (gameState == 3)
+    {
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0, 0, 0, 0);
+        glColor3f(1.0, 0.0, 0.0);
+        imprimirTexto("FIM DE JOGO", -20, (orthoFirstY + orthoLastY)/2);
+    }
 
     glutSwapBuffers();
 }
@@ -1189,188 +1173,171 @@ void idle()
     float t,desiredFrameTime, frameTime;
     static float tLast = 0.0;
 
-    /* Get elapsed time and convert to s */
+    // Get elapsed time and convert to s
     t = glutGet(GLUT_ELAPSED_TIME);
 
+    // Convert to seconds
     t /= 1000.0;
 
     frameTime = t - tLast;
 
     desiredFrameTime = 1.0/60.0;
 
-     if(frameTime<=desiredFrameTime)
+     if(frameTime <= desiredFrameTime)
         return;
 
-    if(gameState==1)
+    if(gameState == 1)
     {
-
-
-
-	//Verifica colisao com inimigos
-	for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
-    {
-        if(inimigos[i]->colisaoN(navex1,navey1,navex2,navey2,navex3,navey3))
+        //Verifica colisao com inimigos
+        for(int i = 0; i < QUANTIDADE_INIMIGOS ; i++)
         {
-            vidas--;
-            navex1 = -80; navex2 = -64; navex3 = -72;
-
-            if(vidas <= 0)
+            if(inimigos[i]->colisaoN(navex1,navey1,navex2,navey2,navex3,navey3))
             {
-                gameState = 3;
-                for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
+                vidas--;
+                navex1 = -80; navex2 = -64; navex3 = -72;
+
+                if(vidas <= 0)
+                {
+                    gameState = 3;
+                    for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
                     {
                         delete inimigos[i];
                     }
-                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
-                inicializarInimigo();
-                projetil == NULL;
-                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+                    QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+                    inicializarInimigo();
+                    projetil == NULL;
+                    navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+                }
+            }
+        }
 
+        if(projetil != NULL)
+            for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
+            {
+                if(inimigos[i]->colisaoP(projetil->x,projetil->y))
+                {
+                    pontos++;
+                    delete inimigos[i];
+                    if(QUANTIDADE_INIMIGOS > 1)
+                        inimigos[i] = inimigos[QUANTIDADE_INIMIGOS-1];
+                    QUANTIDADE_INIMIGOS--;
+                    delete projetil;
+                    projetil = NULL;
+                    break;
+                }
             }
 
-        }
-    }
-
-    if(projetil!=NULL)
-            for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
-        {
-            if(inimigos[i]->colisaoP(projetil->x,projetil->y))
+        if(projetil != NULL)
+            for(int i = 0; i < nretas; i++)
             {
-                pontos++;
-                delete inimigos[i];
-                if(QUANTIDADE_INIMIGOS > 1)
-                    inimigos[i] = inimigos[QUANTIDADE_INIMIGOS-1];
-                QUANTIDADE_INIMIGOS--;
+                if(retas[i]->colisaoP() == 1)
+                {
+                    delete projetil;
+                    projetil = NULL;
+                    break;
+                }
+            }
+
+        //Verifica colisão com mapa
+        for(int i = 0; i < nretas; i++)
+        {
+            if(retas[i]->colisao() == 1)
+            {
+
+                vidas--;
+                navex1 = -80; navex2 = -64; navex3 = -72;
+
+                if(vidas <= 0)
+                {
+                    gameState = 3;
+                    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
+                    {
+                        delete inimigos[i];
+                    }
+                    QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+                    inicializarInimigo();
+                    projetil == NULL;
+                    navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+                }
+            }
+        }
+
+
+        /* Update velocity and position */
+
+        if(orthoLastY < ORTHO_MAXIMO)
+        {
+            orthoLastY += 2;
+            orthoFirstY += 2;
+            navey1 += 2;
+            navey2 += 2;
+            navey3 += 2;
+        }
+
+        if(projetil!=NULL)
+        {
+            projetil->y += 10;
+            if(projetil->y > orthoLastY)
+            {
                 delete projetil;
                 projetil = NULL;
-                break;
             }
         }
 
-    if(projetil!=NULL)
-            for(int i = 0; i<nretas; i++)
-        {
-
-
-            if(retas[i]->colisaoP()== 1)
-            {
-               delete projetil;
-                projetil = NULL;
-                break;
-            }
-
-        }
-
-
-
-
-
-	//Verifica colisão com mapa
-    for(int i = 0; i<nretas; i++)
-    {
-
-
-        if(retas[i]->colisao()== 1)
-            {
-
-            vidas--;
-            navex1 = -80; navex2 = -64; navex3 = -72;
-
-            if(vidas <= 0)
-                {
-                gameState = 3;
-                for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
-                    {
-                        delete inimigos[i];
-                    }
-                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
-                inicializarInimigo();
-                projetil == NULL;
-                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
-
-                }
-
-            }
-
-    }
-
-
-    /* Update velocity and position */
-
-    if(orthoLastY < ORTHO_MAXIMO)
-    {
-        orthoLastY += 2;
-        orthoFirstY += 2;
-        navey1 += 2;
-        navey2 += 2;
-        navey3 += 2;
-    }
-
-    if(projetil!=NULL)
-    {
-        projetil->y += 10;
-        if(projetil->y > orthoLastY)
-        {
-            delete projetil;
-            projetil = NULL;
-        }
-
-    }
-
-    inimigos[1]->oscilar(-120, 120);
-    inimigos[2]->oscilar(-120, 120);
-    inimigos[3]->oscilar(-120, 120);
-    inimigos[4]->oscilar(-120, 120);
-    inimigos[5]->oscilar(-120, 120);
-    inimigos[6]->oscilar(-120, 120);
-    inimigos[7]->oscilar(-120, 120);
-    inimigos[8]->oscilar(-120, 120);
-    inimigos[10]->oscilar(-150, 150);
-    inimigos[11]->oscilar(-120, 120);
-    inimigos[12]->oscilar(-120, 120);
-    inimigos[13]->oscilar(-150, 150);
-    inimigos[14]->oscilar(-170, 170);
-    inimigos[15]->oscilar(-170, -30);
-    inimigos[16]->oscilar(30, 170);
-    inimigos[19]->oscilar(-50, 50);
-    inimigos[22]->oscilar(-50, 50);
-    inimigos[23]->oscilar(-50, 50);
-    inimigos[24]->oscilar(-90, 90);
-    inimigos[25]->oscilar(-90, 90);
-    inimigos[26]->oscilar(-90, 90);
-    inimigos[27]->oscilar(-90, 90);
-    inimigos[28]->oscilar(-90, 90);
-    inimigos[29]->oscilar(-90, 90);
-    inimigos[30]->oscilar(-90, 90);
-    inimigos[31]->oscilar(-90, 90);
-    inimigos[32]->oscilar(-90, 90);
-    inimigos[33]->oscilar(-90, 90);
-    inimigos[34]->oscilar(-90, 90);
-    inimigos[35]->oscilar(-90, 90);
-    inimigos[36]->oscilar(-50, 50);
-    inimigos[37]->oscilar(-60, 60);
-    inimigos[43]->oscilar(80, 140);
-    inimigos[44]->oscilar(-50, 50);
-    inimigos[45]->oscilar(-50, 50);
-    inimigos[46]->oscilar(-100, 100);
-    inimigos[47]->oscilar(-100, 100);
-    inimigos[48]->oscilar(-100, 100);
-    inimigos[49]->oscilar(-100, 100);
-    inimigos[50]->oscilar(-100, 100);
-    inimigos[51]->oscilar(-100, 100);
-    inimigos[52]->oscilar(-100, 100);
-    inimigos[53]->oscilar(-100, 100);
-    inimigos[54]->oscilar(-100, 100);
-    inimigos[56]->oscilar(-140, 140);
-    inimigos[57]->oscilar(-140, 140);
-    inimigos[59]->oscilar(-160, -110);
-    inimigos[60]->oscilar(100, 160);
-    inimigos[61]->oscilar(-160, 160);
-    inimigos[62]->oscilar(-160, 160);
-    inimigos[63]->oscilar(-160, 160);
-    inimigos[64]->oscilar(-160, 160);
-    inimigos[65]->oscilar(-160, 160);
-    inimigos[67]->oscilar(-160, 160);
+        inimigos[1]->oscilar(-120, 120);
+        inimigos[2]->oscilar(-120, 120);
+        inimigos[3]->oscilar(-120, 120);
+        inimigos[4]->oscilar(-120, 120);
+        inimigos[5]->oscilar(-120, 120);
+        inimigos[6]->oscilar(-120, 120);
+        inimigos[7]->oscilar(-120, 120);
+        inimigos[8]->oscilar(-120, 120);
+        inimigos[10]->oscilar(-150, 150);
+        inimigos[11]->oscilar(-120, 120);
+        inimigos[12]->oscilar(-120, 120);
+        inimigos[13]->oscilar(-150, 150);
+        inimigos[14]->oscilar(-170, 170);
+        inimigos[15]->oscilar(-170, -30);
+        inimigos[16]->oscilar(30, 170);
+        inimigos[19]->oscilar(-50, 50);
+        inimigos[22]->oscilar(-50, 50);
+        inimigos[23]->oscilar(-50, 50);
+        inimigos[24]->oscilar(-90, 90);
+        inimigos[25]->oscilar(-90, 90);
+        inimigos[26]->oscilar(-90, 90);
+        inimigos[27]->oscilar(-90, 90);
+        inimigos[28]->oscilar(-90, 90);
+        inimigos[29]->oscilar(-90, 90);
+        inimigos[30]->oscilar(-90, 90);
+        inimigos[31]->oscilar(-90, 90);
+        inimigos[32]->oscilar(-90, 90);
+        inimigos[33]->oscilar(-90, 90);
+        inimigos[34]->oscilar(-90, 90);
+        inimigos[35]->oscilar(-90, 90);
+        inimigos[36]->oscilar(-50, 50);
+        inimigos[37]->oscilar(-60, 60);
+        inimigos[43]->oscilar(80, 140);
+        inimigos[44]->oscilar(-50, 50);
+        inimigos[45]->oscilar(-50, 50);
+        inimigos[46]->oscilar(-100, 100);
+        inimigos[47]->oscilar(-100, 100);
+        inimigos[48]->oscilar(-100, 100);
+        inimigos[49]->oscilar(-100, 100);
+        inimigos[50]->oscilar(-100, 100);
+        inimigos[51]->oscilar(-100, 100);
+        inimigos[52]->oscilar(-100, 100);
+        inimigos[53]->oscilar(-100, 100);
+        inimigos[54]->oscilar(-100, 100);
+        inimigos[56]->oscilar(-140, 140);
+        inimigos[57]->oscilar(-140, 140);
+        inimigos[59]->oscilar(-160, -110);
+        inimigos[60]->oscilar(100, 160);
+        inimigos[61]->oscilar(-160, 160);
+        inimigos[62]->oscilar(-160, 160);
+        inimigos[63]->oscilar(-160, 160);
+        inimigos[64]->oscilar(-160, 160);
+        inimigos[65]->oscilar(-160, 160);
+        inimigos[67]->oscilar(-160, 160);
     }
     /* Update tLast for next time, using static local variable */
     tLast = t;
@@ -1394,40 +1361,35 @@ void keyboard(unsigned char key, int x, int y)
             navex2 += 5;
             navex3 += 5;
         break;
-
         case 'w':
             navey1 += 5;
             navey2 += 5;
             navey3 += 5;
         break;
-
 		case 'm':
-
-            if(fullscreen == 0)
+            if(!fullscreen)
             {
-                fullscreen=1;
+                fullscreen = true;
                 glutFullScreen();
-
             }
             else
             {
-                fullscreen = 0;
-                glutReshapeWindow(900,600);
+                fullscreen = false;
+                glutReshapeWindow(WINDOW_WIDTH,WINDOW_HEIGHT);
             }
-            break;
-
+        break;
         case ' ':
-            if(projetil==NULL&&gameState==1)
-                projetil= new Projetil();
-            if(gameState==0 || gameState==3)
+            if(projetil == NULL && gameState == 1)
+                projetil = new Projetil();
+            if(gameState == 0 || gameState == 3)
             {
-                gameState=1;
-                vidas=3;
-                pontos=0;
-                orthoFirstY=0;
-                orthoLastY=500;
+                gameState = 1;
+                vidas = 3;
+                pontos = 0;
+                orthoFirstY = 0;
+                orthoLastY = 500;
             }
-            break;
+        break;
         case 'p':
             if(gameState == 1)
             {
@@ -1439,33 +1401,26 @@ void keyboard(unsigned char key, int x, int y)
                 gameState = 1;
             }
         break;
-
         case 'r':
-                 for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
-                    {
-                        delete inimigos[i];
-                    }
-                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
-                inicializarInimigo();
-                projetil == NULL;
-                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
-                gameState=0;
-                vidas=3;
-                pontos=0;
-                orthoFirstY=0;
-                orthoLastY=500;
-
-            break;
-
-		case 27 :
-		    for(int i=0; i<QUANTIDADE_INIMIGOS; i++)
+            for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
+            {
+                delete inimigos[i];
+            }
+            QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+            inicializarInimigo();
+            projetil == NULL;
+            navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+            gameState = 0;
+            vidas = 3;
+            pontos = 0;
+            orthoFirstY = 0;
+            orthoLastY = 500;
+        break;
+		case 27:
+		    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
                 delete inimigos[i];
             delete [] inimigos;
-
-		     exit(0);
-
+            exit(0);
         break;
-
-
     }
 }
