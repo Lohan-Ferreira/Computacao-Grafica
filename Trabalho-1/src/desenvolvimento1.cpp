@@ -15,7 +15,7 @@
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
 
-//#define QUANTIDADE_INIMIGOS 68
+#define QUANTIDADE_INIMIGOS_INICIAL 68
 
 #define ORTHO_MAXIMO 18000
 
@@ -251,6 +251,9 @@ void motion(int x, int y);
 double orthoFirstY = 0;
 double orthoLastY = 500;
 int fullscreen = 0;
+int gameState = 0; //Estados do jogo 0 tela inicial, 1 jogando , 2 pausado , 3 fim de jogo
+int vidas = 3;
+int pontos = 0;
 
 int main(int argc, char** argv)
 {
@@ -726,13 +729,36 @@ void inicializarInimigo()
 
 void display()
 {
+
+    if(gameState == 0)
+    {
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glMatrixMode (GL_PROJECTION);
+        glLoadIdentity ();
+
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+
+        glClearColor (0.0, 0.0, 0.0, 0.0);
+
+        glColor3f(1,1,0);
+        imprimirTexto("RIVER RAID",-20,(orthoLastY+orthoFirstY)/2);
+        imprimirTexto("Aperte Espaço para Começar",-50,(orthoLastY+orthoFirstY)/2 - 20);
+
+    }
+
+
+    if (gameState==1)
+    {
+
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
 
     glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
-
+    glClearColor (0.0, 0.0, 1.0, 0.0);
     glColor3f(0.1, 1.0, 0.4);
 
     glBegin(GL_TRIANGLE_STRIP);
@@ -1105,6 +1131,35 @@ void display()
         inimigos[i]->desenhar();
     }
 
+        char *c = new char [10];
+        glColor3f(0.0,0.0,0.0);
+        imprimirTexto(itoa(pontos,c,10),150,orthoLastY-30);
+
+
+    }
+
+    if (gameState==2)
+    {
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glClearColor(0,0,0,0);
+        glColor3f(1.0,0.0,0.0);
+        imprimirTexto("JOGO PAUSADO",-20,(orthoLastY+orthoFirstY)/2);
+
+    }
+
+     if (gameState==3)
+    {
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0,0,0,0);
+        glColor3f(1.0,0.0,0.0);
+        imprimirTexto("FIM DE JOGO",-20,(orthoFirstY+orthoLastY)/2);
+
+    }
+
+
+
+
     glutSwapBuffers();
 }
 
@@ -1144,15 +1199,36 @@ void idle()
 
     desiredFrameTime = 1.0/60.0;
 
-    if(frameTime<=desiredFrameTime)
+     if(frameTime<=desiredFrameTime)
         return;
+
+    if(gameState==1)
+    {
+
+
 
 	//Verifica colisao com inimigos
 	for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
     {
         if(inimigos[i]->colisaoN(navex1,navey1,navex2,navey2,navex3,navey3))
         {
+            vidas--;
             navex1 = -80; navex2 = -64; navex3 = -72;
+
+            if(vidas <= 0)
+            {
+                gameState = 3;
+                for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
+                    {
+                        delete inimigos[i];
+                    }
+                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+                inicializarInimigo();
+                projetil == NULL;
+                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+
+            }
+
         }
     }
 
@@ -1161,8 +1237,10 @@ void idle()
         {
             if(inimigos[i]->colisaoP(projetil->x,projetil->y))
             {
+                pontos++;
                 delete inimigos[i];
-                inimigos[i] = inimigos[QUANTIDADE_INIMIGOS-1];
+                if(QUANTIDADE_INIMIGOS > 1)
+                    inimigos[i] = inimigos[QUANTIDADE_INIMIGOS-1];
                 QUANTIDADE_INIMIGOS--;
                 delete projetil;
                 projetil = NULL;
@@ -1177,7 +1255,6 @@ void idle()
 
             if(retas[i]->colisaoP()== 1)
             {
-                //std::cout<<"BOOOM!";
                delete projetil;
                 projetil = NULL;
                 break;
@@ -1197,7 +1274,23 @@ void idle()
         if(retas[i]->colisao()== 1)
             {
 
-                navex1 = -80; navex2 = -64; navex3 = -72;
+            vidas--;
+            navex1 = -80; navex2 = -64; navex3 = -72;
+
+            if(vidas <= 0)
+                {
+                gameState = 3;
+                for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
+                    {
+                        delete inimigos[i];
+                    }
+                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+                inicializarInimigo();
+                projetil == NULL;
+                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+
+                }
+
             }
 
     }
@@ -1279,7 +1372,7 @@ void idle()
     inimigos[64]->oscilar(-160, 160);
     inimigos[65]->oscilar(-160, 160);
     inimigos[67]->oscilar(-160, 160);
-
+    }
     /* Update tLast for next time, using static local variable */
     tLast = t;
 
@@ -1325,12 +1418,53 @@ void keyboard(unsigned char key, int x, int y)
             break;
 
         case ' ':
-            if(projetil==NULL)
+            if(projetil==NULL&&gameState==1)
                 projetil= new Projetil();
+            if(gameState==0 || gameState==3)
+            {
+                gameState=1;
+                vidas=3;
+                pontos=0;
+                orthoFirstY=0;
+                orthoLastY=500;
+            }
+            break;
+        case 'p':
+            if(gameState == 1)
+            {
+                gameState = 2;
+            }
+
+            else if(gameState == 2)
+            {
+                gameState = 1;
+            }
+        break;
+
+        case 'r':
+                 for(int i=0; i< QUANTIDADE_INIMIGOS; i++)
+                    {
+                        delete inimigos[i];
+                    }
+                QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
+                inicializarInimigo();
+                projetil == NULL;
+                navex1 = -8; navey1 = 20; navex2 = 8; navey2 = 20; navex3 = 0; navey3 = 40;
+                gameState=0;
+                vidas=3;
+                pontos=0;
+                orthoFirstY=0;
+                orthoLastY=500;
 
             break;
 
-		case 27 : exit(0);
+		case 27 :
+		    for(int i=0; i<QUANTIDADE_INIMIGOS; i++)
+                delete inimigos[i];
+            delete [] inimigos;
+
+		     exit(0);
+
         break;
 
 
