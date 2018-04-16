@@ -53,7 +53,7 @@
 	"Esfera.h"
 	"Plano.h"
 
-1523835369 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
+1523901964 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
 	<GL/glut.h>
 	<iostream>
 	<string.h>
@@ -62,6 +62,7 @@
 	"Aviao.h"
 	"Inimigo.h"
 	"Combustivel.h"
+	<string>
 
 1522531163 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/extras.h
 
@@ -79,28 +80,28 @@
 1522531103 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Plano.cpp
 	"Plano.h"
 
-1523820512 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Inimigo.cpp
+1523900648 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Inimigo.cpp
 	"Inimigo.h"
 	"math.h"
 
-1523820403 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Inimigo.h
+1523899717 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Inimigo.h
 	<GL/glut.h>
 	"Aviao.h"
 
-1523830921 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Combustivel.cpp
+1523835657 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Combustivel.cpp
 	"Combustivel.h"
 
-1523828744 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Combustivel.h
+1523835657 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Combustivel.h
 	<GL/glut.h>
 	<math.h>
 
-1523828240 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Aviao.h
+1523835657 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/include/Aviao.h
 	<GL/glut.h>
 	<string>
 	<math.h>
 	"Combustivel.h"
 
-1523828991 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Aviao.cpp
+1523835657 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Aviao.cpp
 	"Aviao.h"
 
 1523896229 source:/home/hynax/Desktop/Computacao-Grafica-master/Trabalho-1/src/desenvolvimento1.cpp

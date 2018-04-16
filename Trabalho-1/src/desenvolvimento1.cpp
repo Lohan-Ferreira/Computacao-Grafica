@@ -1404,60 +1404,86 @@ void idle()
             }
         }
 
-        inimigos[1]->oscilar(-120, 120);
-        inimigos[2]->oscilar(-120, 120);
-        inimigos[3]->oscilar(-120, 120);
-        inimigos[4]->oscilar(-120, 120);
-        inimigos[5]->oscilar(-120, 120);
-        inimigos[6]->oscilar(-120, 120);
-        inimigos[7]->oscilar(-120, 120);
-        inimigos[8]->oscilar(-120, 120);
-        inimigos[10]->oscilar(-150, 150);
-        inimigos[11]->oscilar(-120, 120);
-        inimigos[12]->oscilar(-120, 120);
-        inimigos[13]->oscilar(-150, 150);
-        inimigos[14]->oscilar(-170, 170);
-        inimigos[15]->oscilar(-170, -30);
-        inimigos[16]->oscilar(30, 170);
-        inimigos[19]->oscilar(-50, 50);
-        inimigos[22]->oscilar(-50, 50);
-        inimigos[23]->oscilar(-50, 50);
-        inimigos[24]->oscilar(-90, 90);
-        inimigos[25]->oscilar(-90, 90);
-        inimigos[26]->oscilar(-90, 90);
-        inimigos[27]->oscilar(-90, 90);
-        inimigos[28]->oscilar(-90, 90);
-        inimigos[29]->oscilar(-90, 90);
-        inimigos[30]->oscilar(-90, 90);
-        inimigos[31]->oscilar(-90, 90);
-        inimigos[32]->oscilar(-90, 90);
-        inimigos[33]->oscilar(-90, 90);
-        inimigos[34]->oscilar(-90, 90);
-        inimigos[35]->oscilar(-90, 90);
-        inimigos[36]->oscilar(-50, 50);
-        inimigos[37]->oscilar(-60, 60);
-        inimigos[43]->oscilar(80, 140);
-        inimigos[44]->oscilar(-50, 50);
-        inimigos[45]->oscilar(-50, 50);
-        inimigos[46]->oscilar(-100, 100);
-        inimigos[47]->oscilar(-100, 100);
-        inimigos[48]->oscilar(-100, 100);
-        inimigos[49]->oscilar(-100, 100);
-        inimigos[50]->oscilar(-100, 100);
-        inimigos[51]->oscilar(-100, 100);
-        inimigos[52]->oscilar(-100, 100);
-        inimigos[53]->oscilar(-100, 100);
-        inimigos[54]->oscilar(-100, 100);
-        inimigos[56]->oscilar(-140, 140);
-        inimigos[57]->oscilar(-140, 140);
-        inimigos[59]->oscilar(-160, -110);
-        inimigos[60]->oscilar(100, 160);
-        inimigos[61]->oscilar(-160, 160);
-        inimigos[62]->oscilar(-160, 160);
-        inimigos[63]->oscilar(-160, 160);
-        inimigos[64]->oscilar(-160, 160);
-        inimigos[65]->oscilar(-160, 160);
-        inimigos[67]->oscilar(-160, 160);
+        for(int i = 1; i <= 8; i++) {
+            if(inimigos[i] != NULL) {
+                inimigos[i]->oscilar(-120, 120);
+            }
+        }
+
+        if(inimigos[10] != NULL)
+            inimigos[10]->oscilar(-150, 150);
+
+        if(inimigos[11] != NULL)
+            inimigos[11]->oscilar(-120, 120);
+
+        if(inimigos[12] != NULL)
+            inimigos[12]->oscilar(-120, 120);
+
+        if(inimigos[13] != NULL)
+            inimigos[13]->oscilar(-150, 150);
+
+        if(inimigos[14] != NULL)
+            inimigos[14]->oscilar(-170, 170);
+
+        if(inimigos[15] != NULL)
+            inimigos[15]->oscilar(-170, -30);
+
+        if(inimigos[16] != NULL)
+            inimigos[16]->oscilar(30, 170);
+
+        if(inimigos[19] != NULL)
+            inimigos[19]->oscilar(-50, 50);
+
+        if(inimigos[22] != NULL)
+            inimigos[22]->oscilar(-50, 50);
+
+        if(inimigos[23] != NULL)
+            inimigos[23]->oscilar(-50, 50);
+
+        for(int i = 24; i <= 35; i++) {
+            if(inimigos[i] != NULL) {
+                inimigos[i]->oscilar(-90, 90);
+            }
+        }
+
+        if(inimigos[36] != NULL)
+            inimigos[36]->oscilar(-50, 50);
+
+        if(inimigos[37] != NULL)
+            inimigos[37]->oscilar(-60, 60);
+
+        if(inimigos[43] != NULL)
+            inimigos[43]->oscilar(80, 140);
+
+        if(inimigos[44] != NULL)
+            inimigos[44]->oscilar(-50, 50);
+
+        if(inimigos[45] != NULL)
+            inimigos[45]->oscilar(-50, 50);
+
+        for(int i = 46; i <= 54; i++) {
+            if(inimigos[i] != NULL) {
+                inimigos[i]->oscilar(-100, 100);
+            }
+        }
+
+        if(inimigos[56] != NULL)
+            inimigos[56]->oscilar(-140, 140);
+
+        if(inimigos[57] != NULL)
+            inimigos[57]->oscilar(-140, 140);
+
+        if(inimigos[59] != NULL)
+            inimigos[59]->oscilar(-160, -110);
+
+        if(inimigos[60] != NULL)
+            inimigos[60]->oscilar(100, 160);
+
+        for(int i = 61; i <= 67; i++) {
+            if(inimigos[i] != NULL) {
+                inimigos[i]->oscilar(-160, 160);
+            }
+        }
     }
     /* Update tLast for next time, using static local variable */
     tLast = t;
