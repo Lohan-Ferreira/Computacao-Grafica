@@ -12,11 +12,12 @@
 #include "Aviao.h"
 #include "Inimigo.h"
 #include "Combustivel.h"
+#include <string>
 
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
 
-#define QUANTIDADE_INIMIGOS_INICIAL 68
+#define QUANTIDADE_INIMIGOS 68
 #define QUANTIDADE_COMBUSTIVEL 43
 
 #define ORTHO_MAXIMO 18000
@@ -204,7 +205,6 @@ public:
 };
 
 Reta **retas;
-int QUANTIDADE_INIMIGOS = 68;
 Inimigo **inimigos;
 int nretas = 0;
 void init();
@@ -1154,7 +1154,8 @@ void display()
         }
 
         for(int i = 0; i < QUANTIDADE_INIMIGOS; i++) {
-            inimigos[i]->desenhar();
+            if(inimigos[i]!=NULL)
+                inimigos[i]->desenhar();
         }
 
         for(int i = 0; i < QUANTIDADE_COMBUSTIVEL; i++) {
@@ -1233,29 +1234,34 @@ void idle()
         // Verifica colisao com inimigos
         for(int i = 0; i < QUANTIDADE_INIMIGOS ; i++)
         {
-            if(inimigos[i]->colisaoN(aviao))
+            if(inimigos[i]!=NULL)
             {
-                vidas--;
-                aviao->setComponente("x1", -80);
-                aviao->setComponente("x2", -64);
-                aviao->setComponente("x3", -72);
-                if(vidas <= 0)
+
+
+                if(inimigos[i]->colisaoN(aviao))
                 {
-                    gameState = 3;
-                    porcentagemCombustivel = 100;
-                    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
+                    vidas--;
+                    aviao->setComponente("x1", -80);
+                    aviao->setComponente("x2", -64);
+                    aviao->setComponente("x3", -72);
+                    if(vidas <= 0)
                     {
-                        delete inimigos[i];
+                        gameState = 3;
+                        porcentagemCombustivel = 100;
+                        for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
+                        {
+                            if(inimigos[i]!=NULL)
+                                delete inimigos[i];
+                        }
+                        inicializarInimigo();
+                        projetil = NULL;
+                        aviao->setComponente("x1", -8);
+                        aviao->setComponente("y1", 20);
+                        aviao->setComponente("x2", 8);
+                        aviao->setComponente("y2", 20);
+                        aviao->setComponente("x3", 0);
+                        aviao->setComponente("y3", 40);
                     }
-                    QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
-                    inicializarInimigo();
-                    projetil == NULL;
-                    aviao->setComponente("x1", -8);
-                    aviao->setComponente("y1", 20);
-                    aviao->setComponente("x2", 8);
-                    aviao->setComponente("y2", 20);
-                    aviao->setComponente("x3", 0);
-                    aviao->setComponente("y3", 40);
                 }
             }
         }
@@ -1265,16 +1271,20 @@ void idle()
         if(projetil != NULL)
             for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
             {
-                if(inimigos[i]->colisaoP(projetil->x,projetil->y))
+                if(inimigos[i]!=NULL)
                 {
-                    pontos++;
-                    delete inimigos[i];
-                    if(QUANTIDADE_INIMIGOS > 1)
-                        inimigos[i] = inimigos[QUANTIDADE_INIMIGOS-1];
-                    QUANTIDADE_INIMIGOS--;
-                    delete projetil;
-                    projetil = NULL;
-                    break;
+
+
+                    if(inimigos[i]->colisaoP(projetil->x,projetil->y))
+                    {
+                        pontos++;
+                        delete inimigos[i];
+                        inimigos[i]=NULL;
+                        delete projetil;
+                        projetil = NULL;
+                        std::cout<<"as";
+                        break;
+                    }
                 }
             }
 
@@ -1305,11 +1315,11 @@ void idle()
                     gameState = 3;
                     for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
                     {
-                        delete inimigos[i];
+                        if(inimigos[i]!=NULL)
+                            delete inimigos[i];
                     }
-                    QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
                     inicializarInimigo();
-                    projetil == NULL;
+                    projetil = NULL;
                     aviao->setComponente("x1", -8);
                     aviao->setComponente("y1", 20);
                     aviao->setComponente("x2", 8);
@@ -1453,11 +1463,11 @@ void keyboard(unsigned char key, int x, int y)
         case 'r':
             for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
             {
-                delete inimigos[i];
+                if(inimigos[i]!=NULL)
+                    delete inimigos[i];
             }
-            QUANTIDADE_INIMIGOS = QUANTIDADE_INIMIGOS_INICIAL;
             inicializarInimigo();
-            projetil == NULL;
+            projetil = NULL;
             aviao->setComponente("x1", -8);
             aviao->setComponente("y1", 20);
             aviao->setComponente("x2", 8);
@@ -1469,6 +1479,7 @@ void keyboard(unsigned char key, int x, int y)
             pontos = 0;
             orthoFirstY = 0;
             orthoLastY = 500;
+            porcentagemCombustivel = 100;
         break;
 		case 27:
 		    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
