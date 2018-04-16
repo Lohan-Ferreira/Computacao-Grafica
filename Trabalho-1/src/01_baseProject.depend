@@ -103,3 +103,38 @@
 1523828991 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/src/Aviao.cpp
 	"Aviao.h"
 
+1523896229 source:/home/hynax/Desktop/Computacao-Grafica-master/Trabalho-1/src/desenvolvimento1.cpp
+	<GL/glut.h>
+	<iostream>
+	<string.h>
+	<cstdlib>
+	<time.h>
+	"Aviao.h"
+	"Inimigo.h"
+	"Combustivel.h"
+	<string>
+
+1523840256 /home/hynax/Desktop/Computacao-Grafica-master/Trabalho-1/src/include/Aviao.h
+	<GL/glut.h>
+	<string>
+	<math.h>
+	"Combustivel.h"
+
+1523840256 /home/hynax/Desktop/Computacao-Grafica-master/Trabalho-1/src/include/Combustivel.h
+	<GL/glut.h>
+	<math.h>
+
+1523887910 /home/hynax/Desktop/Computacao-Grafica-master/Trabalho-1/src/include/Inimigo.h
+	<GL/glut.h>
+	"Aviao.h"
+
+1523840256 source:/home/hynax/Desktop/Computacao-Grafica-master/Trabalho-1/src/src/Aviao.cpp
+	"Aviao.h"
+
+1523840256 source:/home/hynax/Desktop/Computacao-Grafica-master/Trabalho-1/src/src/Combustivel.cpp
+	"Combustivel.h"
+
+1523893318 source:/home/hynax/Desktop/Computacao-Grafica-master/Trabalho-1/src/src/Inimigo.cpp
+	"Inimigo.h"
+	"math.h"
+

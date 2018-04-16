@@ -16,6 +16,7 @@
 
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
+#define QUANTIDADE_CHECKPOINTS 6
 
 #define QUANTIDADE_INIMIGOS 68
 #define QUANTIDADE_COMBUSTIVEL 43
@@ -204,9 +205,24 @@ public:
     }
 };
 
+
+
+int returny1 = aviao->getY1(),returny2 = aviao->getY2(), returny3 = aviao->getY3();
+
 Reta **retas;
 Inimigo **inimigos;
+Inimigo **checkpoints;
 int nretas = 0;
+double orthoFirstY = 0;
+double orthoLastY = 500;
+bool fullscreen = false;
+int gameState = 0; // Estados do jogo 0 tela inicial, 1 jogando, 2 pausado, 3 fim de jogo
+int vidas = 3;
+int pontos = 0;
+float porcentagemCombustivel = 100;
+Combustivel *combustiveis[QUANTIDADE_COMBUSTIVEL];
+
+
 void init();
 void inicializarInimigo();
 void inicializarCombustiveis();
@@ -217,14 +233,10 @@ void specialKeys(int key, int x, int y);
 void keyboard(unsigned char key, int x, int y);
 void idle();
 void motion(int x, int y);
-double orthoFirstY = 0;
-double orthoLastY = 500;
-bool fullscreen = false;
-int gameState = 0; // Estados do jogo 0 tela inicial, 1 jogando, 2 pausado, 3 fim de jogo
-int vidas = 3;
-int pontos = 0;
-float porcentagemCombustivel = 100;
-Combustivel *combustiveis[QUANTIDADE_COMBUSTIVEL];
+void reconfigurar();
+
+
+
 
 int main(int argc, char** argv)
 {
@@ -241,6 +253,7 @@ int main(int argc, char** argv)
     glutIdleFunc(idle);
     inimigos = new Inimigo* [QUANTIDADE_INIMIGOS];
     retas = new Reta* [400];
+    checkpoints = new Inimigo* [QUANTIDADE_CHECKPOINTS];
     inicializarInimigo();
     inicializarCombustiveis();
     //Lado Direito
@@ -650,7 +663,7 @@ void inicializarInimigo()
     inimigos[6] = new Inimigo(30, 1350);
     inimigos[7] = new Inimigo(80, 1500);
     inimigos[8] = new Inimigo(-80, 1700);
-    inimigos[9] = new Inimigo(0, 1900);
+    inimigos[9] = new Inimigo(0, 2100);
     inimigos[10] = new Inimigo(110, 2220);
     inimigos[11] = new Inimigo(100, 2350);
     inimigos[12] = new Inimigo(90, 2450);
@@ -663,8 +676,8 @@ void inicializarInimigo()
     inimigos[19] = new Inimigo(20, 3700);
     inimigos[20] = new Inimigo(-90, 4200);
     inimigos[21] = new Inimigo(90, 4750);
-    inimigos[22] = new Inimigo(-30, 5100);
-    inimigos[23] = new Inimigo(-30, 5200);
+    inimigos[22] = new Inimigo(-30, 4800);
+    inimigos[23] = new Inimigo(-30, 5450);
     inimigos[24] = new Inimigo(50, 5850);
     inimigos[25] = new Inimigo(50, 6000);
     inimigos[26] = new Inimigo(50, 6100);
@@ -678,8 +691,8 @@ void inicializarInimigo()
     inimigos[34] = new Inimigo(-10, 8000);
     inimigos[35] = new Inimigo(-10, 8500);
     inimigos[35] = new Inimigo(-10, 8700);
-    inimigos[36] = new Inimigo(0, 9100);
-    inimigos[37] = new Inimigo(-10, 9800);
+    inimigos[36] = new Inimigo(0, 8900);
+    inimigos[37] = new Inimigo(-10, 9900);
     inimigos[38] = new Inimigo(60, 10100);
     inimigos[39] = new Inimigo(-70, 10300);
     inimigos[40] = new Inimigo(-100, 10680);
@@ -710,6 +723,20 @@ void inicializarInimigo()
     inimigos[65] = new Inimigo(50, 16400);
     inimigos[66] = new Inimigo(-145, 16900);
     inimigos[67] = new Inimigo(130, 17400);
+
+
+    checkpoints[0] = new Inimigo (0,1900);
+    checkpoints[0]->isCheckPoint = true;
+    checkpoints[1] = new Inimigo (0,5150);
+    checkpoints[1]->isCheckPoint = true;
+    checkpoints[2] = new Inimigo (0,9150);
+    checkpoints[2]->isCheckPoint = true;
+    checkpoints[3] = new Inimigo (0,12900);
+    checkpoints[3]->isCheckPoint = true;
+    checkpoints[4] = new Inimigo (0,14600);
+    checkpoints[4]->isCheckPoint = true;
+    checkpoints[5] = new Inimigo (0,17800);
+    checkpoints[5]->isCheckPoint = true;
 }
 
 void inicializarCombustiveis()
@@ -1139,9 +1166,6 @@ void display()
 
         aviao->desenhar();
 
-        if(porcentagemCombustivel <= 0) {
-            gameState = 3;
-        }
 
         //Projetil
         if(projetil != NULL)
@@ -1158,6 +1182,11 @@ void display()
                 inimigos[i]->desenhar();
         }
 
+        for(int i = 0; i < QUANTIDADE_CHECKPOINTS; i++) {
+            if(checkpoints[i]!=NULL)
+                checkpoints[i]->desenhar();
+        }
+
         for(int i = 0; i < QUANTIDADE_COMBUSTIVEL; i++) {
             combustiveis[i]->desenhar();
              if(aviao->colideComCombustivel(combustiveis[i])) {
@@ -1168,6 +1197,7 @@ void display()
         glColor3f(0.0,0.0,0.0);
         imprimirTexto(std::to_string(pontos).c_str(), 150, orthoLastY - 30);
         imprimirTexto(std::to_string(porcentagemCombustivel).c_str(), -180, orthoLastY - 30);
+        imprimirTexto(std::to_string(vidas).c_str(), 0, orthoLastY - 30);
     }
 
     if (gameState == 2)
@@ -1182,6 +1212,12 @@ void display()
     {
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0, 0, 0, 0);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+
+
         glColor3f(1.0, 0.0, 0.0);
         imprimirTexto("FIM DE JOGO", -20, (orthoFirstY + orthoLastY)/2);
     }
@@ -1229,45 +1265,55 @@ void idle()
      if(frameTime <= desiredFrameTime)
         return;
 
+
+
+
+
+
     if(gameState == 1)
     {
-        // Verifica colisao com inimigos
+
+        porcentagemCombustivel -= 0.05;
+
+         if(porcentagemCombustivel <= 0) {
+
+            reconfigurar();
+        }
+
+        // Verifica colisao AVIÃO-INIMIGOS
         for(int i = 0; i < QUANTIDADE_INIMIGOS ; i++)
         {
             if(inimigos[i]!=NULL)
             {
 
-
                 if(inimigos[i]->colisaoN(aviao))
                 {
-                    vidas--;
-                    aviao->setComponente("x1", -80);
-                    aviao->setComponente("x2", -64);
-                    aviao->setComponente("x3", -72);
-                    if(vidas <= 0)
-                    {
-                        gameState = 3;
-                        porcentagemCombustivel = 100;
-                        for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
-                        {
-                            if(inimigos[i]!=NULL)
-                                delete inimigos[i];
-                        }
-                        inicializarInimigo();
-                        projetil = NULL;
-                        aviao->setComponente("x1", -8);
-                        aviao->setComponente("y1", 20);
-                        aviao->setComponente("x2", 8);
-                        aviao->setComponente("y2", 20);
-                        aviao->setComponente("x3", 0);
-                        aviao->setComponente("y3", 40);
-                    }
+                    reconfigurar();
                 }
             }
         }
 
-        porcentagemCombustivel -= 0.1;
 
+        // Verifica colisao AVIÃO-CHECKPOINTS
+        for(int i = 0; i < QUANTIDADE_CHECKPOINTS ; i++)
+        {
+            if(checkpoints[i]!=NULL)
+            {
+
+
+                if(checkpoints[i]->colisaoN(aviao))
+                {
+                    reconfigurar();
+                }
+            }
+        }
+
+
+
+
+
+
+        //Colisão PROJETIL - INIMIGOS
         if(projetil != NULL)
             for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
             {
@@ -1282,12 +1328,12 @@ void idle()
                         inimigos[i]=NULL;
                         delete projetil;
                         projetil = NULL;
-                        std::cout<<"as";
                         break;
                     }
                 }
             }
 
+        //Colisão Projetil - Mapa
         if(projetil != NULL)
             for(int i = 0; i < nretas; i++)
             {
@@ -1299,34 +1345,33 @@ void idle()
                 }
             }
 
-        //Verifica colisão com mapa
+        //Colisão Projetil - Checkpoints
+        if(projetil != NULL)
+            for(int i= 0; i < QUANTIDADE_CHECKPOINTS; i++)
+                {
+                    if(checkpoints[i]!=NULL)
+                    if (checkpoints[i]->colisaoP(projetil->x,projetil->y))
+                    {
+                        returny1 = returny2 = checkpoints[i]->getY();
+                        returny3 = returny1 + 20;
+
+                        delete checkpoints[i];
+                        checkpoints[i] = NULL;
+                        delete projetil;
+                        projetil = NULL;
+                        break;
+
+
+                    }
+                }
+
+        //Verifica colisão AVIÃO - MAPA
         for(int i = 0; i < nretas; i++)
         {
             if(retas[i]->colisao() == 1)
             {
 
-                vidas--;
-                aviao->setComponente("x1", -80);
-                aviao->setComponente("x2", -64);
-                aviao->setComponente("x3", -72);
-
-                if(vidas <= 0)
-                {
-                    gameState = 3;
-                    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
-                    {
-                        if(inimigos[i]!=NULL)
-                            delete inimigos[i];
-                    }
-                    inicializarInimigo();
-                    projetil = NULL;
-                    aviao->setComponente("x1", -8);
-                    aviao->setComponente("y1", 20);
-                    aviao->setComponente("x2", 8);
-                    aviao->setComponente("y2", 20);
-                    aviao->setComponente("x3", 0);
-                    aviao->setComponente("y3", 40);
-                }
+                reconfigurar();
             }
         }
 
@@ -1341,6 +1386,13 @@ void idle()
             aviao->setComponente("y2", aviao->getY2() + 2);
             aviao->setComponente("y3", aviao->getY3() + 2);
         }
+
+        else
+        {
+            gameState=3;
+            reconfigurar();
+        }
+
 
         if(projetil != NULL)
         {
@@ -1447,6 +1499,7 @@ void keyboard(unsigned char key, int x, int y)
                 pontos = 0;
                 orthoFirstY = 0;
                 orthoLastY = 500;
+                porcentagemCombustivel = 100;
             }
         break;
         case 'p':
@@ -1474,6 +1527,9 @@ void keyboard(unsigned char key, int x, int y)
             aviao->setComponente("y2", 20);
             aviao->setComponente("x3", 0);
             aviao->setComponente("y3", 40);
+            returny1 = aviao->getY1();
+            returny2 = aviao->getY2();
+            returny3 = aviao->getY3();
             gameState = 0;
             vidas = 3;
             pontos = 0;
@@ -1488,4 +1544,41 @@ void keyboard(unsigned char key, int x, int y)
             exit(0);
         break;
     }
+}
+
+
+
+void reconfigurar()
+{
+                    vidas--;
+                    aviao->setComponente("x1", -8);
+                    aviao->setComponente("y1", returny1);
+                    aviao->setComponente("x2", 8);
+                    aviao->setComponente("y2", returny2);
+                    aviao->setComponente("x3", 0);
+                    aviao->setComponente("y3", returny3);
+                    orthoFirstY = returny1 - 20;
+                    orthoLastY  = returny1 + 480;
+
+                    if(vidas <= 0)
+                    {
+                        gameState = 3;
+                        porcentagemCombustivel = 100;
+                        for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
+                        {
+                            if(inimigos[i]!=NULL)
+                                delete inimigos[i];
+                        }
+                        inicializarInimigo();
+                        projetil = NULL;
+                        aviao->setComponente("x1", -8);
+                        aviao->setComponente("y1", 20);
+                        aviao->setComponente("x2", 8);
+                        aviao->setComponente("y2", 20);
+                        aviao->setComponente("x3", 0);
+                        aviao->setComponente("y3", 40);
+                        returny1 = aviao->getY1();
+                        returny2 = aviao->getY2();
+                        returny3 = aviao->getY3();
+                    }
 }

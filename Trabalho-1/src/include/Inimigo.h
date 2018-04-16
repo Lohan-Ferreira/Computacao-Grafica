@@ -15,10 +15,13 @@ class Inimigo
         void oscilar(int esquerda, int direita);
         bool colisaoN(Aviao *aviao);
         bool colisaoP(double xp, double yp);
+        bool isCheckPoint;
+        int getY(){return y;}
     private:
         int x;
         int y;
         int direcaoMovimento;
+
 
 };
 
