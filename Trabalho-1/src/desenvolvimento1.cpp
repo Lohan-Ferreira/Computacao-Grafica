@@ -13,6 +13,7 @@
 #include "Inimigo.h"
 #include "Combustivel.h"
 #include <string>
+#include <fstream>
 
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
@@ -208,7 +209,7 @@ public:
 
 
 int returny1 = aviao->getY1(),returny2 = aviao->getY2(), returny3 = aviao->getY3();
-
+int placar[11];
 Reta **retas;
 Inimigo **inimigos;
 Inimigo **checkpoints;
@@ -216,11 +217,16 @@ int nretas = 0;
 double orthoFirstY = 0;
 double orthoLastY = 500;
 bool fullscreen = false;
-int gameState = 0; // Estados do jogo 0 tela inicial, 1 jogando, 2 pausado, 3 fim de jogo
+int gameState = 0; // Estados do jogo 0 tela inicial, 1 jogando, 2 pausado, 3 fim de jogo, 4 placar
 int vidas = 3;
 int pontos = 0;
 float porcentagemCombustivel = 100;
 Combustivel *combustiveis[QUANTIDADE_COMBUSTIVEL];
+std::fstream file;
+int oldState;
+int velocidade;
+
+
 
 
 void init();
@@ -234,6 +240,7 @@ void keyboard(unsigned char key, int x, int y);
 void idle();
 void motion(int x, int y);
 void reconfigurar();
+void ordena(int v[], int tam);
 
 
 
@@ -256,6 +263,13 @@ int main(int argc, char** argv)
     checkpoints = new Inimigo* [QUANTIDADE_CHECKPOINTS];
     inicializarInimigo();
     inicializarCombustiveis();
+
+
+    file.open("pontos.txt" , std::ios::in | std::ios::out);
+    for(int i=0; i<10; i++)
+        file>>placar[i];
+    file.clear();
+    file.seekg(0, std::ios::beg);
     //Lado Direito
     retas[nretas] = new Reta(50,0,50,250,1,false);
     nretas++;
@@ -649,6 +663,16 @@ void specialKeys(int key, int x, int y)
         case GLUT_KEY_RIGHT:
             aviao->moverDireita();
         break;
+
+        case GLUT_KEY_UP:
+            velocidade = 2;
+        break;
+
+        case GLUT_KEY_DOWN:
+            velocidade = -1.5;
+        break;
+
+
     }
 }
 
@@ -1189,7 +1213,7 @@ void display()
 
         for(int i = 0; i < QUANTIDADE_COMBUSTIVEL; i++) {
             combustiveis[i]->desenhar();
-             if(aviao->colideComCombustivel(combustiveis[i])) {
+             if(aviao->colideComCombustivel(combustiveis[i]) && porcentagemCombustivel<100) {
                porcentagemCombustivel += 1;
              }
         }
@@ -1210,6 +1234,7 @@ void display()
 
     if (gameState == 3)
     {
+
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0, 0, 0, 0);
         glMatrixMode(GL_PROJECTION);
@@ -1220,6 +1245,21 @@ void display()
 
         glColor3f(1.0, 0.0, 0.0);
         imprimirTexto("FIM DE JOGO", -20, (orthoFirstY + orthoLastY)/2);
+    }
+
+    if (gameState == 4)
+    {
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0, 0, 0, 0);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+
+        glColor3f(1.0, 1.0, 0.0);
+        imprimirTexto("PLACAR", -20, orthoLastY-20);
+        for(int i=0; i<10; i++)
+            imprimirTexto(std::to_string(placar[i]).c_str(), 0, orthoLastY - 20*(i+2));
+
     }
 
     glutSwapBuffers();
@@ -1380,11 +1420,12 @@ void idle()
 
         if(orthoLastY < ORTHO_MAXIMO)
         {
-            orthoLastY += 2;
-            orthoFirstY += 2;
-            aviao->setComponente("y1", aviao->getY1() + 2);
-            aviao->setComponente("y2", aviao->getY2() + 2);
-            aviao->setComponente("y3", aviao->getY3() + 2);
+            orthoLastY += 2 + velocidade;
+            orthoFirstY += 2 + velocidade;
+            aviao->setComponente("y1", aviao->getY1() + 2 + velocidade);
+            aviao->setComponente("y2", aviao->getY2() + 2 + velocidade);
+            aviao->setComponente("y3", aviao->getY3() + 2 + velocidade);
+            velocidade = 0;
         }
 
         else
@@ -1518,7 +1559,7 @@ void keyboard(unsigned char key, int x, int y)
         case ' ':
             if(projetil == NULL && gameState == 1)
                 projetil = new Projetil();
-            if(gameState == 0 || gameState == 3)
+            if(gameState == 0 || gameState == 3 || gameState == 4)
             {
                 gameState = 1;
                 vidas = 3;
@@ -1563,10 +1604,26 @@ void keyboard(unsigned char key, int x, int y)
             orthoLastY = 500;
             porcentagemCombustivel = 100;
         break;
+
+        case '2':
+             oldState = gameState;
+            if(gameState==0 || gameState==3)
+            {
+                gameState=4;
+            }
+           else if(gameState==4)
+            {
+
+                gameState=oldState;
+
+            }
+        break;
+
 		case 27:
 		    for(int i = 0; i < QUANTIDADE_INIMIGOS; i++)
                 delete inimigos[i];
             delete [] inimigos;
+            file.close();
             exit(0);
         break;
     }
@@ -1606,5 +1663,31 @@ void reconfigurar()
                         returny1 = aviao->getY1();
                         returny2 = aviao->getY2();
                         returny3 = aviao->getY3();
+
+                        placar[10] = pontos;
+                        ordena(placar,11);
+                        for(int i=0; i<10; i++)
+                        {
+                            file<<placar[i]<<'\n';
+                        }
+
+                        file.clear();
+                        file.seekg(0, std::ios::beg);
                     }
+}
+
+
+void ordena (int v[], int tam)
+{
+    int aux;
+    for(int i=0; i<tam; i++)
+        for(int j=0; j<tam; j++)
+            if(v[j] < v[i])
+                {
+                    aux = v[j];
+                    v[j] = v[i];
+                    v[i] = aux;
+                }
+
+
 }
