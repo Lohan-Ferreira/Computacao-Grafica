@@ -23,7 +23,6 @@
 
 using namespace std;
 
-
 fstream file;
 float current = 0;
 float angle = 0;
@@ -35,6 +34,7 @@ int height = 600;
 float rotationX = 0.0, rotationY = 0.0;
 int   last_x, last_y;
 Object* cow;
+float z = 5;
 
 void init(void)
 {
@@ -81,7 +81,7 @@ void display(void)
 
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity ();
-   gluLookAt (0.0, 0.0, 5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+   gluLookAt (0.0, 0.0, z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
    // Movimenta a camera em torno do objeto
    // Luz fica fixa na posicao (0, 0, 5) inicialmente
@@ -91,9 +91,9 @@ void display(void)
    // Define o material a ser utilizado pelo objeto abaixo
   setMaterial();
   glColor3f(1,0,0);
-   float g;
-   int i;
-    cow->desenha(false);
+  float g;
+  int i;
+  cow->desenha(true);
 
 
    glutSwapBuffers();
@@ -129,6 +129,17 @@ void idle()
    glutPostRedisplay();
 }
 
+void mouse(int button, int state, int x, int y)
+{
+    float TAXA_VARIACAO_ZOOM = 0.25;
+    if(button == 4 && z <= 25) {
+        z += TAXA_VARIACAO_ZOOM;
+    }
+    if(button == 3 && z >= 2.5) {
+        z -= TAXA_VARIACAO_ZOOM;
+    }
+}
+
 int main(int argc, char** argv)
 {
    glutInit(&argc, argv);
@@ -141,9 +152,10 @@ int main(int argc, char** argv)
    glutReshapeFunc(reshape);
    glutMotionFunc( motion );
    glutIdleFunc(idle);
+   glutMouseFunc(mouse);
    glutKeyboardFunc(keyboard);
     cow = new Object();
-    cow->lerArq("snowman.ply");
+    cow->lerArq("bunny.ply");
 
    glutMainLoop();
    return 0;

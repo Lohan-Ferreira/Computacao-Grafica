@@ -53,7 +53,7 @@
 	"Esfera.h"
 	"Plano.h"
 
-1523901964 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
+1525273360 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/desenvolvimento1.cpp
 	<GL/glut.h>
 	<iostream>
 	<string.h>
@@ -63,6 +63,7 @@
 	"Inimigo.h"
 	"Combustivel.h"
 	<string>
+	<fstream>
 
 1522531163 /home/diego/Área de Trabalho/diego/Computacao-Grafica/Trabalho-1/src/extras.h
 

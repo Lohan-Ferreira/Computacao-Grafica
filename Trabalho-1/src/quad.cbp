@@ -13,6 +13,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -33,8 +34,12 @@
 			<Add library="png" />
 			<Add library="z" />
 		</Linker>
-		<Unit filename="animationBase.cpp" />
-		<Unit filename="extras.h" />
+		<Unit filename="../../D2N/Face.cpp" />
+		<Unit filename="../../D2N/Face.h" />
+		<Unit filename="../../D2N/Object.cpp" />
+		<Unit filename="../../D2N/Object.h" />
+		<Unit filename="../../D2N/Vertex.h" />
+		<Unit filename="../../D2N/lighting.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
