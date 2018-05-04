@@ -16,6 +16,9 @@
 #include <iostream>
 #include <cstring>
 #include "Object.h"
+#include <stdlib.h>
+#include <cstdio>
+
 
 // Globals
 #define NUM 180
@@ -24,17 +27,19 @@
 using namespace std;
 
 fstream file;
-float current = 0;
-float angle = 0;
-float raio = 1.5;
-float dir = 1;
+
+
 bool idleOn = true;
 int width  = 800;
 int height = 600;
 float rotationX = 0.0, rotationY = 0.0;
 int   last_x, last_y;
-Object* cow;
+Object *cow,*bunny,*budda,*dragon,*snowman;
+int option = 1;
+bool mode = true;
+bool fullscreen = false;
 float z = 5;
+char *c = new char[50];
 
 void init(void)
 {
@@ -56,8 +61,39 @@ void init(void)
    glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
    glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);
 }
-
 void setMaterial(void)
+{
+   // Material do objeto (neste caso, ruby). Parametros em RGBA
+   GLfloat objeto_ambient[]   = { 0.05f,0.05f,0.0f,1.0f };
+   GLfloat objeto_difusa[]    = {0.5f,0.5f,0.4f,1.0f};
+   GLfloat objeto_especular[] = {0.7f,0.7f,0.04f,1.0f };
+   GLfloat objeto_brilho[]    = { 10.0f };
+
+   // Define os parametros da superficie a ser iluminada
+   glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho );
+}
+
+void setMaterial2(void)
+{
+   // Material do objeto (neste caso, ruby). Parametros em RGBA
+   GLfloat objeto_ambient[]   = { 0.2125f, 0.1275f, 0.054f, 1.0f };
+   GLfloat objeto_difusa[]    = { 0.714f, 0.4284f, 0.18144f, 1.0f };
+   GLfloat objeto_especular[] = { 0.393548f, 0.271906f, 0.166721f, 1.0f };
+   GLfloat objeto_brilho[]    = { 25.6f };
+
+   // Define os parametros da superficie a ser iluminada
+   glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho );
+}
+
+
+
+void setMaterial3(void)
 {
    // Material do objeto (neste caso, ruby). Parametros em RGBA
    GLfloat objeto_ambient[]   = { 0.32, 0.22, 0.02, 1.0 };
@@ -71,6 +107,41 @@ void setMaterial(void)
    glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
    glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho );
 }
+
+
+void setMaterial4(void)
+{
+   // Material do objeto (neste caso, ruby). Parametros em RGBA
+   GLfloat objeto_ambient[]   = { 0.0215f, 0.1745f, 0.0215f, 0.55f };
+   GLfloat objeto_difusa[]    = {0.07568f, 0.61424f, 0.07568f, 0.55f };
+   GLfloat objeto_especular[] = {0.633f, 0.727811f, 0.633f, 0.55f };
+   GLfloat objeto_brilho[]    = { 76.8f };
+
+   // Define os parametros da superficie a ser iluminada
+   glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho );
+}
+
+
+
+void setMaterial5(void)
+{
+   // Material do objeto (neste caso, ruby). Parametros em RGBA
+   GLfloat objeto_ambient[]   = { 0.05f,0.05f,0.05f,1.0f };
+   GLfloat objeto_difusa[]    = { 0.5f,0.5f,0.5f,1.0f};
+   GLfloat objeto_especular[] = { 0.7f,0.7f,0.7f,1.0f};
+   GLfloat objeto_brilho[]    = { 5.0f };
+
+   // Define os parametros da superficie a ser iluminada
+   glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho );
+}
+
+
 
 void display(void)
 {
@@ -89,11 +160,45 @@ void display(void)
    glRotatef( rotationX, 0.0, 1.0, 0.0 );
 
    // Define o material a ser utilizado pelo objeto abaixo
-  setMaterial();
+
   glColor3f(1,0,0);
-  float g;
-  int i;
-  cow->desenha(true);
+
+    if(option == 1)
+    {
+        snprintf(c,50,"Numero de triangulos: %d",cow->n_max);
+        glutSetWindowTitle(c);
+        setMaterial();
+        cow->desenha(mode);
+    }
+    if(option == 2)
+    {
+        snprintf(c,50,"Numero de triangulos: %d",bunny->n_max);
+        glutSetWindowTitle(c);
+        setMaterial2();
+        bunny->desenha(mode);
+    }
+    if(option == 3)
+    {
+        snprintf(c,50,"Numero de triangulos: %d",budda->n_max);
+        glutSetWindowTitle(c);
+        setMaterial3();
+        budda->desenha(mode);
+    }
+    if(option == 4)
+    {
+        snprintf(c,50,"Numero de triangulos: %d",dragon->n_max);
+        glutSetWindowTitle(c);
+        setMaterial4();
+        dragon->desenha(mode);
+    }
+    if(option == 5)
+    {
+        snprintf(c,50,"Numero de triangulos: %d",snowman->n_max);
+        glutSetWindowTitle(c);
+        setMaterial5();
+        snowman->desenha(mode);
+    }
+
 
 
    glutSwapBuffers();
@@ -109,6 +214,32 @@ void reshape (int w, int h)
 void keyboard (unsigned char key, int x, int y)
 {
    if(tolower(key) == 27) exit(0);
+
+   switch(key)
+   {
+       case '1': option = 1; break;
+       case '2': option = 2; break;
+       case '3': option = 3; break;
+       case '4': option = 4; break;
+       case '5': option = 5; break;
+       case 'w': mode = false; break;
+       case 's': mode = true; break;
+       case 'm':
+        {
+            if(!fullscreen)
+            {
+                fullscreen=true;
+                glutFullScreen();
+            }
+
+            else
+            {
+                fullscreen = false;
+                glutReshapeWindow(800, 600);
+            }
+            break;
+        }
+   }
 }
 
 // Motion callback
@@ -144,9 +275,9 @@ int main(int argc, char** argv)
 {
    glutInit(&argc, argv);
    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-   glutInitWindowSize (width, height);
+   glutInitWindowSize (800, 600);
    glutInitWindowPosition (100, 100);
-   glutCreateWindow("Simple Ilumination");
+   glutCreateWindow("");
    init ();
    glutDisplayFunc(display);
    glutReshapeFunc(reshape);
@@ -155,7 +286,26 @@ int main(int argc, char** argv)
    glutMouseFunc(mouse);
    glutKeyboardFunc(keyboard);
     cow = new Object();
-    cow->lerArq("bunny.ply");
+    cow->lerArq("cow.ply");
+    bunny = new Object();
+    bunny->lerArq("bunny.ply");
+    budda = new Object();
+    budda->lerArq("budda.ply");
+    dragon = new Object();
+    dragon->lerArq("dragon.ply");
+    snowman = new Object();
+    snowman->lerArq("snowman.ply");
+
+    cout<<"Controles:"<<endl;
+    cout<<"1 : Vaca"<<endl;
+    cout<<"2 : Coelho"<<endl;
+    cout<<"3 : Buda"<<endl;
+    cout<<"4 : Dragon"<<endl;
+    cout<<"5 : Boneco de Neve"<<endl;
+    cout<<"w : Visualizar em wireframe"<<endl;
+    cout<<"s : Visualizar em superficie"<<endl;
+    cout<<"Mouse Scroll : Zoom IN/OUT"<<endl;
+    cout<<"m : FullScreen ON/OFF";
 
    glutMainLoop();
    return 0;
