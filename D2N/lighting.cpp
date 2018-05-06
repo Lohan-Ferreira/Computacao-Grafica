@@ -1,12 +1,3 @@
-/*
-  Name:        iluminacao_simples.cpp
-  Copyright:   Version 0.1
-  Author:      Rodrigo Luis de Souza da Silva
-  Last Update:	29/11/2013
-  Date:        16/09/2004
-  Description: Codigo simples com apenas uma fonte de luz.
-*/
-
 #include <GL/glut.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,15 +10,9 @@
 #include <stdlib.h>
 #include <cstdio>
 
-
-// Globals
-#define NUM 180
-#define PI 3.1415927
-
 using namespace std;
 
 fstream file;
-
 
 bool idleOn = true;
 int width  = 800;
@@ -285,16 +270,11 @@ int main(int argc, char** argv)
    glutIdleFunc(idle);
    glutMouseFunc(mouse);
    glutKeyboardFunc(keyboard);
-    cow = new Object();
-    cow->lerArq("cow.ply");
-    bunny = new Object();
-    bunny->lerArq("bunny.ply");
-    budda = new Object();
-    budda->lerArq("budda.ply");
-    dragon = new Object();
-    dragon->lerArq("dragon.ply");
-    snowman = new Object();
-    snowman->lerArq("snowman.ply");
+    cow = new Object("ply/cow.ply");
+    bunny = new Object("ply/bunny.ply");
+    budda = new Object("ply/budda.ply");
+    dragon = new Object("ply/dragon.ply");
+    snowman =new Object("ply/snowman.ply");
 
     cout<<"Controles:"<<endl;
     cout<<"1 : Vaca"<<endl;

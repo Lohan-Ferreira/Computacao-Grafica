@@ -17,17 +17,17 @@
 
 1471984452 /home/diego/Área de Trabalho/diego/CG/src/extras.h
 
-1525286346 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Face.cpp
+1525566150 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Face.cpp
 	"Face.h"
 	<iostream>
 	<math.h>
 
-1525286346 /home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Face.h
+1525566150 /home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Face.h
 	"Vertex.h"
 
-1525286346 /home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Vertex.h
+1525566150 /home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Vertex.h
 
-1525286509 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/lighting.cpp
+1525566150 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/lighting.cpp
 	<GL/glut.h>
 	<stdio.h>
 	<stdlib.h>
@@ -37,14 +37,16 @@
 	<iostream>
 	<cstring>
 	"Object.h"
+	<stdlib.h>
+	<cstdio>
 
-1525286346 /home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Object.h
+1525566150 /home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Object.h
 	"Face.h"
 	"Vertex.h"
 	<fstream>
 	<GL/glut.h>
 
-1525286346 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Object.cpp
+1525566150 source:/home/diego/Área de Trabalho/diego/Computacao-Grafica/D2N/Object.cpp
 	"Object.h"
 	<GL/glut.h>
 	<fstream>

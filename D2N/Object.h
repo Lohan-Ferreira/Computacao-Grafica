@@ -10,13 +10,13 @@
 class Object
 {
     public:
-        Object();
+        Object(char* fileName);
         ~Object();
 
         Face **faces;
         void addFace(Face *f);
         void desenha(bool kind);
-        void lerArq(char* name);
+        void lerArq(char* fileName);
         int n_atual;
         int n_max;
 

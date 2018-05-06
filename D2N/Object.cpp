@@ -5,10 +5,11 @@
 #include <iostream>
 #include <cmath>
 
-Object::Object()
+Object::Object(char* fileName)
 {
     n_max = 0;
     n_atual = 0;
+    this->lerArq(fileName);
 
 }
 
@@ -43,13 +44,13 @@ void Object::desenha(bool kind)
 }
 
 
-void Object::lerArq(char* name)
+void Object::lerArq(char* fileName)
 {
     int n_vert;
     int n_faces;
 
     std::fstream file;
-    file.open(name, std::ios::in | std::ios::out);
+    file.open(fileName, std::ios::in | std::ios::out);
     file.clear();
     file.seekg(0, std::ios::beg);
 
