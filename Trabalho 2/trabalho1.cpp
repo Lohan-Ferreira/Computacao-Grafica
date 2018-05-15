@@ -228,6 +228,7 @@ int oldState;
 int velocidade;
 float translatey = 0.0;
 float translatex= 0.0;
+Object *enemy;
 
 
 
@@ -263,6 +264,38 @@ void setMaterial(void)
 }
 
 
+void setMaterial2(void)
+{
+   // Material do objeto (neste caso, ruby). Parametros em RGBA
+GLfloat mat_ambient[] ={0.25f, 0.25f, 0.25f, 1.0f  };
+GLfloat mat_diffuse[] ={0.4f, 0.4f, 0.4f, 1.0f };
+GLfloat mat_specular[] ={0.774597f, 0.774597f, 0.774597f, 1.0f };
+GLfloat shine[] = {76.8f};
+
+   // Define os parametros da superficie a ser iluminada
+   glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+}
+
+void setMaterial3(void)
+{
+   // Material do objeto (neste caso, ruby). Parametros em RGBA
+GLfloat mat_ambient[] ={ 0.0215f, 0.1745f, 0.0215f, 0.55f };
+GLfloat mat_diffuse[]= {0.07568f, 0.61424f, 0.07568f, 0.55f };
+GLfloat mat_specular[] ={0.633f, 0.727811f, 0.633f, 0.55f };
+GLfloat shine[] = {76.8f};
+
+   // Define os parametros da superficie a ser iluminada
+   glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+}
+
+
+
 int main(int argc, char** argv)
 {
 
@@ -285,6 +318,7 @@ int main(int argc, char** argv)
     checkpoints = new Inimigo* [QUANTIDADE_CHECKPOINTS];
     inicializarInimigo();
     inicializarCombustiveis();
+    enemy = new Object("chopper.ply");
 
 
     file.open("pontos.txt" , std::ios::in | std::ios::out);
@@ -886,6 +920,7 @@ void display()
 
         glColor3f(0.1, 1.0, 0.4);
 
+        setMaterial3();
         glBegin(GL_TRIANGLE_STRIP);
             glVertex3f(50,  0.0,   0);
             glVertex3f(800, 0.0,   0);
@@ -1231,14 +1266,15 @@ void display()
             glPopMatrix();
         }
 
+        setMaterial2();
         for(int i = 0; i < QUANTIDADE_INIMIGOS; i++) {
             if(inimigos[i]!=NULL)
-                inimigos[i]->desenhar();
+                inimigos[i]->desenhar(enemy, orthoFirstY,orthoLastY+300);
         }
 
         for(int i = 0; i < QUANTIDADE_CHECKPOINTS; i++) {
             if(checkpoints[i]!=NULL)
-                checkpoints[i]->desenhar();
+                checkpoints[i]->desenhar(enemy,orthoFirstY,orthoLastY+300);
         }
 
         for(int i = 0; i < QUANTIDADE_COMBUSTIVEL; i++) {
@@ -1698,6 +1734,8 @@ void reconfigurar()
                         returny1 = aviao->getY1();
                         returny2 = aviao->getY2();
                         returny3 = aviao->getY3();
+                        translatex = 0.0;
+                        translatey = aviao->getY3();
 
                         placar[10] = pontos;
                         ordena(placar,11);

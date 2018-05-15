@@ -14,24 +14,29 @@ Inimigo::~Inimigo()
     //dtor
 }
 
-void Inimigo::desenhar()
+void Inimigo::desenhar(Object *o, double y1, double y2)
 {
     if(isCheckPoint)
     {
+        if(!(this->y >= y1 && this->y <= y2)) return;
         glColor3f(1.0, 0.7, 0.3);
         glPushMatrix();
             glTranslatef(this->x, this->y, 9);
-            glScalef(5.0,5.0,1.0);
-            glutSolidCube(18);
+            glutSolidCube(50);
         glPopMatrix();
     }
 
     else
     {
+        if(!(this->y >= y1 && this->y <= y2)) return;
         glColor3f(1.0, 0.0, 0.0);
         glPushMatrix();
             glTranslatef(this->x, this->y, 9);
-            glutSolidCube(18);
+            glScalef(20.0,20.0,20.0);
+
+            if(this->direcaoMovimento == 1) glRotatef(90,0,0,1);
+            else glRotatef(-90,0,0,1);
+            o->desenha(true);
         glPopMatrix();
     }
 

@@ -11,7 +11,7 @@ class Inimigo
     public:
         Inimigo(int x, int y);
         ~Inimigo();
-        void desenhar();
+        void desenhar(Object *o, double y1, double y2);
         void oscilar(int esquerda, int direita);
         bool colisaoN(Aviao *aviao);
         bool colisaoP(double xp, double yp);
