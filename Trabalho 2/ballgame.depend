@@ -1,0 +1,121 @@
+# depslib dependency file v1.0
+1524000536 source:c:\users\hynax\desktop\trabalho 1\aviao.cpp
+	"Aviao.h"
+
+1524000608 c:\users\hynax\desktop\trabalho 1\aviao.h
+	<GL/glut.h>
+	<string>
+	<math.h>
+	"Combustivel.h"
+
+1368290960 c:\users\hynax\desktop\trabalho 1\windows\include\gl\glut.h
+	"freeglut_std.h"
+
+1368290960 c:\users\hynax\desktop\trabalho 1\windows\include\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1524000610 c:\users\hynax\desktop\trabalho 1\combustivel.h
+	<GL/glut.h>
+	<math.h>
+
+1524000536 source:c:\users\hynax\desktop\trabalho 1\combustivel.cpp
+	"Combustivel.h"
+
+1524000536 source:c:\users\hynax\desktop\trabalho 1\inimigo.cpp
+	"Inimigo.h"
+	"math.h"
+
+1524000608 c:\users\hynax\desktop\trabalho 1\inimigo.h
+	<GL/glut.h>
+	"Aviao.h"
+
+1524000676 source:c:\users\hynax\desktop\trabalho 1\trabalho1.cpp
+	<GL/glut.h>
+	<iostream>
+	<string.h>
+	<cstdlib>
+	<time.h>
+	"Aviao.h"
+	"Inimigo.h"
+	"Combustivel.h"
+	<string>
+	<fstream>
+
+1526063976 source:c:\users\hynax\desktop\trabalho 2\aviao.cpp
+	"Aviao.h"
+
+1526061513 c:\users\hynax\desktop\trabalho 2\aviao.h
+	<GL/glut.h>
+	<string>
+	<math.h>
+	"Combustivel.h"
+	"Object.h"
+
+1368290960 c:\users\hynax\desktop\trabalho 2\windows\include\gl\glut.h
+	"freeglut_std.h"
+
+1368290960 c:\users\hynax\desktop\trabalho 2\windows\include\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1524000610 c:\users\hynax\desktop\trabalho 2\combustivel.h
+	<GL/glut.h>
+	<math.h>
+
+1524000536 source:c:\users\hynax\desktop\trabalho 2\combustivel.cpp
+	"Combustivel.h"
+
+1526071091 source:c:\users\hynax\desktop\trabalho 2\inimigo.cpp
+	"Inimigo.h"
+	"math.h"
+
+1524000608 c:\users\hynax\desktop\trabalho 2\inimigo.h
+	<GL/glut.h>
+	"Aviao.h"
+
+1526064167 source:c:\users\hynax\desktop\trabalho 2\trabalho1.cpp
+	<GL/glut.h>
+	<iostream>
+	<string.h>
+	<cstdlib>
+	<time.h>
+	"Aviao.h"
+	"Inimigo.h"
+	"Combustivel.h"
+	<string>
+	<fstream>
+	"Object.h"
+
+1525566627 c:\users\hynax\desktop\trabalho 2\object.h
+	"Face.h"
+	"Vertex.h"
+	<fstream>
+	<GL/glut.h>
+
+1525566627 c:\users\hynax\desktop\trabalho 2\face.h
+	"Vertex.h"
+
+1525566627 c:\users\hynax\desktop\trabalho 2\vertex.h
+
+1525566627 source:c:\users\hynax\desktop\trabalho 2\face.cpp
+	"Face.h"
+	<iostream>
+	<math.h>
+
+1526063863 source:c:\users\hynax\desktop\trabalho 2\object.cpp
+	"Object.h"
+	<GL/glut.h>
+	<fstream>
+	<cstring>
+	<iostream>
+	<cmath>
+
