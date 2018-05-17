@@ -17,7 +17,8 @@ void Combustivel::desenhar()
 {
     glColor3f(0.8, 0.25, 0.75);
     glPushMatrix();
-        glTranslatef(this->x, this->y, this->z);
+        glScalef(1,1,0.1);
+        glTranslatef(this->x, this->y, this->z-50);
         glutSolidCube(this->tamanho);
     glPopMatrix();
 }

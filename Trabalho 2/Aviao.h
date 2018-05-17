@@ -9,11 +9,11 @@
 
 class Aviao
 {
-    private:
+
+    public:
         int x1, x2, x3;
         int y1, y2, y3;
         Object *o;
-    public:
         Aviao();
         ~Aviao();
         void desenhar();

@@ -57,16 +57,16 @@ int Aviao::getY3()
 
 void Aviao::moverEsquerda()
 {
-    this->x1 -= 5;
-    this->x2 -= 5;
-    this->x3 -= 5;
+    this->x1 -= 2;
+    this->x2 -= 2;
+    this->x3 -= 2;
 }
 
 void Aviao::moverDireita()
 {
-    this->x1 += 5;
-    this->x2 += 5;
-    this->x3 += 5;
+    this->x1 += 2;
+    this->x2 += 2;
+    this->x3 += 2;
 }
 
 void Aviao::setComponente(std::string componente, int valor)

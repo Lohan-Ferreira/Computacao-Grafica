@@ -21,7 +21,8 @@ void Inimigo::desenhar(Object *o, double y1, double y2)
         if(!(this->y >= y1 && this->y <= y2)) return;
         glColor3f(1.0, 0.7, 0.3);
         glPushMatrix();
-            glTranslatef(this->x, this->y, 9);
+            glScalef(20,1,1);
+            glTranslatef(this->x, this->y, 14);
             glutSolidCube(50);
         glPopMatrix();
     }
