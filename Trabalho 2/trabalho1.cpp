@@ -218,6 +218,7 @@ int nretas = 0;
 double orthoFirstY = 0;
 double orthoLastY = 500;
 bool fullscreen = false;
+bool orthoview = false;
 int gameState = 0; // Estados do jogo 0 tela inicial, 1 jogando, 2 pausado, 3 fim de jogo, 4 placar
 int vidas = 3;
 int pontos = 0;
@@ -230,6 +231,7 @@ float translatey = 0.0;
 float translatex= 0.0;
 float move_x=0.0;
 Object *enemy;
+
 
 
 
@@ -776,6 +778,10 @@ void init()
 void specialKeys(int key, int x, int y)
 {
     switch(key) {
+
+        case GLUT_KEY_F10:
+            orthoview = !orthoview;
+            break;
         case GLUT_KEY_LEFT:
             aviao->moverEsquerda();
         break;
@@ -939,7 +945,7 @@ void display()
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
 
-        glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -100.0, 100.0);
 
         glClearColor (0.0, 0.0, 0.0, 0.0);
 
@@ -955,19 +961,22 @@ void display()
 
         glMatrixMode (GL_PROJECTION);
         glLoadIdentity ();
-        gluPerspective(45.0, (GLfloat)WINDOW_WIDTH/(GLfloat) WINDOW_HEIGHT, 1.0, 1000.0);
-        //glOrtho(-200, 200, -100, 200, 1.0, 1000.0);
+        if(!orthoview)
+            gluPerspective(45.0, (GLfloat)WINDOW_WIDTH/(GLfloat) WINDOW_HEIGHT, 1.0, 1000.0);
+        else
+            glOrtho(-200, 200, -100, 300, 1.0, 1000.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity ();
-        gluLookAt (0.0, aviao->getY3()-180, 180.0, 0.0, aviao->getY3(), 50.0, 0.0, 1.0, 0.0);
-       // gluLookAt (0.0, aviao->getY3(), 180.0, 0.0, aviao->getY3(), 0.0, 0.0, 1.0, 0.0);
+        if(!orthoview)
+            gluLookAt (0.0, aviao->getY3()-170, 180.0, 0.0, aviao->getY3(), 50.0, 0.0, 1.0, 0.0);
+        else
+            gluLookAt (0.0, aviao->getY3(), 180.0, 0.0, aviao->getY3(), 0.0, 0.0, 1.0, 0.0);
 
 
 
         glClearColor (0.0, 0.0, 1.0, 0.0);
 
         glColor3f(0.1, 1.0, 0.4);
-
 
         imprimirTexto(std::to_string(pontos).c_str(), 150, orthoLastY - 30);
         imprimirTexto(std::to_string(porcentagemCombustivel).c_str(), -180, orthoLastY - 30);
@@ -1377,7 +1386,7 @@ glBegin(GL_TRIANGLE_STRIP);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
 
-        glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -100.0, 100.0);
 
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
@@ -1392,7 +1401,7 @@ glBegin(GL_TRIANGLE_STRIP);
         glClearColor(0, 0, 0, 0);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(-200, 200, orthoFirstY, orthoLastY, -1.0, 1.0);
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -100.0, 100.0);
 
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
@@ -1412,7 +1421,7 @@ void imprimirTexto(char const *texto, int x, int y)
     int length = (int) strlen(texto);
 
     // Posição do texto na tela
-    glRasterPos3f(x, y,0.0);
+    glRasterPos3f(x, y-150,40.0);
 
     for(int i = 0; i < length; i++)
     {
