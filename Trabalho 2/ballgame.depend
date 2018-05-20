@@ -67,14 +67,14 @@
 	<GL/glu.h>
 	<stdlib.h>
 
-1524000610 c:\users\hynax\desktop\trabalho 2\combustivel.h
+1526809550 c:\users\hynax\desktop\trabalho 2\combustivel.h
 	<GL/glut.h>
 	<math.h>
 
-1526494122 source:c:\users\hynax\desktop\trabalho 2\combustivel.cpp
+1526809598 source:c:\users\hynax\desktop\trabalho 2\combustivel.cpp
 	"Combustivel.h"
 
-1526495764 source:c:\users\hynax\desktop\trabalho 2\inimigo.cpp
+1526810517 source:c:\users\hynax\desktop\trabalho 2\inimigo.cpp
 	"Inimigo.h"
 	"math.h"
 
@@ -82,7 +82,7 @@
 	<GL/glut.h>
 	"Aviao.h"
 
-1526549083 source:c:\users\hynax\desktop\trabalho 2\trabalho1.cpp
+1526810208 source:c:\users\hynax\desktop\trabalho 2\trabalho1.cpp
 	<GL/glut.h>
 	<iostream>
 	<string.h>

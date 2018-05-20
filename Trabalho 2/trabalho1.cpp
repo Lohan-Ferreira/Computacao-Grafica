@@ -16,6 +16,7 @@
 #include <fstream>
 #include "Object.h"
 
+
 #define WINDOW_WIDTH  900
 #define WINDOW_HEIGHT 600
 #define QUANTIDADE_CHECKPOINTS 6
@@ -40,7 +41,8 @@ class Projetil
 
 };
 
-Projetil *projetil;
+Projetil *projetil[50] = {NULL};
+int i_projetil=0;
 
 class Reta
 {
@@ -171,7 +173,7 @@ public:
         return 0;
     }
 
-    int colisaoP()
+    int colisaoP(Projetil *projetil)
     {
         if (projetil->y >= y1-6 && projetil->y <= y2+6 )
          {
@@ -251,6 +253,20 @@ void motion(int x, int y);
 void reconfigurar();
 void ordena(int v[], int tam);
 
+void specialKeysRelease(int key, int x, int y)
+{
+    switch(key)
+    {
+        case GLUT_KEY_LEFT:
+        case GLUT_KEY_RIGHT:
+            move_x = 0;
+            break;
+        case GLUT_KEY_UP:
+        case GLUT_KEY_DOWN:
+            velocidade=0;
+    }
+}
+
 void keyboardRelease(unsigned char key, int x, int y)
 {
 	switch (key)
@@ -258,6 +274,10 @@ void keyboardRelease(unsigned char key, int x, int y)
 		case 'd' :
 		case 'a' :
 		    move_x=0.0;
+        break;
+        case 'w':
+        case 's':
+            velocidade = 0;
 		break;
 	}
 }
@@ -343,6 +363,22 @@ GLfloat shine[] = {76.8f};
 }
 
 
+void setMaterial6(void)
+{
+
+GLfloat mat_ambient[] ={ 0.1f, 0.18725f, 0.1745f, 0.8f };
+GLfloat mat_diffuse[]={0.396f, 0.74151f, 0.69102f, 0.8f };
+GLfloat mat_specular[] ={0.297254f, 0.30829f, 0.306678f, 0.8f };
+GLfloat shine[] = {0.1f};
+
+   // Define os parametros da superficie a ser iluminada
+   glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+   glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+}
+
+
 
 int main(int argc, char** argv)
 {
@@ -357,6 +393,7 @@ int main(int argc, char** argv)
 
     glutIgnoreKeyRepeat(0);
     glutKeyboardUpFunc( keyboardRelease );
+    glutSpecialUpFunc(specialKeysRelease);
     srand(time(NULL));
     glutKeyboardFunc(keyboard);
     glutDisplayFunc(display);
@@ -759,11 +796,11 @@ void init()
    glEnable(GL_DEPTH_TEST);               // Habilita Z-buffer
    glEnable(GL_LIGHTING);
    glEnable(GL_LIGHT0);                   // habilita luz 0
-    glEnable(GL_NORMALIZE);
+   glEnable(GL_NORMALIZE);
    // Cor da fonte de luz (RGBA)
    GLfloat cor_luz[]     = { 1.0, 1.0, 1.0, 1.0};
    // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
-   GLfloat posicao_luz[] = { 0.0, orthoFirstY , 60.0, 1.0};
+   GLfloat posicao_luz[] = { 0.0, aviao->getY3() , 50.0, 1.0};
 
    // Define parametros da luz
    glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
@@ -783,10 +820,10 @@ void specialKeys(int key, int x, int y)
             orthoview = !orthoview;
             break;
         case GLUT_KEY_LEFT:
-            aviao->moverEsquerda();
+            move_x = -2;
         break;
         case GLUT_KEY_RIGHT:
-            aviao->moverDireita();
+            move_x = 2;
         break;
 
         case GLUT_KEY_UP:
@@ -975,8 +1012,8 @@ void display()
 
 
         glClearColor (0.0, 0.0, 1.0, 0.0);
-
-        glColor3f(0.1, 1.0, 0.4);
+        setMaterial6();
+        //glColor3f(0.1, 1.0, 0.4);
 
         imprimirTexto(std::to_string(pontos).c_str(), 150, orthoLastY - 30);
         imprimirTexto(std::to_string(porcentagemCombustivel).c_str(), -180, orthoLastY - 30);
@@ -1336,10 +1373,11 @@ glBegin(GL_TRIANGLE_STRIP);
 
 
         //Projetil
-        if(projetil != NULL)
+        for(int i=0; i<50; i++)
+        if(projetil[i] != NULL)
         {
             glPushMatrix();
-                glTranslatef(projetil->x,projetil->y,3);
+                glTranslatef(projetil[i]->x,projetil[i]->y,3);
                 glScalef(0.6,1,1);
                 glutSolidSphere(3,50,50);
             glPopMatrix();
@@ -1359,10 +1397,13 @@ glBegin(GL_TRIANGLE_STRIP);
 
         setMaterial4();
         for(int i = 0; i < QUANTIDADE_COMBUSTIVEL; i++) {
-            combustiveis[i]->desenhar();
-             if(aviao->colideComCombustivel(combustiveis[i]) && porcentagemCombustivel<100) {
-               porcentagemCombustivel += 1;
+            if(combustiveis[i]!=NULL)
+            {
+                 combustiveis[i]->desenhar();
+                 if(aviao->colideComCombustivel(combustiveis[i]) && porcentagemCombustivel<100) {
+                   porcentagemCombustivel += 1;
              }
+            }
         }
 
         glColor3f(0.0,0.0,0.0);
@@ -1504,23 +1545,45 @@ void idle()
 
 
 
-        //Colisão PROJETIL - INIMIGOS
-        if(projetil != NULL)
+            //COLISAO PROJETIL-COMBUSTIVEL
+            for(int i = 0; i <QUANTIDADE_COMBUSTIVEL; i++)
+            {
+                if(combustiveis[i]!=NULL)
+                {
+                  for(int j=0; j<50; j++)
+                  {
+                    if(projetil[j]!=NULL)
+                    if(combustiveis[i]->colisaoP(projetil[j]->x,projetil[j]->y))
+                    {
+                        pontos++;
+                        delete combustiveis[i];
+                        combustiveis[i]=NULL;
+                        delete projetil[j];
+                        projetil[j] = NULL;
+                        break;
+                    }
+                  }
+                }
+            }
+
+            //Colisão PROJETIL - INIMIGOS
             for(int i = 0; i <QUANTIDADE_INIMIGOS ; i++)
             {
                 if(inimigos[i]!=NULL)
                 {
-
-
-                    if(inimigos[i]->colisaoP(projetil->x,projetil->y))
+                  for(int j=0; j<50; j++)
+                  {
+                    if(projetil[j]!=NULL)
+                    if(inimigos[i]->colisaoP(projetil[j]->x,projetil[j]->y))
                     {
                         pontos++;
                         delete inimigos[i];
                         inimigos[i]=NULL;
-                        delete projetil;
-                        projetil = NULL;
+                        delete projetil[j];
+                        projetil[j] = NULL;
                         break;
                     }
+                  }
                 }
             }
 
@@ -1528,11 +1591,17 @@ void idle()
         if(projetil != NULL)
             for(int i = 0; i < nretas; i++)
             {
-                if(retas[i]->colisaoP() == 1)
+                for(int j=0; j<50; j++)
                 {
-                    delete projetil;
-                    projetil = NULL;
+
+                if(projetil[j]!=NULL)
+                if(retas[i]->colisaoP(projetil[j]) == 1)
+                {
+                    delete projetil[j];
+                    projetil[j] = NULL;
                     break;
+                }
+
                 }
             }
 
@@ -1541,18 +1610,23 @@ void idle()
             for(int i= 0; i < QUANTIDADE_CHECKPOINTS; i++)
                 {
                     if(checkpoints[i]!=NULL)
-                    if (checkpoints[i]->colisaoP(projetil->x,projetil->y))
+                    for(int j=0; j<50;j++)
+                    {
+
+                    if(projetil[j]!=NULL)
+                    if (checkpoints[i]->colisaoP(projetil[j]->x,projetil[j]->y))
                     {
                         returny1 = returny2 = checkpoints[i]->getY();
                         returny3 = returny1 + 20;
 
                         delete checkpoints[i];
                         checkpoints[i] = NULL;
-                        delete projetil;
-                        projetil = NULL;
+                        delete projetil[j];
+                        projetil[j] = NULL;
                         break;
 
 
+                    }
                     }
                 }
 
@@ -1577,7 +1651,6 @@ void idle()
             aviao->setComponente("y1", aviao->getY1() + 2 + velocidade);
             aviao->setComponente("y2", aviao->getY2() + 2 + velocidade);
             aviao->setComponente("y3", aviao->getY3() + 2 + velocidade);
-            velocidade = 0;
         }
 
         else
@@ -1586,14 +1659,14 @@ void idle()
             reconfigurar();
         }
 
-
-        if(projetil != NULL)
+    for(int i=0; i<50; i++)
+        if(projetil[i] != NULL)
         {
-            projetil->y += 10;
-            if(projetil->y > orthoLastY)
+            projetil[i]->y += 10;
+            if(projetil[i]->y > orthoLastY+200)
             {
-                delete projetil;
-                projetil = NULL;
+                delete projetil[i];
+                projetil[i] = NULL;
             }
         }
 
@@ -1698,6 +1771,13 @@ void keyboard(unsigned char key, int x, int y)
             move_x= 2;
         //    aviao->moverDireita();
         break;
+
+        case 'w':
+            velocidade = 2;
+        break;
+        case 's':
+            velocidade = -1.5;
+        break;
 		case 'm':
             if(!fullscreen)
             {
@@ -1711,8 +1791,11 @@ void keyboard(unsigned char key, int x, int y)
             }
         break;
         case ' ':
-            if(projetil == NULL && gameState == 1)
-                projetil = new Projetil();
+            if(gameState == 1)
+                if(i_projetil >= 50) i_projetil = 0;
+                if(projetil[i_projetil]!= NULL) delete projetil[i_projetil];
+                projetil[i_projetil] = new Projetil();
+                i_projetil++;
             if(gameState == 0 || gameState == 3 || gameState == 4)
             {
                 gameState = 1;
@@ -1741,7 +1824,11 @@ void keyboard(unsigned char key, int x, int y)
                     delete inimigos[i];
             }
             inicializarInimigo();
-            projetil = NULL;
+            for(int i=0; i<50;i++)
+                        {
+                            if(projetil[i]!=NULL) delete projetil[i];
+                            projetil[i] = NULL;
+                        }
             aviao->setComponente("x1", -8);
             aviao->setComponente("y1", 20);
             aviao->setComponente("x2", 8);
@@ -1810,7 +1897,13 @@ void reconfigurar()
                                 delete inimigos[i];
                         }
                         inicializarInimigo();
-                        projetil = NULL;
+
+
+                        for(int i=0; i<50;i++)
+                        {
+                            if(projetil[i]!=NULL) delete projetil[i];
+                            projetil[i] = NULL;
+                        }
                         aviao->setComponente("x1", -8);
                         aviao->setComponente("y1", 20);
                         aviao->setComponente("x2", 8);

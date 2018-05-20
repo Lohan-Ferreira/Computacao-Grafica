@@ -18,6 +18,7 @@ class Combustivel
         int getX();
         int getY();
         int getTamanho();
+        bool colisaoP(double xp, double yp);
 };
 
 #endif // COMBUSTIVEL_H

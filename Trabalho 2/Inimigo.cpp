@@ -67,11 +67,11 @@ bool Inimigo::colisaoN(Aviao *aviao)
     }
     else
     {
-        if( (aviao->getX1() <= x + 9 && aviao->getX1() >= x-9) && (aviao->getY1() <= y + 9 && aviao->getY1() >= y - 9) )
+        if( (aviao->getX1() <= x + 10 && aviao->getX1() >= x-10) && (aviao->getY1() <= y + 10 && aviao->getY1() >= y - 10) )
             return true;
-        if( (aviao->getX2() <= x + 9 && aviao->getX2() >= x-9) && (aviao->getY2() <= y + 9 && aviao->getY2() >= y - 9) )
+        if( (aviao->getX2() <= x + 10&& aviao->getX2() >= x-10) && (aviao->getY2() <= y + 10 && aviao->getY2() >= y - 10) )
             return true;
-        if( (aviao->getX3() <= x + 9 && aviao->getX3() >= x-9) && (aviao->getY3() <= y + 9 && aviao->getY3() >= y - 9) )
+        if( (aviao->getX3() <= x + 10 && aviao->getX3() >= x-10) && (aviao->getY3() <= y + 10 && aviao->getY3() >= y - 10) )
             return true;
     }
 
@@ -88,7 +88,7 @@ bool Inimigo::colisaoP(double xp, double yp)
     }
     else
     {
-        if(sqrt((xp-x)*(xp-x)+(yp-y)*(yp-y))<= 12 )
+        if(sqrt((xp-x)*(xp-x)+(yp-y)*(yp-y))<= 20 )
             return true;
     }
     return false;

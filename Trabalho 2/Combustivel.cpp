@@ -37,3 +37,11 @@ int Combustivel::getTamanho()
 {
     return this->tamanho;
 }
+
+
+bool Combustivel::colisaoP(double xp, double yp)
+{
+        if(sqrt((xp-x)*(xp-x)+(yp-y)*(yp-y))<= 20 )
+            return true;
+    return false;
+}
