@@ -3,11 +3,11 @@
 Aviao::Aviao()
 {
     o = new Object("plane.ply");
-    this->x1 = -15;
-    this->y1 = 30;
+    this->x1 = -8;
+    this->y1 = 20;
 
-    this->x2 = 15;
-    this->y2 = 30;
+    this->x2 = 8;
+    this->y2 = 20;
 
     this->x3 = 0;
     this->y3 = 40;

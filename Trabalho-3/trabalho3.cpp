@@ -805,6 +805,7 @@ void init()
    glEnable(GL_NORMALIZE);
 
 
+
     glEnable(GL_ALPHA_TEST); // O alpha test descarta fragmentos dependendo de uma comparação (abaixo)
    glAlphaFunc(GL_GREATER, 0.5); // Info: https://www.opengl.org/sdk/docs/man2/xhtml/glAlphaFunc.xml
 
@@ -824,13 +825,15 @@ void init()
 
 
    textureManager = new glcTexture();            // Criação do arquivo que irá gerenciar as texturas
-   textureManager->SetNumberOfTextures(4);       // Estabelece o número de texturas que será utilizado
+   textureManager->SetNumberOfTextures(6);       // Estabelece o número de texturas que será utilizado
    textureManager->SetWrappingMode(GL_REPEAT);
 
    textureManager->CreateTexture("../data/ground.png", 0); // Para testar magnificação, usar a imagem marble128
    textureManager->CreateTexture("../data/ground3.png", 1); // Textura transparente, não sendo múltipla de zero
    textureManager->CreateTexture("../data/water.png", 2); // Textura transparente, não sendo múltipla de zero
    textureManager->CreateTexture("../data/capa.png", 3);
+   textureManager->CreateTexture("../data/arcade.png", 4);
+   textureManager->CreateTexture("../data/gas.png", 5);
 
    //textureManager->SetColorMode(GL_REPLACE);
 
@@ -1002,6 +1005,8 @@ void inicializarCombustiveis()
 void display()
 {
 
+        textureManager->SetColorMode(GL_REPLACE);
+        textureManager->Update();
 
         float aspectRatio = textureManager->GetAspectRatio(1);
 
@@ -1023,8 +1028,7 @@ void display()
 
         glClearColor (0.0, 0.0, 0.0, 0.0);
         textureManager->Bind(3);
-        textureManager->SetColorMode(GL_REPLACE);
-        //textureManager->Update();
+
 
         glBegin(GL_QUADS);
         glTexCoord2f(0,0);
@@ -1037,7 +1041,7 @@ void display()
         glVertex3f(-200,orthoLastY,0);
         glEnd();
 
-
+        textureManager->Bind(5);
         glColor3f(1.0, 1.0, 0);
         imprimirTexto("RIVER RAID", -20, (orthoLastY + orthoFirstY)/2);
         imprimirTexto("Aperte espaco para comecar", -50, (orthoLastY + orthoFirstY)/2 - 20);
@@ -1064,7 +1068,7 @@ void display()
 
 
         glClearColor (0.0, 0.0, 1.0, 0.0);
-        setMaterial6();
+        //setMaterial6();
         //glColor3f(0.1, 1.0, 0.4);
 
         imprimirTexto(std::to_string(pontos).c_str(), 150, orthoLastY - 30);
@@ -1548,6 +1552,7 @@ glBegin(GL_TRIANGLE_STRIP);
                 checkpoints[i]->desenhar(enemy,orthoFirstY,orthoLastY+300);
         }
 
+        textureManager->Bind(5);
         setMaterial4();
         for(int i = 0; i < QUANTIDADE_COMBUSTIVEL; i++) {
             if(combustiveis[i]!=NULL)
@@ -1568,8 +1573,34 @@ glBegin(GL_TRIANGLE_STRIP);
     {
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0,0,0,0);
-        glColor3f(1.0,0.0,0.0);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -100.0, 100.0);
+
+        textureManager->Bind(3);
+
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+        glVertex3f(-200,orthoFirstY,0);
+        glTexCoord2f(1,0);
+        glVertex3f(200,orthoFirstY,0);
+        glTexCoord2f(1,1);
+        glVertex3f(200,orthoLastY,0);
+        glTexCoord2f(0,1);
+        glVertex3f(-200,orthoLastY,0);
+        glEnd();
+
+
+
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        textureManager->Bind(5);
         imprimirTexto("JOGO PAUSADO", -20, (orthoLastY+orthoFirstY)/2);
+
     }
 
     if (gameState == 3)
@@ -1577,15 +1608,10 @@ glBegin(GL_TRIANGLE_STRIP);
 
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0, 0, 0, 0);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
 
-        glOrtho(-200, 200, orthoFirstY, orthoLastY, -100.0, 100.0);
-
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
 
         glColor3f(1.0, 0.0, 0.0);
+        textureManager->Bind(5);
         imprimirTexto("FIM DE JOGO", -20, (orthoFirstY + orthoLastY)/2);
     }
 
@@ -1595,12 +1621,30 @@ glBegin(GL_TRIANGLE_STRIP);
         glClearColor(0, 0, 0, 0);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
+
         glOrtho(-200, 200, orthoFirstY, orthoLastY, -100.0, 100.0);
+
+        glClearColor (0.0, 0.0, 0.0, 0.0);
+        textureManager->Bind(4);
+
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+        glVertex3f(-200,orthoFirstY,0);
+        glTexCoord2f(1,0);
+        glVertex3f(200,orthoFirstY,0);
+        glTexCoord2f(1,1);
+        glVertex3f(200,orthoLastY,0);
+        glTexCoord2f(0,1);
+        glVertex3f(-200,orthoLastY,0);
+        glEnd();
+
 
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        glColor3f(1.0, 1.0, 0.0);
+        textureManager->Bind(5);
+        glColor3f(1.0, 1.0, 1.0);
         imprimirTexto("PLACAR", -20, orthoLastY-20);
         for(int i=0; i<10; i++)
             imprimirTexto(std::to_string(placar[i]).c_str(), 0, orthoLastY - 20*(i+2));
