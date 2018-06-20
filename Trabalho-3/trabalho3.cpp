@@ -17,6 +17,9 @@
 #include "Object.h"
 #include "glcTexture.h"
 #include <cmath>
+#include <stdlib.h>
+#include <time.h>
+#include <vector>
 
 
 #define WINDOW_WIDTH  900
@@ -29,6 +32,70 @@
 #define ORTHO_MAXIMO 18000
 
 Aviao *aviao = new Aviao();
+
+class Quad
+{
+public:
+    double x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4;
+    double n1x,n1y,n1z,n2x,n2y,n2z;
+    double maiorz, menorz;
+    Quad *next;
+    int tag;
+    bool spec;
+    Quad()
+    {
+        tag = 0;
+        next = NULL;
+        spec = 0;
+    }
+
+    void calculaNormal()
+    {
+        float u[3],v[3];
+        u[0] = x2 - x1;
+        u[1] = y2 - y1;
+        u[2] = z2 - z1;
+
+        v[0] = x4 - x1;
+        v[1] = y4 - y1;
+        v[2] = z4 - z1;
+
+
+        n1x =  u[1]*v[2] - v[1] * u[2];
+        n1y = - (u[0]*v[2]-v[0]*u[2]) ;
+        n1z = u[0]*v[1] - v[0] * u[1];
+
+        float modulo = sqrt((n1x * n1x)+(n1y * n1y)+(n1z * n1z));
+        n1x /= modulo;
+        n1y /= modulo;
+        n1z /= modulo;
+         if (n1z < 0) n1z *= -1;
+
+        /*-------------------------------------------------*/
+        u[0] = x3 - x2;
+        u[1] = y3 - y2;
+        u[2] = z3 - z2;
+
+        v[0] = x4 - x2;
+        v[1] = y4 - y2;
+        v[2] = z4 - z2;
+
+
+        n2x =  u[1]*v[2] - v[1] * u[2];
+        n2y = - (u[0]*v[2]-v[0]*u[2]) ;
+        n2z = u[0]*v[1] - v[0] * u[1];
+
+        modulo = sqrt((n2x * n2x)+(n2y * n2y)+(n2z * n2z));
+        n2x /= modulo;
+        n2y /= modulo;
+        n2z /= modulo;
+        if (n2z < 0) n2z *= -1;
+
+
+
+    }
+
+};
 
 class Projetil
 {
@@ -243,7 +310,7 @@ Object *enemy;
 
 
 
-
+std::vector<Quad*> *quads;
 void init();
 void inicializarInimigo();
 void inicializarCombustiveis();
@@ -256,6 +323,222 @@ void idle();
 void motion(int x, int y);
 void reconfigurar();
 void ordena(int v[], int tam);
+
+
+void RMD()
+{
+    Quad *quad;
+//Inicia vector com quads base
+    for(int i=0; i<nretas;i++)
+        {
+            quad = new Quad();
+            if(retas[i]->x1>0 && !retas[i]->verificaX)
+            {
+
+
+            quad->x1 = retas[i]->x1;
+            quad->y1 = retas[i]->y1;
+            quad->z1 = 0;
+
+            quad->x2 = 300;
+            quad->y2 = retas[i]->y1;
+            quad->z2 = 41;
+
+            quad->x3 = 300;
+            quad->y3 = retas[i]->y2;
+            quad->z3 = 41;
+
+
+            quad->x4 = retas[i]->x2;
+            quad->y4 = retas[i]->y2;
+            quad->z4 = 0;
+
+
+            }
+            else if(!retas[i]->verificaX)
+            {
+
+            quad->x1 = -300;
+            quad->y1 = retas[i]->y1;
+            quad->z1 = 41;
+
+            quad->x2 = retas[i]->x1;
+            quad->y2 = retas[i]->y1;
+            quad->z2 = 0;
+
+            quad->x3 = retas[i]->x2;
+            quad->y3 = retas[i]->y2;
+            quad->z3 = 0;
+
+
+            quad->x4 = -300;
+            quad->y4 = retas[i]->y2;
+            quad->z4 = 41;
+
+            }
+            else if(retas[i]->side==1)
+            {
+
+            quad->spec = true;
+            quad->x1 = retas[i]->x1;
+            quad->y1 = retas[i]->y1;
+            quad->z1 = 10;
+
+            quad->x2 = -retas[i]->x1;
+            quad->y2 = retas[i]->y1;
+            quad->z2 = 10;
+
+            quad->x3 = -retas[i]->x2;
+            quad->y3 = retas[i]->y2;
+            quad->z3 = 10;
+
+
+            quad->x4 = retas[i]->x2;
+            quad->y4 = retas[i]->y2;
+            quad->z4 = 10;
+            }
+
+            quads->push_back(quad);
+        }
+
+    quad = quads->front();
+
+    while(quad->tag<=2)
+    {
+        if(quad->spec && ((quad->x1 == quad->x2) || (quad->x3 == quad->x4)))
+        {
+            quads->push_back(quad);
+            quads->erase(quads->begin());
+            std::cout<<quad->spec;
+            quad = quads->front();
+            continue;
+
+        }
+            std::cout<<quad->tag;
+        Quad *q1,*q2,*q3,*q4;
+        double mx,my,mz;
+        mx = (quad->x1 + quad->x3)/ 2;
+        my = (quad->y1 + quad->y3)/ 2;
+        if(quad->tag == 0)
+            if(quad->x1 == 0) mz = 30;
+            else
+            mz = 70;
+        else
+        {
+            mz = (quad->z1+quad->z2+quad->z3+quad->z4)/4.0;
+            if(rand()%2 == 1)
+            {
+                mz = mz - (rand() % 16);
+            }
+            else
+            {
+                mz = mz + rand() % 16;
+            }
+
+        }
+
+
+
+        q1 = new Quad();
+        q1->tag = quad->tag + 1;
+        q2 = new Quad();
+        q2->tag = quad->tag + 1;
+        q3 = new Quad();
+        q3->tag = quad->tag + 1;
+        q4 = new Quad();
+        q4->tag = quad->tag + 1;
+
+        q1->spec=q2->spec=q3->spec=q4->spec=quad->spec;
+
+        q1->x1 = quad->x1;
+        q1->y1 = quad->y1;
+        q1->z1 = quad->z1;
+
+        q1->x2 = mx;
+        q1->y2 = q1->y1;
+        q1->z2 = (quad->z1 + quad->z2)/2.0;
+
+        q1->x3 = mx;
+        q1->y3 = my;
+        q1->z3 = mz;
+
+        if(quad->x1 == 0) q1->x4 = (my-quad->y1)/((quad->y1 - quad->y4)/(quad->x1-quad->x4));
+        else
+        q1->x4 = (quad->x1+quad->x4)/2;
+        q1->y4 = my;
+        q1->z4 = (quad->z1+quad->z4)/2.0;
+
+
+
+    /*----------------------*/
+        q2->x1 = q1->x2;
+        q2->y1 = q1->y2;
+        q2->z1 = q1->z2;
+
+        q2->x2 = quad->x2;
+        q2->y2 = quad->y2;
+        q2->z2 = quad->z2;
+
+        if(quad->x2 == 0) q2->x3 = (my-quad->y2)/((quad->y3 - quad->y2)/(quad->x3-quad->x2));
+        else
+        q2->x3 = (quad->x2+quad->x3)/2;
+        q2->y3 = my;
+        q2->z3 = (quad->z2 + quad->z3)/2.0;
+
+        q2->x4 = mx;
+        q2->y4 = my;
+        q2->z4 = mz;
+
+    /*---------------------*/
+
+        q3->x1 = mx;
+        q3->y1 = my;
+        q3->z1 = mz;
+
+        q3->x2 = q2->x3;
+        q3->y2 = q2->y3;
+        q3->z2 = q2->z3;
+
+        q3->x3 = quad->x3;
+        q3->y3 = quad->y3;
+        q3->z3 = quad->z3;
+
+        q3->x4 = mx;
+        q3->y4 = quad->y3;
+        q3->z4 = (quad->z3+quad->z4)/2.0;
+
+    /*-------------------*/
+
+        q4->x1 = q1->x4;
+        q4->y1 = q1->y4;
+        q4->z1 = q1->z4;
+
+        q4->x2 = mx;
+        q4->y2 = my;
+        q4->z2 = mz;
+
+        q4->x3 = q3->x4;
+        q4->y3 = q3->y4;
+        q4->z3 = q3->z4;
+
+        q4->x4 = quad->x4;
+        q4->y4 = quad->y4;
+        q4->z4 = quad->z4;
+
+
+        quads->push_back(q1);
+        quads->push_back(q2);
+        quads->push_back(q3);
+        quads->push_back(q4);
+        quads->erase(quads->begin());
+        quad = quads->front();
+
+    }
+
+    for(int i=0; i<quads->size(); i++)
+        quads->at(i)->calculaNormal();
+
+}
 
 void specialKeysRelease(int key, int x, int y)
 {
@@ -389,7 +672,9 @@ GLfloat shine[] = {0.1f};
 int main(int argc, char** argv)
 {
 
+    quads = new std::vector<Quad*>();
     glutInit(&argc, argv);
+    srand(time(NULL));
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     glutInitWindowPosition(200, 100);
@@ -660,9 +945,9 @@ int main(int argc, char** argv)
     //Primeiro Poligono
     retas[nretas] = new Reta(-30,3000,-30,3300,1,true);
     nretas++;
-    retas[nretas] = new Reta(-30,3300,30,3301,1,true);
+    retas[nretas] = new Reta(-30,3300,30,3301,0,true);
     nretas++;
-    retas[nretas] = new Reta(-30,3000,30,3001,1,true);
+    retas[nretas] = new Reta(-30,3000,30,3001,0,true);
     nretas++;
     retas[nretas] = new Reta(30,3000,30,3300,0,true);
     nretas++;
@@ -788,6 +1073,9 @@ int main(int argc, char** argv)
     nretas++;
 
 
+    RMD();
+
+
     glutMainLoop();
 
     return 0;
@@ -825,15 +1113,16 @@ void init()
 
 
    textureManager = new glcTexture();            // Criação do arquivo que irá gerenciar as texturas
-   textureManager->SetNumberOfTextures(6);       // Estabelece o número de texturas que será utilizado
+   textureManager->SetNumberOfTextures(7);       // Estabelece o número de texturas que será utilizado
    textureManager->SetWrappingMode(GL_REPEAT);
 
    textureManager->CreateTexture("../data/ground.png", 0); // Para testar magnificação, usar a imagem marble128
-   textureManager->CreateTexture("../data/ground3.png", 1); // Textura transparente, não sendo múltipla de zero
+   textureManager->CreateTexture("../data/ground5.png", 1); // Textura transparente, não sendo múltipla de zero
    textureManager->CreateTexture("../data/water.png", 2); // Textura transparente, não sendo múltipla de zero
    textureManager->CreateTexture("../data/capa.png", 3);
    textureManager->CreateTexture("../data/arcade.png", 4);
    textureManager->CreateTexture("../data/gas.png", 5);
+   textureManager->CreateTexture("../data/gameover.png", 6);
 
    //textureManager->SetColorMode(GL_REPLACE);
 
@@ -1075,338 +1364,16 @@ void display()
         imprimirTexto(std::to_string(porcentagemCombustivel).c_str(), -180, orthoLastY - 30);
         imprimirTexto(std::to_string(vidas).c_str(), 0, orthoLastY - 30);
 
-//setMaterial3();
+        //setMaterial3();
         glNormal3f(0,0,1);
         textureManager->Bind(1);
-glBegin(GL_TRIANGLE_STRIP);
-            glVertex3f(50,  0.0,40);
-            glVertex3f(800, 0.0,40);
-            glVertex3f(50,  250,40);
-            glVertex3f(800, 250,40);
-            glVertex3f(120, 300,40);
-            glVertex3f(800, 300,40);
-            glVertex3f(120, 1800,40);
-            glVertex3f(800, 1800,40);
-            glVertex3f(50,  1850,40);
-            glVertex3f(800, 1850,40);
-            glVertex3f(50,  2100,40);
-            glVertex3f(800, 2100,40);
-            glVertex3f(120, 2150,40);
-            glVertex3f(800, 2150,40);
-            glVertex3f(150, 2200,40);
-            glVertex3f(800, 2200,40);
-            glVertex3f(150, 2250,40);
-            glVertex3f(800, 2250,40);
-            glVertex3f(120, 2300,40);
-            glVertex3f(800, 2300,40);
-            glVertex3f(120, 2500,40);
-            glVertex3f(800, 2500,40);
-            glVertex3f(150, 2550,40);
-            glVertex3f(800, 2550,40);
-            glVertex3f(150, 2650,40);
-            glVertex3f(800, 2650,40);
-            glVertex3f(170, 2700,40);
-            glVertex3f(800, 2700,40);
-            glVertex3f(170, 3400,40);
-            glVertex3f(800, 3400,40);
-            glVertex3f(50,  3450,40);
-            glVertex3f(800, 3450,40);
-            glVertex3f(50,  3750,40);
-            glVertex3f(800, 3750,40);
-            glVertex3f(100, 3800,40);
-            glVertex3f(800, 3800,40);
-            glVertex3f(100, 4000,40);
-            glVertex3f(800, 4000,40);
-            glVertex3f(120, 4050,40);
-            glVertex3f(800, 4050,40);
-            glVertex3f(120, 5000,40);
-            glVertex3f(800, 5000,40);
-            glVertex3f(50,  5050,40);
-            glVertex3f(800, 5050,40);
-            glVertex3f(50,  5300,40);
-            glVertex3f(800, 5300,40);
-            glVertex3f(100, 5300,40);
-            glVertex3f(800, 5300,40);
-            glVertex3f(100, 5350,40);
-            glVertex3f(800, 5350,40);
-            glVertex3f(50,  5400,40);
-            glVertex3f(800, 5400,40);
-            glVertex3f(50,  5550,40);
-            glVertex3f(800, 5550,40);
-            glVertex3f(90,  5600,40);
-            glVertex3f(800, 5600,40);
-            glVertex3f(90,  9000,40);
-            glVertex3f(800, 9000,40);
-            glVertex3f(50,  9050,40);
-            glVertex3f(800, 9050,40);
-            glVertex3f(50,  9400,40);
-            glVertex3f(800, 9400,40);
-            glVertex3f(110, 9450,40);
-            glVertex3f(800, 9450,40);
-            glVertex3f(110, 9500,40);
-            glVertex3f(800, 9500,40);
-            glVertex3f(60,  9550,40);
-            glVertex3f(800, 9550,40);
-            glVertex3f(60,  10000,40);
-            glVertex3f(800, 10000,40);
-            glVertex3f(120, 10050,40);
-            glVertex3f(800, 10050,40);
-            glVertex3f(120, 10200,40);
-            glVertex3f(800, 10200,40);
-            glVertex3f(130, 10200,40);
-            glVertex3f(800, 10200,40);
-            glVertex3f(130, 10400,40);
-            glVertex3f(800, 10400,40);
-            glVertex3f(140, 10400,40);
-            glVertex3f(800, 10400,40);
-            glVertex3f(140, 10600,40);
-            glVertex3f(800, 10600,40);
-            glVertex3f(160, 10650,40);
-            glVertex3f(800, 10650,40);
-            glVertex3f(160, 11400,40);
-            glVertex3f(800, 11400,40);
-            glVertex3f(120, 11450,40);
-            glVertex3f(800, 11450,40);
-            glVertex3f(120, 11650,40);
-            glVertex3f(800, 11650,40);
-            glVertex3f(140, 11700,40);
-            glVertex3f(800, 11700,40);
-            glVertex3f(140, 12550,40);
-            glVertex3f(800, 12550,40);
-            glVertex3f(50,  12600,40);
-            glVertex3f(800, 12600,40);
-            glVertex3f(50,  13000,40);
-            glVertex3f(800, 13000,40);
-            glVertex3f(100, 13050,40);
-            glVertex3f(800, 13050,40);
-            glVertex3f(100, 14500,40);
-            glVertex3f(800, 14500,40);
-            glVertex3f(50,  14550,40);
-            glVertex3f(800, 14550,40);
-            glVertex3f(50,  14750,40);
-            glVertex3f(800, 14750,40);
-            glVertex3f(140, 14800,40);
-            glVertex3f(800, 14800,40);
-            glVertex3f(140, 14900,40);
-            glVertex3f(800, 14900,40);
-            glVertex3f(160, 14950,40);
-            glVertex3f(800, 14950,40);
-            glVertex3f(160, 17500,40);
-            glVertex3f(800, 17500,40);
-            glVertex3f(50,  17550,40);
-            glVertex3f(800, 17550,40);
-            glVertex3f(50,  18000,40);
-            glVertex3f(800, 18000,40);
-        glEnd();
 
-        glBegin(GL_TRIANGLE_STRIP);
-            glVertex3f(-50,  0.0,40);
-            glVertex3f(-800, 0.0,40);
-            glVertex3f(-50,  250,40);
-            glVertex3f(-800, 250,40);
-            glVertex3f(-120, 300,40);
-            glVertex3f(-800, 300,40);
-            glVertex3f(-120, 1800,40);
-            glVertex3f(-800, 1800,40);
-            glVertex3f(-50,  1850,40);
-            glVertex3f(-800, 1850,40);
-            glVertex3f(-50,  2100,40);
-            glVertex3f(-800, 2100,40);
-            glVertex3f(-120, 2150,40);
-            glVertex3f(-800, 2150,40);
-            glVertex3f(-150, 2200,40);
-            glVertex3f(-800, 2200,40);
-            glVertex3f(-150, 2250,40);
-            glVertex3f(-800, 2250,40);
-            glVertex3f(-120, 2300,40);
-            glVertex3f(-800, 2300,40);
-            glVertex3f(-120, 2500,40);
-            glVertex3f(-800, 2500,40);
-            glVertex3f(-150, 2550,40);
-            glVertex3f(-800, 2550,40);
-            glVertex3f(-150, 2650,40);
-            glVertex3f(-800, 2650,40);
-            glVertex3f(-170, 2700,40);
-            glVertex3f(-800, 2700,40);
-            glVertex3f(-170, 3400,40);
-            glVertex3f(-800, 3400,40);
-            glVertex3f(-50,  3450,40);
-            glVertex3f(-800, 3450,40);
-            glVertex3f(-50,  3750,40);
-            glVertex3f(-800, 3750,40);
-            glVertex3f(-100, 3800,40);
-            glVertex3f(-800, 3800,40);
-            glVertex3f(-100, 4000,40);
-            glVertex3f(-800, 4000,40);
-            glVertex3f(-120, 4050,40);
-            glVertex3f(-800, 4050,40);
-            glVertex3f(-120, 5000,40);
-            glVertex3f(-800, 5000,40);
-            glVertex3f(-50,  5050,40);
-            glVertex3f(-800, 5050,40);
-            glVertex3f(-50,  5300,40);
-            glVertex3f(-800, 5300,40);
-            glVertex3f(-100, 5300,40);
-            glVertex3f(-800, 5300,40);
-            glVertex3f(-100, 5350,40);
-            glVertex3f(-800, 5350,40);
-            glVertex3f(-50,  5400,40);
-            glVertex3f(-800, 5400,40);
-            glVertex3f(-50,  5550,40);
-            glVertex3f(-800, 5550,40);
-            glVertex3f(-90,  5600,40);
-            glVertex3f(-800, 5600,40);
-            glVertex3f(-90,  9000,40);
-            glVertex3f(-800, 9000,40);
-            glVertex3f(-50,  9050,40);
-            glVertex3f(-800, 9050,40);
-            glVertex3f(-50,  9400,40);
-            glVertex3f(-800, 9400,40);
-            glVertex3f(-110, 9450,40);
-            glVertex3f(-800, 9450,40);
-            glVertex3f(-110, 9500,40);
-            glVertex3f(-800, 9500,40);
-            glVertex3f(-60,  9550,40);
-            glVertex3f(-800, 9550,40);
-            glVertex3f(-60,  10000,40);
-            glVertex3f(-800, 10000,40);
-            glVertex3f(-120, 10050,40);
-            glVertex3f(-800, 10050,40);
-            glVertex3f(-120, 10200,40);
-            glVertex3f(-800, 10200,40);
-            glVertex3f(-130, 10200,40);
-            glVertex3f(-800, 10200,40);
-            glVertex3f(-130, 10400,40);
-            glVertex3f(-800, 10400,40);
-            glVertex3f(-140, 10400,40);
-            glVertex3f(-800, 10400,40);
-            glVertex3f(-140, 10600,40);
-            glVertex3f(-800, 10600,40);
-            glVertex3f(-160, 10650,40);
-            glVertex3f(-800, 10650,40);
-            glVertex3f(-160, 11000,40);
-            glVertex3f(-800, 11000,40);
-            glVertex3f(-160, 11400,40);
-            glVertex3f(-800, 11400,40);
-            glVertex3f(-120, 11450,40);
-            glVertex3f(-800, 11450,40);
-            glVertex3f(-120, 11650,40);
-            glVertex3f(-800, 11650,40);
-            glVertex3f(-140, 11700,40);
-            glVertex3f(-800, 11700,40);
-            glVertex3f(-140, 12550,40);
-            glVertex3f(-800, 12550,40);
-            glVertex3f(-50,  12600,40);
-            glVertex3f(-800, 12600,40);
-            glVertex3f(-50,  13000,40);
-            glVertex3f(-800, 13000,40);
-            glVertex3f(-100, 13050,40);
-            glVertex3f(-800, 13050,40);
-            glVertex3f(-100, 14500,40);
-            glVertex3f(-800, 14500,40);
-            glVertex3f(-50,  14550,40);
-            glVertex3f(-800, 14550,40);
-            glVertex3f(-50,  14750,40);
-            glVertex3f(-800, 14750,40);
-            glVertex3f(-140, 14800,40);
-            glVertex3f(-800, 14800,40);
-            glVertex3f(-140, 14900,40);
-            glVertex3f(-800, 14900,40);
-            glVertex3f(-160, 14950,40);
-            glVertex3f(-800, 14950,40);
-            glVertex3f(-160, 17500,40);
-            glVertex3f(-800, 17500,40);
-            glVertex3f(-50,  17550,40);
-            glVertex3f(-800, 17550,40);
-            glVertex3f(-50,  18000,40);
-            glVertex3f(-800, 18000,40);
-        glEnd();
-
-        // Primeiro obstaculo que fica dentro da parte azul
-        glBegin(GL_POLYGON);
-            glVertex3f(-30, 3000,40);
-            glVertex3f(-30, 3300,40);
-            glVertex3f(30, 3300,40);
-            glVertex3f(30, 3000,40);
-        glEnd();
-
-        // Segundo obstaculo que fica dentro da parte azul
-        glBegin(GL_POLYGON);
-            glVertex3f(0,4100,40);
-            glVertex3f(-60, 4200,40);
-            glVertex3f(-60, 4400,40);
-            glVertex3f(-25, 4500,40);
-            glVertex3f(-25, 4700,40);
-            glVertex3f(0, 4800,40);
-            glVertex3f(25, 4700,40);
-            glVertex3f(25, 4500,40);
-            glVertex3f(60, 4400,40);
-            glVertex3f(60, 4200,40);
-        glEnd();
-
-        // Quarto obstaculo que fica dentro da parte azul
-        glBegin(GL_POLYGON);
-            glVertex3f(0, 10700,40);
-            glVertex3f(-60, 10750,40);
-            glVertex3f(-60, 10950,40);
-            glVertex3f(-25, 11050,40);
-            glVertex3f(-25, 11250,40);
-            glVertex3f(0, 11260,40);
-            glVertex3f(25, 11250,40);
-            glVertex3f(25, 11050,40);
-            glVertex3f(60, 10950,40);
-            glVertex3f(60, 10750,40);
-        glEnd();
-
-        // Quinto obstaculo que fica dentro da parte azul
-        glBegin(GL_POLYGON);
-            glVertex3f(0, 11800,40);
-            glVertex3f(-70, 11850,40);
-            glVertex3f(-70, 12150,40);
-            glVertex3f(-80, 12150,40);
-            glVertex3f(-80, 12300,40);
-            glVertex3f(0, 12350,40);
-            glVertex3f(80, 12300,40);
-            glVertex3f(80, 12150,40);
-            glVertex3f(70, 12150,40);
-            glVertex3f(70, 11850,40);
-        glEnd();
-
-        // Sexto obstaculo que fica dentro da parte azul
-        glBegin(GL_POLYGON);
-            glVertex3f(0, 15100,40);
-            glVertex3f(-100, 15150,40);
-            glVertex3f(-100, 15250,40);
-            glVertex3f(-80, 15260,40);
-            glVertex3f(-80, 15450,40);
-            glVertex3f(-100, 15500,40);
-            glVertex3f(-100, 15550,40);
-            glVertex3f(-70, 15600,40);
-            glVertex3f(-70, 15700,40);
-            glVertex3f(0.0, 15750,40);
-            glVertex3f(70, 15700,40);
-            glVertex3f(70, 15600,40);
-            glVertex3f(100, 15550,40);
-            glVertex3f(100, 15500,40);
-            glVertex3f(80, 15450,40);
-            glVertex3f(80, 15260,40);
-            glVertex3f(100, 15250,40);
-            glVertex3f(100, 15150,40);
-        glEnd();
-
-        // Setimo obstaculo que fica dentro da parte azul
-        glBegin(GL_POLYGON);
-            glVertex3f(0, 16500,40);
-            glVertex3f(-90, 16550,40);
-            glVertex3f(-90, 17050,40);
-            glVertex3f(0, 17100,40);
-            glVertex3f(90, 17050,40);
-            glVertex3f(90, 16550,40);
-        glEnd();
 
         //textureManager->SetColorMode(GL_MODULATE);
-        textureManager->Bind(0);
-        for(int i=0; i<nretas;i++)
+       // textureManager->Bind(0);
+
+
+       /* for(int i=0; i<nretas;i++)
         {
             if(retas[i]->x1 < 0) glNormal3f(1,0,0);
             else glNormal3f(-1,0,0);
@@ -1416,72 +1383,59 @@ glBegin(GL_TRIANGLE_STRIP);
             glTexCoord2f(5.0,0.0);
             glVertex3f(retas[i]->x2, retas[i]->y2, 0);
             glTexCoord2f(5.0,1.0);
-            glVertex3f(retas[i]->x2, retas[i]->y2, 40);
+            glVertex3f(retas[i]->x2, retas[i]->y2, 41);
             glTexCoord2f(0.0,1.0);
-            glVertex3f(retas[i]->x1, retas[i]->y1, 40);
+            glVertex3f(retas[i]->x1, retas[i]->y1, 41);
             glEnd();
         }
+        */
 
+        setMaterial6();
+       textureManager->SetColorMode(GL_MODULATE);
+       textureManager->Update();
 
-        textureManager->Bind(1);
-        for(int i=0; i<nretas;i++)
+        Quad *quad;
+        for(int i = 0; i < quads->size(); i++)
         {
-            glNormal3f(0,0,1);
-            glBegin(GL_QUADS);
+            quad = quads->at(i);
+
+            if(quad->y1 > orthoLastY+100 || quad->y1 < orthoFirstY-500) continue;
+
+            if(quad->x1 >0 )
+            w = abs(300 - abs(quad->x1)) / 250.0;
+            else
+            w = abs(300 - abs(quad->x2)) / 250.0;
+
+            h = abs(quad->y1 - quad->y3) / 250.0;
+
+                glNormal3f(quad->n1x,quad->n1y,quad->n1z);
+                glBegin(GL_TRIANGLES);
+
+                glTexCoord2f(0,0);
+                glVertex3f(quad->x1,quad->y1,quad->z1);
+                glTexCoord2f(w,0);
+                glVertex3f(quad->x2,quad->y2,quad->z2);
+                glTexCoord2f(0,h);
+                glVertex3f(quad->x4,quad->y4,quad->z4);
+                glEnd();
+
+                glNormal3f(quad->n2x,quad->n2y,quad->n2z);
+                glBegin(GL_TRIANGLES);
 
 
-            w = abs(300 - abs(retas[i]->x1 )) / 250.0;
-            h = abs(retas[i]->y2 - retas[i]->y1) / 250.0;
-
-
-            if(retas[i]->x1>0 && !retas[i]->verificaX)
-            {
-
-            glTexCoord2f(0.0,0.0);
-            glVertex3f(retas[i]->x1, retas[i]->y1, 41);
-            glTexCoord2f(w,0.0);
-            glVertex3f(300, retas[i]->y1, 41);
-            glTexCoord2f(w,h);
-            glVertex3f(300, retas[i]->y2, 41);
-            glTexCoord2f(0.0,h);
-            glVertex3f(retas[i]->x2, retas[i]->y2, 41);
-
-            }
-            else if(!retas[i]->verificaX)
-            {
-
-                glTexCoord2f(0.0,0.0);
-                glVertex3f(-300, retas[i]->y1, 41);
-                glTexCoord2f(w,0.0);
-                glVertex3f(retas[i]->x1, retas[i]->y1, 41);
+                glTexCoord2f(w,0);
+                glVertex3f(quad->x2,quad->y2,quad->z2);
                 glTexCoord2f(w,h);
-                glVertex3f(retas[i]->x2, retas[i]->y2, 41);
-                glTexCoord2f(0.0,h);
-                glVertex3f(-300, retas[i]->y2, 41);
-            }
-            else if(retas[i]->side==1)
-            {
+                glVertex3f(quad->x3,quad->y3,quad->z3);
+                glTexCoord2f(0,h);
+                glVertex3f(quad->x4,quad->y4,quad->z4);
+                glEnd();
 
-                w = abs(retas[i]->x1 - retas[i]->x2);
-                if (w == 0) w = retas[i]->x1;
-                w = w*2 / 250.0;
-                h = abs(retas[i]->y2 - retas[i]->y1) / 250.0;
-
-                glBegin(GL_QUADS);
-                glTexCoord2f(0.0,0.0);
-                glVertex3f(-retas[i]->x1, retas[i]->y1, 41);
-                glTexCoord2f(w,0.0);
-                glVertex3f(retas[i]->x1, retas[i]->y1, 41);
-                glTexCoord2f(w,h);
-                glVertex3f(retas[i]->x2, retas[i]->y2, 41);
-                glTexCoord2f(0.0,h);
-                glVertex3f(-retas[i]->x2, retas[i]->y2, 41);
-
-
-            }
-        glEnd();
 
         }
+
+       textureManager->SetColorMode(GL_REPLACE);
+       textureManager->Update();
 
         textureManager->Bind(2);
 
@@ -1511,7 +1465,7 @@ glBegin(GL_TRIANGLE_STRIP);
 
 
 
-
+        textureManager->Disable();
         translatex+=move_x;
         aviao->x1+=move_x;
         aviao->x2+=move_x;
@@ -1607,12 +1561,32 @@ glBegin(GL_TRIANGLE_STRIP);
     {
 
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(0, 0, 0, 0);
+        glClearColor(0,0,0,0);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        glOrtho(-200, 200, orthoFirstY, orthoLastY, -100.0, 100.0);
+
+        textureManager->Bind(6);
 
 
-        glColor3f(1.0, 0.0, 0.0);
-        textureManager->Bind(5);
-        imprimirTexto("FIM DE JOGO", -20, (orthoFirstY + orthoLastY)/2);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0,0);
+        glVertex3f(-200,orthoFirstY,0);
+        glTexCoord2f(1,0);
+        glVertex3f(200,orthoFirstY,0);
+        glTexCoord2f(1,1);
+        glVertex3f(200,orthoLastY,0);
+        glTexCoord2f(0,1);
+        glVertex3f(-200,orthoLastY,0);
+        glEnd();
+
+
+
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
     }
 
     if (gameState == 4)
@@ -1659,7 +1633,7 @@ void imprimirTexto(char const *texto, int x, int y)
     int length = (int) strlen(texto);
 
     // Posição do texto na tela
-    glRasterPos3f(x, y-150,40.0);
+    glRasterPos3f(x, y-250,70.0);
 
     for(int i = 0; i < length; i++)
     {
